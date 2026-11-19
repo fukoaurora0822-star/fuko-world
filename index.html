@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fuko 的小世界</title>
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="preconnect" href="https://sf3-scmcdn-cn.feishucdn.com">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Great+Vibes&family=Italianno&family=Cormorant+Garamond:ital,wght@0,300%3B0,400%3B1,300&family=Noto+Sans+SC:wght@300%3B400%3B500&family=Noto+Sans+JP:wght@300%3B400&family=Noto+Sans+KR:wght@300%3B400&display=swap">
+<script src="https://fastly.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+/* ================= 令牌 ================= */
+:root{
+  --pink:#F7D9E4;--pink-deep:#EEC7D6;--base:#FEFBFC;--lilac:#E8E1F2;--mint:#E2F0EF;
+  --ink:#5A4A52;--ink2:#94828C;--line:#F2E4EB;--shadow:rgba(235,210,222,.35);
+  --script:'Great Vibes','Italianno','Segoe Script',cursive;
+  --serif:'Cormorant Garamond','Noto Sans SC','Songti SC',serif;
+  --sans:'Noto Sans SC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background-color:var(--base);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body[data-lang="ja"]{font-family:'Noto Sans JP','Noto Sans SC',system-ui,sans-serif}
+body[data-lang="ko"]{font-family:'Noto Sans KR','Noto Sans SC',system-ui,sans-serif}
+::selection{background:rgba(247,217,228,.85)}
+a{color:inherit}
+button{font-family:inherit}
+input,textarea,select{font-family:inherit}
+
+/* ================= 梦核背景 ================= */
+.bgdeco{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bgdeco::before{content:"";position:absolute;inset:-12%;background:
+ radial-gradient(44% 34% at 10% 4%,rgba(247,217,228,.72),rgba(247,217,228,0) 62%),
+ radial-gradient(38% 30% at 92% 12%,rgba(232,225,242,.62),rgba(232,225,242,0) 64%),
+ radial-gradient(48% 36% at 16% 72%,rgba(226,240,239,.5),rgba(226,240,239,0) 66%),
+ radial-gradient(62% 44% at 56% 104%,rgba(247,217,228,.58),rgba(247,217,228,0) 72%),
+ radial-gradient(32% 24% at 70% 44%,rgba(255,255,255,.95),rgba(255,255,255,0) 70%)}
+.blob{position:absolute;border-radius:50%;filter:blur(52px);opacity:.5}
+.blob.b1{width:56vw;height:56vw;left:-18vw;top:2vh;background:radial-gradient(circle,#F7D9E4,rgba(247,217,228,0) 70%);animation:breathe 20s ease-in-out infinite}
+.blob.b2{width:48vw;height:48vw;right:-16vw;top:22vh;background:radial-gradient(circle,#E8E1F2,rgba(232,225,242,0) 70%);animation:breathe 26s ease-in-out infinite reverse}
+.blob.b3{width:64vw;height:44vw;left:6vw;bottom:-14vh;background:radial-gradient(circle,#E2F0EF,rgba(226,240,239,0) 68%);opacity:.38;animation:breathe 30s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.42}50%{transform:scale(1.09) translateY(-14px);opacity:.62}}
+.bokeh{position:absolute;inset:0}
+.bokeh i{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(251,227,238,.55) 42%,rgba(251,227,238,0) 72%);filter:blur(3px);animation:bokehFloat linear infinite}
+@keyframes bokehFloat{0%{transform:translate3d(0,20vh,0) scale(.9);opacity:0}15%{opacity:.6}85%{opacity:.5}100%{transform:translate3d(24px,-30vh,0) scale(1.1);opacity:0}}
+.twinkles{position:absolute;inset:0}
+.twinkle{position:absolute;animation:twinkle 4.5s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(247,217,228,.9))}
+@keyframes twinkle{0%,100%{opacity:.12;transform:scale(.75) rotate(0)}50%{opacity:.8;transform:scale(1.05) rotate(12deg)}}
+.words{position:absolute;inset:0}
+.words span{position:absolute;font-family:var(--script);color:rgba(201,140,166,.13);white-space:nowrap;animation:wave 24s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-16px) rotate(var(--r,0deg))}}
+.leaks{position:absolute;inset:0}
+.leaks::before{content:"";position:absolute;left:-20%;top:-30%;width:90vw;height:80vh;background:linear-gradient(120deg,rgba(255,255,255,.85),rgba(255,255,255,0) 55%);transform:rotate(-12deg);opacity:.55;filter:blur(6px)}
+.leaks::after{content:"";position:absolute;right:-24%;bottom:-24%;width:80vw;height:70vh;background:radial-gradient(circle at 60% 40%,rgba(255,246,250,.9),rgba(255,246,250,0) 62%);opacity:.6}
+.floaties{position:absolute;inset:0}
+.floaty{position:absolute;will-change:transform;animation:drift linear infinite}
+@keyframes drift{0%{transform:translate3d(0,112vh,0) rotate(0);opacity:0}10%{opacity:.55}90%{opacity:.5}100%{transform:translate3d(22px,-14vh,0) rotate(210deg);opacity:0}}
+.paper{position:absolute;inset:0;opacity:.19;mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.4'/></svg>");background-size:180px 180px}
+.vignette{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 46%,rgba(255,255,255,0) 52%,rgba(238,199,214,.16) 82%,rgba(214,160,182,.22) 100%)}
+.haze{position:absolute;inset:0;background:radial-gradient(58% 46% at 50% 22%,rgba(255,255,255,.78),rgba(255,255,255,0) 72%);mix-blend-mode:screen}
+.frame-ghost{position:absolute;border:1px dashed rgba(240,214,226,.85);border-radius:14px;opacity:.55;animation:sway 30s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-14px) rotate(-3deg)}}
+
+/* ================= 开门 ================= */
+#gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:radial-gradient(52% 42% at 50% 44%,#FFFFFF 0%,#FFFBFC 42%,#FDF3F7 72%,#F8E6EE 100%);cursor:pointer;transition:opacity 1.1s ease .35s,visibility 1.1s ease .35s}
+#gate.done{opacity:0;visibility:hidden;pointer-events:none}
+#gate::after{content:"";position:absolute;inset:0;background:radial-gradient(40% 34% at 50% 46%,rgba(255,255,255,.95),rgba(255,255,255,0) 70%);opacity:0;transition:opacity .9s ease .3s}
+#gate.open::after{opacity:1}
+.gate-stage{position:relative;display:grid;place-items:center;transform:translateY(-2vh)}
+.gate-glow{position:absolute;left:50%;top:52%;translate:-50% -50%;width:min(78vw,380px);aspect-ratio:1;background:radial-gradient(circle,rgba(255,255,255,.98) 0%,rgba(255,246,250,.85) 38%,rgba(247,217,228,0) 72%);filter:blur(14px);opacity:.55;transform:scale(.7);transition:transform 1.8s cubic-bezier(.4,0,.2,1),opacity 1.4s ease}
+#gate.open .gate-glow{transform:scale(1.55);opacity:1}
+.gate-arch{position:relative;--aw:min(62vw,272px);width:var(--aw);height:min(88vw,388px);border-radius:calc(var(--aw)/2) calc(var(--aw)/2) 0 0;background:linear-gradient(155deg,#F6D2DF 0%,#EBC0D2 46%,#F9DFE9 100%);box-shadow:inset 0 0 0 9px rgba(255,255,255,.72),0 26px 60px rgba(214,168,188,.38);perspective:1100px;transform-style:preserve-3d}
+.gate-arch::before{content:"";position:absolute;inset:-14px;border-radius:inherit;border:1px solid rgba(242,228,235,.9);box-shadow:0 0 0 6px rgba(255,255,255,.35)}
+.leaf{position:absolute;top:9px;bottom:0;width:calc(50% - 9px);overflow:hidden;backface-visibility:hidden;transform-style:preserve-3d;transition:transform 1.7s cubic-bezier(.45,0,.2,1);box-shadow:inset 0 0 0 1px rgba(214,150,175,.45),inset 0 -20px 40px rgba(214,150,175,.18)}
+.leaf-l{left:9px;border-top-left-radius:calc(var(--aw)/2 - 9px) calc(var(--aw)/2 - 9px);transform-origin:left center}
+.leaf-r{right:9px;border-top-right-radius:calc(var(--aw)/2 - 9px) calc(var(--aw)/2 - 9px);transform-origin:right center}
+.leaf svg{display:block;width:100%;height:100%}
+.leaf-r svg{transform:scaleX(-1)}
+#gate.open .leaf-l{transform:rotateY(-104deg)}
+#gate.open .leaf-r{transform:rotateY(104deg)}
+.gate-hint{position:absolute;left:50%;bottom:-74px;translate:-50% 0;font-size:12px;letter-spacing:.26em;color:#B79AA7;white-space:nowrap;animation:hintPulse 3.4s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.55;transform:translateY(0)}50%{opacity:.95;transform:translateY(-4px)}}
+#gate.open .gate-hint{opacity:0;transition:opacity .4s}
+.gate-mini{position:absolute;left:50%;translate:-50% 0;bottom:6vh;font-size:11px;letter-spacing:.2em;color:#C6ADB7;opacity:.8}
+
+/* ================= 页面骨架 ================= */
+.page{position:relative;z-index:2;transition:opacity 1s ease .15s,filter .7s ease}
+.js .page{opacity:0}
+.js .page.show{opacity:1}
+.page.locked{filter:blur(7px) saturate(.9);pointer-events:none;user-select:none}
+.topbar{position:sticky;top:0;z-index:40;padding:10px 14px 8px;background:linear-gradient(180deg,rgba(254,251,252,.94) 0%,rgba(254,251,252,.78) 62%,rgba(254,251,252,0) 100%);backdrop-filter:blur(18px) saturate(1.1);-webkit-backdrop-filter:blur(18px)}
+.topbar-in{max-width:1040px;margin:0 auto}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--script);font-size:23px;color:#B57D97;line-height:1.2;text-shadow:0 1px 0 #fff,0 6px 18px rgba(247,217,228,.9)}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--pink-deep);box-shadow:0 0 0 3px rgba(247,217,228,.6)}
+.brand small{font-family:var(--serif);font-style:italic;font-size:10px;letter-spacing:.24em;color:#C6ADB7;display:block;margin-top:-2px}
+.lang{display:flex;gap:1px;padding:2px;border-radius:999px;background:rgba(255,255,255,.6);flex:none}
+.lang button{border:none;background:transparent;cursor:pointer;font-size:11.5px;color:var(--ink2);padding:4px 7px;border-radius:999px;line-height:1.2;transition:background .35s,color .35s}
+.lang button.on{background:var(--pink);color:var(--ink);box-shadow:0 2px 8px rgba(235,210,222,.5)}
+.tabs-wrap{position:relative;margin-top:8px}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:3px 2px 5px;scrollbar-width:none;-ms-overflow-style:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 34px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 16px,#000 calc(100% - 34px),transparent 100%)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:999px;font-size:12.5px;color:#8B7280;border:1px solid transparent;transition:all .4s;display:flex;align-items:center;gap:6px}
+.tab em{font-family:var(--serif);font-style:italic;font-size:9.5px;color:#C2ACB6;letter-spacing:.1em}
+.tab.on{background:linear-gradient(160deg,#FBE2EC,#F7D9E4);border-color:rgba(255,255,255,.9);color:var(--ink);box-shadow:0 6px 16px rgba(235,210,222,.6),inset 0 1px 0 rgba(255,255,255,.9)}
+.tab.on em{color:#B493A1}
+.ticker{display:flex;align-items:center;gap:9px;margin-top:12px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(242,228,235,.9);font-size:12px;color:#8B7280;box-shadow:0 4px 14px rgba(235,210,222,.22)}
+.ticker .note{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(232,225,242,.7);color:#9C8CB4;flex:none}
+.ticker b{font-weight:400;letter-spacing:.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticker .arrows{margin-left:auto;display:flex;gap:8px;color:#C2ACB6;flex:none}
+.wrap{width:100%;max-width:1040px;margin:0 auto;padding:0 16px;position:relative}
+#view.enter{animation:viewIn .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+
+/* ================= 通用 ================= */
+.card{position:relative;background:linear-gradient(180deg,rgba(255,253,254,.92),rgba(254,251,252,.8));border:1px solid rgba(255,255,255,.9);border-radius:18px;box-shadow:0 12px 32px var(--shadow),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(10px);padding:18px 16px;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='120' height='120' filter='url(%23g)' opacity='0.6'/></svg>");opacity:.045;mix-blend-mode:multiply}
+.kicker{font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:.22em;color:#C09AA9;text-transform:uppercase}
+.divider{display:flex;align-items:center;justify-content:center;gap:10px;color:#DCC3CE;font-size:11px;letter-spacing:.3em;margin:26px 0 2px}
+.divider .l{height:1px;width:52px;background:linear-gradient(90deg,rgba(242,228,235,0),var(--line))}
+.divider .r{height:1px;width:52px;background:linear-gradient(90deg,var(--line),rgba(242,228,235,0))}
+.slot{position:relative;display:grid;place-items:center;gap:2px;border:1px dashed rgba(238,205,220,.95);border-radius:14px;background:radial-gradient(80% 60% at 50% 0%,rgba(255,255,255,.75),rgba(255,255,255,0) 70%),linear-gradient(160deg,rgba(255,255,255,.55),rgba(247,217,228,.12));min-height:96px;overflow:hidden;transition:border-color .5s,background .5s}
+.slot b{font-family:var(--script);font-size:26px;font-weight:400;color:rgba(201,140,166,.42);line-height:1;position:relative;z-index:1}
+.slot i{font-style:normal;font-size:9.5px;letter-spacing:.26em;color:#C9AFBA;position:relative;z-index:1}
+.slot::after{content:"";position:absolute;width:64%;height:64%;border-radius:50%;background:radial-gradient(circle,rgba(247,217,228,.55),rgba(247,217,228,0) 70%);filter:blur(14px);opacity:.55}
+.slot:hover{border-color:#E9BCCD}
+.r-sq{aspect-ratio:1/1}.r-34{aspect-ratio:3/4}.r-916{aspect-ratio:9/16}.r-169{aspect-ratio:16/9}.r-wide{aspect-ratio:21/9}.r-45{aspect-ratio:4/5}
+.grid{display:grid;gap:10px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(min-width:760px){.g3-md{grid-template-columns:repeat(3,1fr)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border:none;border-radius:14px;cursor:pointer;background:var(--pink);color:var(--ink);font-size:13.5px;letter-spacing:.08em;box-shadow:0 6px 18px rgba(235,210,222,.55),inset 0 1px 0 rgba(255,255,255,.75);transition:background .5s,box-shadow .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.btn:hover{background:var(--pink-deep);box-shadow:0 10px 26px rgba(235,210,222,.8),0 0 0 6px rgba(247,217,228,.26);transform:translateY(-1px) scale(1.015)}
+.btn-ghost{background:rgba(255,255,255,.55);border:1px solid var(--line);color:var(--ink2);box-shadow:none}
+.btn-ghost:hover{background:rgba(247,217,228,.35);color:var(--ink)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:12px}
+
+/* ================= 首页 ================= */
+.hero{position:relative;text-align:center;padding:34px 0 8px}
+.hero>*{position:relative;z-index:1}
+.hero::before{content:"";position:absolute;left:50%;top:58px;translate:-50% 0;width:min(70vw,400px);aspect-ratio:1;border-radius:50%;border:1px dashed rgba(238,205,220,.65);background:radial-gradient(circle,rgba(255,255,255,.45),rgba(247,217,228,.16) 62%,rgba(247,217,228,0) 72%);animation:spinSlow 70s linear infinite;pointer-events:none;z-index:0}
+@keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero::after{content:"";position:absolute;left:50%;top:-30px;translate:-50% 0;width:min(88vw,640px);height:280px;background:radial-gradient(ellipse at 50% 42%,rgba(255,222,237,.42),rgba(255,255,255,0) 66%);filter:blur(26px);pointer-events:none;z-index:0}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--serif);font-size:10.5px;letter-spacing:.28em;color:#BB99A8;padding:5px 14px;border-radius:999px;border:1px solid rgba(247,217,228,.95);background:rgba(255,255,255,.6);backdrop-filter:blur(6px)}
+.hero-badge i{width:5px;height:5px;border-radius:50%;background:var(--pink-deep)}
+.script{font-family:var(--script);font-size:clamp(42px,13vw,92px);line-height:1.04;color:#C98CA6;margin:12px 0 0;position:relative;text-shadow:0 1px 0 rgba(255,255,255,.95),0 10px 34px rgba(247,217,228,.95)}
+.hero-cn{font-size:12.5px;letter-spacing:.42em;color:var(--ink2);margin:4px 0 0;padding-left:.42em}
+.hero-quote{font-family:var(--serif);font-style:italic;font-size:14.5px;color:#AB8F9C;margin:12px auto 0;max-width:340px}
+.hero-frame{position:relative;margin:24px 0 0;padding:9px;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(253,240,246,.6));box-shadow:0 16px 40px rgba(235,210,222,.5),inset 0 1px 0 #fff;border:1px solid rgba(255,255,255,.95)}
+.hero-frame::before{content:"";position:absolute;inset:-11px;border-radius:26px;border:1px dashed rgba(238,205,220,.85);pointer-events:none}
+.hero-frame .slot{border-radius:14px;max-height:330px}
+.hero-frame .tag-float{position:absolute;top:-11px;right:16px;padding:3px 10px;border-radius:999px;background:var(--pink);font-size:10px;letter-spacing:.18em;color:#9B7285;box-shadow:0 4px 12px rgba(235,210,222,.6)}
+.hero-visual{position:relative;display:grid;place-items:center;overflow:hidden;border-radius:14px;min-height:clamp(320px,34vw,440px);background:linear-gradient(155deg,#FFF7FB 0%,#F9DFEA 48%,#EDE6F6 100%)}
+.hv-blur{position:absolute;inset:-14%;width:128%;height:128%;object-fit:cover;filter:blur(38px) saturate(.85) brightness(1.5);opacity:.48;pointer-events:none;z-index:0}
+.hv-glow{position:absolute;inset:0;z-index:1;background:radial-gradient(52% 58% at 50% 46%,rgba(255,255,255,.92),rgba(255,255,255,0) 68%)}
+.hv-card{position:relative;z-index:2;margin:0;padding:10px 10px 30px;width:clamp(200px,24vw,286px);background:#fff;border-radius:7px 11px 8px 13px;box-shadow:0 18px 44px rgba(200,150,175,.42);transform:rotate(-1.4deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.hv-card:hover{transform:rotate(0) translateY(-6px) scale(1.02)}
+.hv-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px;background:#FDF4F8}
+.hv-tape{position:absolute;top:-9px;left:50%;translate:-50% 0;width:58px;height:16px;transform:rotate(-4deg);background:linear-gradient(180deg,rgba(247,217,228,.92),rgba(247,217,228,.55));border:1px dashed rgba(255,255,255,.95);border-radius:3px;z-index:1}
+.hero-visual::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(150deg,rgba(255,250,252,.5),rgba(247,217,228,.32) 55%,rgba(232,225,242,.42))}.hv-word{position:absolute;z-index:1;font-family:var(--script);color:rgba(140,105,122,.28);pointer-events:none;letter-spacing:.04em;font-size:clamp(20px,3.2vw,38px)}.hv-word.w1{left:5%;top:16%;transform:rotate(-7deg)}.hv-word.w2{right:5%;bottom:14%;transform:rotate(5deg)}.hv-star{position:absolute;z-index:1;color:rgba(214,168,188,.85);pointer-events:none;animation:twinkle 5s ease-in-out infinite}.hv-star.s1{left:18%;top:22%;font-size:18px}.hv-star.s2{right:16%;top:34%;font-size:13px;animation-delay:-1.6s}.hv-star.s3{left:26%;bottom:20%;font-size:15px;color:rgba(232,225,242,.95);animation-delay:-3s}.hv-cap{position:absolute;left:0;right:0;bottom:7px;text-align:center;font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:.2em;color:#B79AA7}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin:0 2px 12px;flex-wrap:wrap}
+.h2{font-size:18px;font-weight:500;letter-spacing:.05em;margin:0}
+.nine{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media(min-width:760px){.nine{grid-template-columns:repeat(3,1fr);gap:14px}}
+.tile{position:relative;display:block;text-decoration:none;padding:16px 14px 15px;border-radius:18px;border:1px solid rgba(255,255,255,.95);background:linear-gradient(160deg,rgba(255,255,255,.8),rgba(254,248,251,.55));box-shadow:0 10px 26px rgba(235,210,222,.32),inset 0 1px 0 rgba(255,255,255,.95);backdrop-filter:blur(8px);transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s;overflow:hidden}
+.tile::after{content:"";position:absolute;right:-24px;top:-28px;width:86px;height:86px;border-radius:50%;background:radial-gradient(circle,var(--tint,rgba(247,217,228,.55)),rgba(247,217,228,0) 70%);opacity:.75}
+.tile:hover{transform:translateY(-5px) scale(1.012);box-shadow:0 18px 40px rgba(235,210,222,.6)}
+.tile .num{position:absolute;right:12px;top:10px;font-family:var(--serif);font-style:italic;font-size:11px;color:#C9AFBA}
+.tile .ic{width:32px;height:32px;color:#C08EA6;display:block;margin-bottom:10px;opacity:.85}
+.tile-fumi{width:64px;height:64px;object-fit:contain;display:block;margin:0 0 4px -4px;filter:drop-shadow(0 8px 12px rgba(214,168,188,.35));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.tile:hover .tile-fumi{transform:translateY(-2px) rotate(-4deg) scale(1.06)}
+.fumi-mark{height:62px;width:auto;flex:none;margin-left:4px;transform:translateY(10px) rotate(-5deg);filter:drop-shadow(0 8px 12px rgba(214,168,188,.32));transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.fumi-mark:hover{transform:translateY(3px) rotate(2deg) scale(1.05)}
+.mod-title-row{display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap}
+.hero-fumi{position:absolute;right:2%;top:6px;width:clamp(72px,11vw,116px);transform:rotate(7deg);filter:drop-shadow(0 10px 16px rgba(214,168,188,.3));z-index:2}
+#fumi img{width:100%;display:block;filter:drop-shadow(0 10px 18px rgba(214,168,188,.35))}
+.ph-fumi-img{width:84%;height:auto;display:block;filter:drop-shadow(0 10px 16px rgba(214,168,188,.35))}
+.auth-fumi{position:absolute;right:8px;top:6px;height:46px;transform:rotate(9deg);filter:drop-shadow(0 8px 14px rgba(214,168,188,.35));pointer-events:none;z-index:1}
+.tile h4{margin:0;font-size:15px;font-weight:500;letter-spacing:.08em}
+.tile .en{display:block;font-family:var(--serif);font-style:italic;font-size:10px;letter-spacing:.18em;color:#C2ACB6;margin:3px 0 0}
+.tile p{margin:6px 0 0;font-size:11px;line-height:1.6;color:#A98E9B}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{padding:14px 12px;border-radius:16px;text-align:center;background:linear-gradient(170deg,rgba(255,255,255,.8),rgba(253,243,248,.6));border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 20px rgba(235,210,222,.28)}
+.stat b{display:block;font-family:var(--serif);font-size:24px;font-weight:400;color:#B57D97;line-height:1.2}
+.stat span{font-size:10.5px;letter-spacing:.16em;color:#B79AA7}
+
+/* ================= 栏目页 ================= */
+.mod{padding:26px 0 0}
+.crumb{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.16em;color:#C2ACB6}
+.crumb a{text-decoration:none;color:#B79AA7}
+.mod-head{position:relative;margin-top:12px;padding-bottom:16px;border-bottom:1px solid rgba(242,228,235,.9)}
+.mod-no{position:absolute;right:0;top:-2px;font-family:var(--serif);font-style:italic;font-size:34px;color:rgba(201,140,166,.35);line-height:1}
+.mod-title{font-size:27px;font-weight:500;letter-spacing:.08em;margin:6px 0 4px;line-height:1.35}
+.mod-sub{font-size:12.5px;color:#94828C;margin:0}
+.toolbar{display:flex;gap:8px;align-items:center;margin:16px 0 12px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:6px 12px;border-radius:999px;font-size:11.5px;color:#9B8590;background:rgba(255,255,255,.6);border:1px solid var(--line)}
+.chip.on{background:rgba(247,217,228,.85);border-color:rgba(255,255,255,.9);color:#8B6577}
+.canvas{position:relative;padding:16px;border-radius:18px;background:linear-gradient(170deg,rgba(255,255,255,.62),rgba(253,243,248,.35));border:1px solid rgba(255,255,255,.9);box-shadow:0 10px 26px rgba(235,210,222,.26);margin-top:4px}
+.rowline{display:flex;gap:12px;align-items:center;padding:12px 10px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(242,228,235,.9);margin-bottom:8px}
+.rowline .dotno{font-family:var(--serif);font-style:italic;font-size:11px;color:#C9AFBA;flex:none;width:20px}
+.rowline .bar{flex:1;height:9px;border-radius:6px;background:repeating-linear-gradient(90deg,rgba(247,217,228,.55) 0 26px,rgba(232,225,242,.4) 26px 52px);opacity:.7}
+.dir{margin-top:26px}
+.dir-head{display:flex;align-items:baseline;gap:10px;margin:0 2px 10px;flex-wrap:wrap}
+.dir-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:760px){.dir-grid{grid-template-columns:repeat(3,1fr)}}
+.dir-item{display:flex;align-items:center;gap:9px;text-decoration:none;padding:10px 12px;border-radius:12px;border:1px solid rgba(242,228,235,.95);background:rgba(255,255,255,.55);font-size:12.5px;color:#8B7280;transition:all .45s}
+.dir-item:hover{background:rgba(247,217,228,.35);transform:translateY(-2px)}
+.dir-item.on{background:linear-gradient(150deg,#FBE2EC,#F8DCE7);border-color:rgba(255,255,255,.95);color:var(--ink);box-shadow:0 8px 18px rgba(235,210,222,.45)}
+.dir-item .no{font-family:var(--serif);font-style:italic;font-size:10.5px;color:#BFA3B0;width:18px;flex:none}
+.dir-item .dn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dir-item .de{font-family:var(--serif);font-style:italic;font-size:9px;letter-spacing:.12em;color:#C6ADB7;flex:none}
+.pager{display:flex;gap:10px;justify-content:space-between;margin-top:20px}
+.pager a{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:12px;color:#9B8590;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid var(--line);transition:all .45s;max-width:48%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.pager a:hover{background:rgba(247,217,228,.4);color:var(--ink);transform:translateY(-2px)}
+
+/* ================= 登录弹窗 ================= */
+#auth{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:16px;background:radial-gradient(60% 50% at 50% 40%,rgba(255,250,252,.72),rgba(247,217,228,.52));backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+#auth.show{display:grid;animation:fadeIn .7s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.auth-card{position:relative;width:min(94vw,392px);max-height:92vh;overflow:auto;padding:26px 22px 22px;border-radius:24px;background:linear-gradient(180deg,#FFFDFE 0%,#FFF7FB 55%,#FDF0F7 100%);border:1px solid #fff;box-shadow:0 30px 70px rgba(200,160,180,.5),inset 0 0 0 8px rgba(255,255,255,.6);animation:cardIn .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.auth-card::before{content:"";position:absolute;inset:10px;border-radius:18px;border:1px dashed rgba(238,205,220,.9);pointer-events:none}
+.auth-deco{position:absolute;left:50%;top:-34px;translate:-50% 0;width:92px;height:34px;background:radial-gradient(60% 100% at 50% 100%,rgba(247,217,228,.75),rgba(247,217,228,0) 72%);filter:blur(4px);pointer-events:none}
+.auth-kicker{display:block;text-align:center}
+.auth-title{text-align:center;font-size:19px;font-weight:500;letter-spacing:.06em;margin:6px 0 4px}
+.auth-sub{text-align:center;font-size:11.5px;color:#B79AA7;margin:0 0 16px;letter-spacing:.04em}
+.auth-tabs{display:flex;gap:3px;padding:3px;border-radius:999px;background:rgba(247,217,228,.42);margin-bottom:16px}
+.auth-tabs button{flex:1;border:none;background:transparent;padding:8px 6px;border-radius:999px;font-size:12.5px;letter-spacing:.1em;color:#A98E9B;cursor:pointer;transition:all .4s}
+.auth-tabs button.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(235,210,222,.6)}
+.field{margin-bottom:11px}
+.field label{display:block;font-size:11px;letter-spacing:.14em;color:#B79AA7;margin-bottom:5px}
+.input{width:100%;padding:10px 13px;border-radius:12px;background:#FFF8FB;border:1px solid var(--line);outline:none;font-size:14px;color:var(--ink);transition:border-color .4s,box-shadow .4s,background .4s}
+.input::placeholder{color:#C9B5BF}
+.input:focus{border-color:var(--pink-deep);background:#FFFCFD;box-shadow:0 0 0 4px rgba(247,217,228,.45)}
+.genders{display:flex;gap:8px}
+.genders label{flex:1;display:block;margin:0;cursor:pointer}
+.genders input{position:absolute;opacity:0;pointer-events:none}
+.genders span{display:block;text-align:center;padding:9px 0;border-radius:12px;background:#FFF8FB;border:1px solid var(--line);font-size:12.5px;color:#9B8590;transition:all .4s}
+.genders input:checked + span{background:linear-gradient(150deg,#FBE2EC,#F8DCE7);border-color:rgba(255,255,255,.95);color:var(--ink);box-shadow:0 6px 14px rgba(235,210,222,.5)}
+.auth-err{min-height:20px;margin:6px 0 10px;text-align:center;font-size:11.5px;color:#C98CA6;letter-spacing:.04em}
+.auth-btn{width:100%;justify-content:center;padding:11px}
+.auth-tip{text-align:center;font-size:10.5px;letter-spacing:.1em;color:#C2ACB6;margin:12px 0 0}
+.auth-lock{text-align:center;font-size:10px;color:#CBB6C0;margin-top:10px;letter-spacing:.14em}
+
+/* ================= 个人简介 ================= */
+.profile-grid{display:grid;gap:16px}
+@media(min-width:700px){.profile-grid{grid-template-columns:240px 1fr}}
+.portrait{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#FFF3F9,#F7DCE9);border:1px solid #fff;box-shadow:0 14px 32px rgba(235,210,222,.5);aspect-ratio:3/4;display:grid;place-items:center}
+.portrait .ph-fumi{width:62%;opacity:.92}
+.portrait .crown{position:absolute;top:10px;left:50%;translate:-50% 0;font-size:16px}
+.bow-deco{position:absolute;pointer-events:none}
+.bow-deco.b-a{top:8px;right:10px;width:52px;transform:rotate(12deg)}
+.bow-deco.b-b{bottom:8px;left:10px;width:42px;transform:rotate(-16deg)}
+.info-rows{margin-top:2px;display:grid;grid-template-columns:1fr;column-gap:24px}
+@media(min-width:900px){.info-rows{grid-template-columns:1fr 1fr}}
+.ir{display:flex;align-items:center;gap:10px;padding:9px 2px;font-size:13.5px;border-bottom:1px dashed rgba(242,228,235,.9)}
+.ir span{color:var(--ink2);font-size:12px;letter-spacing:.1em;flex:none;min-width:4.6em}
+.ir i{flex:1;height:1px;background:repeating-linear-gradient(90deg,rgba(242,228,235,0) 0 3px,rgba(242,228,235,1) 3px 5px)}
+.ir b{font-weight:500;letter-spacing:.04em}
+.bio{margin-top:14px;font-size:13.5px;line-height:1.9;color:#75646D;background:rgba(255,255,255,.55);border:1px dashed rgba(238,205,220,.9);border-radius:14px;padding:12px 14px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.tag{padding:4px 11px;border-radius:999px;font-size:11.5px;color:#8B7581;background:rgba(232,225,242,.65);border:1px solid rgba(232,225,242,.9)}
+.tag.mint{background:rgba(226,240,239,.8);border-color:rgba(226,240,239,.95)}
+.tag.pink{background:rgba(247,217,228,.75);border-color:rgba(247,217,228,.95)}
+.ph-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.p-name{font-size:21px;font-weight:500;letter-spacing:.1em;line-height:1.3}
+.p-name em{display:block;font-family:var(--serif);font-style:italic;font-size:11px;letter-spacing:.24em;color:#C6ADB7;margin-top:4px;font-weight:400}
+.p-sub{font-size:11.5px;color:#B79AA7;letter-spacing:.13em;margin:7px 0 10px}
+.p-maple{color:#D79FB4}
+.p-sec{margin:0 0 6px;font-size:15px;font-weight:500;letter-spacing:.08em;color:#7A6570}
+.tl{margin-top:2px}
+.tl-item{display:grid;grid-template-columns:78px 1fr;gap:12px;align-items:start;padding:10px 2px;border-bottom:1px dashed rgba(242,228,235,.9)}
+.tl-item b{font-family:var(--serif);font-size:14px;font-weight:400;color:#B57D97;letter-spacing:.04em}
+.tl-item p{margin:0;font-size:12.5px;line-height:1.85;color:#75646D}
+.facts{display:grid;gap:10px;margin-top:4px}
+@media(min-width:760px){.facts{grid-template-columns:repeat(2,1fr)}}
+.fact{padding:11px 14px;border-radius:15px;background:rgba(255,255,255,.62);border:1px dashed rgba(238,205,220,.88);box-shadow:0 6px 16px rgba(235,210,222,.22)}
+.fact span{display:block;font-size:10px;letter-spacing:.18em;color:#C2ACB6;margin-bottom:5px}
+.fact b{display:block;font-weight:500;font-size:12.5px;line-height:1.85;color:#6E5C66}
+.fact.wide{grid-column:1/-1}
+
+/* ================= 表演 / 视频 ================= */
+.vcard{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.95);box-shadow:0 10px 26px rgba(235,210,222,.4);transition:transform .5s,box-shadow .5s}
+.vcard:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(235,210,222,.6)}
+.vcard .media{position:relative;aspect-ratio:16/9;background:#FDF3F8;display:grid;place-items:center;overflow:hidden}
+.vcard .media iframe,.vcard .media video{width:100%;height:100%;border:0;display:block}
+.vcard .cap{padding:9px 12px;font-size:11.5px;color:#A98E9B;letter-spacing:.06em;display:flex;justify-content:space-between;gap:8px}
+.vcard .cap em{font-family:var(--serif);font-style:italic;color:#C6ADB7;font-size:10px}
+.addbox{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.addbox .input{flex:1;min-width:180px}
+.mini-label{font-size:11px;letter-spacing:.16em;color:#B79AA7;margin:0 0 8px}
+
+/* ================= 相册 ================= */
+.album{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:760px){.album{grid-template-columns:repeat(3,1fr)}}
+.polaroid{position:relative;background:#fff;padding:8px 8px 24px;border-radius:6px 12px 8px 14px;box-shadow:0 12px 26px rgba(235,210,222,.5);transform:rotate(var(--rot,-2deg));transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s,filter .6s}
+.polaroid:hover{transform:rotate(0) translateY(-6px) scale(1.04);box-shadow:0 20px 44px rgba(235,210,222,.75),0 0 30px rgba(255,255,255,.9);filter:saturate(1.08) brightness(1.03)}
+.polaroid .ph{position:relative;aspect-ratio:1/1.08;border-radius:4px;overflow:hidden;background:#FDF4F8}
+.polaroid .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.polaroid .cap{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-size:11px;color:#A98E9B;letter-spacing:.1em}
+.polaroid .tape{position:absolute;top:-7px;left:50%;translate:-50% 0;width:50px;height:14px;transform:rotate(-4deg);background:linear-gradient(180deg,rgba(247,217,228,.85),rgba(247,217,228,.5));border:1px dashed rgba(255,255,255,.9);border-radius:3px}
+.batch{width:100%;min-height:80px;padding:11px 13px;border-radius:14px;background:#FFF8FB;border:1px solid var(--line);outline:none;font-size:13px;line-height:1.7;resize:vertical;margin-bottom:10px}
+.batch:focus{border-color:var(--pink-deep);box-shadow:0 0 0 4px rgba(247,217,228,.45)}
+
+/* ================= 音乐 ================= */
+.player{display:flex;gap:13px;align-items:center;padding:14px;border-radius:18px;background:linear-gradient(150deg,#FFF6FA,#F9E7F0);border:1px solid rgba(255,255,255,.95);box-shadow:0 12px 28px rgba(235,210,222,.45);margin-bottom:14px}
+.disc{flex:none;width:56px;height:56px;border-radius:50%;position:relative;background:conic-gradient(from 0deg,#F7D9E4,#E8E1F2,#E2F0EF,#F7D9E4);box-shadow:inset 0 0 0 5px #FFF9FC,0 6px 14px rgba(235,210,222,.6)}
+.disc::after{content:"";position:absolute;inset:38%;border-radius:50%;background:#FFF9FC}
+.player .meta{flex:1;min-width:0}
+.player .meta b{display:block;font-size:14px;font-weight:500;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .meta span{font-size:11px;color:#B79AA7;letter-spacing:.1em}
+.player audio{width:100%;margin-top:6px;height:32px}
+.track{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(242,228,235,.9);margin-bottom:8px;text-decoration:none;transition:all .4s}
+.track:hover{background:rgba(247,217,228,.35);transform:translateX(3px)}
+.track .n{font-family:var(--serif);font-style:italic;font-size:11px;color:#C9AFBA;width:20px}
+.track .t{flex:1;font-size:13px;color:#75646D;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track .p{color:#C6ADB7;font-size:12px}
+
+/* ================= 倒计时 ================= */
+.clock-grid{display:grid;gap:14px}
+@media(min-width:760px){.clock-grid{grid-template-columns:repeat(3,1fr)}}
+.clock-card{position:relative;text-align:center;padding:20px 14px 16px;border-radius:20px;background:linear-gradient(170deg,#FFFDFE,#FCF1F8 60%,#F7E7F1);border:1px solid #fff;box-shadow:0 14px 34px rgba(235,210,222,.45);overflow:hidden}
+.clock-card::before{content:"";position:absolute;left:-20px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(232,225,242,.6),rgba(232,225,242,0) 70%);filter:blur(6px)}
+.clock-card .star{position:absolute;left:9px;bottom:8px;width:16px;height:16px;opacity:.7}
+.clock-card .star svg{width:100%;height:100%}
+.clock-card .mo{position:absolute;right:9px;top:7px;width:26px;height:26px;opacity:.8}
+.clock-card .mo svg{width:100%;height:100%}
+.clock-card h4{position:relative;font-size:12.5px;font-weight:400;letter-spacing:.14em;color:#9B7285;margin:0 0 4px}
+.clock-card .big{position:relative;font-family:var(--serif);font-size:44px;line-height:1.1;color:#B57D97;font-weight:400;margin:2px 0 0}
+.clock-card .big small{font-size:13px;color:#C09AA9;letter-spacing:.16em;margin-left:3px}
+.clock-card .units{position:relative;display:flex;justify-content:center;gap:9px;margin-top:10px}
+.unit{min-width:44px}
+.unit b{display:block;font-family:var(--serif);font-size:19px;color:#8B7280;font-weight:400;line-height:1.15}
+.unit span{display:block;font-size:9px;letter-spacing:.16em;color:#C2ACB6}
+.clock-card .jp{position:relative;margin-top:12px;font-size:10.5px;letter-spacing:.1em;color:#BFA3B0;font-family:var(--serif);font-style:italic}
+.clock-card .hint{position:relative;margin-top:6px;font-size:10px;letter-spacing:.12em;color:#CBB6C0}
+
+/* ================= 留言 / 信纸 ================= */
+.letter-paper{position:relative;border-radius:16px;padding:16px 16px 14px 30px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.94) 0 27px,rgba(242,228,235,.55) 27px 28px),#FFFCFD;border:1px solid rgba(242,228,235,.95);box-shadow:0 10px 26px rgba(235,210,222,.32);overflow:hidden}
+.letter-paper::before{content:"";position:absolute;left:18px;top:0;bottom:0;width:1px;background:rgba(238,205,220,.85)}
+.note-card{position:relative;padding:16px 16px 14px;border-radius:14px;background:linear-gradient(160deg,#FFF7FB,#FFFBFC);border:1px solid rgba(247,217,228,.9);box-shadow:0 8px 20px rgba(235,210,222,.35);margin-bottom:12px;transform:rotate(var(--rot,0deg))}
+.note-card .who{font-family:var(--script);font-size:20px;color:#B57D97;line-height:1.2;margin-bottom:4px}
+.note-card .txt{font-size:13px;line-height:1.85;color:#6E5E66;white-space:pre-wrap;word-break:break-word}
+.nc-img{margin:2px 0 8px;border-radius:10px;overflow:hidden;background:#fff;border:1px solid rgba(242,228,235,.95)}
+.nc-img img{display:block;width:100%;max-height:340px;object-fit:cover}
+.date-row{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px dashed rgba(242,228,235,.9);font-size:13px}
+.date-row b{font-family:var(--serif);font-size:13px;color:#B57D97;letter-spacing:.04em;flex:none}
+.date-row span{flex:1;color:#75646D;font-size:12.5px}
+.date-row i{font-style:normal;font-size:10.5px;letter-spacing:.12em;color:#C09AA9;background:rgba(247,217,228,.6);padding:2px 8px;border-radius:999px}
+
+/* ================= 管理员后台 ================= */
+.admin-layer{position:fixed;inset:0;z-index:130;display:none;overflow:auto;background:radial-gradient(58% 44% at 50% 8%,#FFFDFE 0%,#FCF2F7 52%,#F4E5ED 100%)}
+.admin-layer.on{display:block}
+.admin-shell{max-width:1000px;margin:0 auto;padding:24px 18px 70px}
+.ad-top{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.ad-top .kicker{display:block;font-size:10px;letter-spacing:.28em;color:#C2ACB6}
+.ad-top h2{margin:4px 0 0;font-size:20px;font-weight:500;letter-spacing:.06em}
+.ad-sec{background:rgba(255,255,255,.88);border:1px solid #fff;border-radius:18px;padding:16px 16px 12px;box-shadow:0 12px 30px rgba(235,210,222,.32);margin-bottom:14px}
+.ad-sec h3{margin:0 0 3px;font-size:14.5px;font-weight:500;letter-spacing:.06em}
+.ad-sec .hint{font-size:11px;color:#B79AA7;margin:0 0 12px;letter-spacing:.03em;line-height:1.7}
+.ad-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.ad-row .input{flex:1;min-width:150px}
+.ad-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:rgba(255,250,252,.95);border:1px solid #F2E4EB;margin-bottom:6px;font-size:12px}
+.ad-item .t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#75646D}
+.ad-item .thumb{width:34px;height:34px;border-radius:8px;object-fit:cover;flex:none;border:1px solid #F2E4EB;background:#fff}
+.ad-item .del{border:none;background:#FBE2EC;color:#B3768F;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer}
+.ad-item .edit{border:none;background:#E8E1F2;color:#8B7DA0;border-radius:999px;padding:3px 10px;font-size:11px;cursor:pointer;margin-right:4px}
+.ad-card{max-width:370px;margin:8vh auto 0;padding:24px 22px;border-radius:20px;background:linear-gradient(180deg,#FFFDFE,#FFF6FA 60%,#FDF0F7);border:1px solid #fff;box-shadow:0 24px 60px rgba(200,160,180,.42)}
+.ad-card h3{margin:6px 0 12px;font-size:17px;font-weight:500;letter-spacing:.08em}
+.ad-badge{display:inline-block;margin-left:6px;font-size:10px;letter-spacing:.14em;color:#B3768F;background:rgba(247,217,228,.7);border-radius:999px;padding:2px 8px;vertical-align:middle}
+.ad-lang{display:flex;gap:3px;border:1px solid #F2E4EB;background:#fff;border-radius:999px;padding:2px}
+.ad-lang button{border:none;background:transparent;border-radius:999px;font-size:11px;letter-spacing:.06em;padding:3px 9px;color:#A98F9B;cursor:pointer}
+.ad-lang button.on{background:var(--pink);color:var(--ink)}
+.cl-state{font-size:11px;letter-spacing:.06em;color:#B79AA7;white-space:nowrap}
+#clState[data-s="ok"]{color:#7BA98F}
+#clState[data-s="err"]{color:#C9768F}
+.ad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px 12px;margin-bottom:10px}
+.ad-grid label{display:block;font-size:10.5px;letter-spacing:.08em;color:#B79AA7;margin-bottom:3px}
+.ad-prev{width:60px;height:72px;border-radius:10px;object-fit:cover;border:1px solid #F2E4EB;background:#fff;flex:none}
+.ad-wide{width:100%;margin-bottom:8px}
+.ad-steps{font-size:11px;color:#B79AA7;line-height:1.9;margin:0 0 10px;padding-left:14px}
+.note-card .when{font-size:10px;color:#C2ACB6;letter-spacing:.1em;margin-top:6px;font-family:var(--serif);font-style:italic}
+.note-card .pin{position:absolute;top:-6px;right:12px;width:14px;height:14px;border-radius:50%;background:var(--pink-deep);box-shadow:0 2px 6px rgba(214,168,188,.6)}
+.note-empty{text-align:center;font-size:12px;color:#BFA3B0;letter-spacing:.12em;padding:20px 0}
+.write-card{position:relative;background:rgba(255,255,255,.86);border:1px solid #F2E4EB;border-radius:14px;padding:14px 15px 12px;margin:4px 0 18px;box-shadow:0 8px 22px rgba(235,210,222,.28)}
+.write-card::before{content:"♡";position:absolute;top:-9px;left:16px;font-size:15px;color:#D49DB3;background:#FEFBFC;padding:0 5px}
+.write-card textarea{width:100%;min-height:74px;border:none;outline:none;resize:vertical;background:transparent;font-family:var(--serif);font-size:14px;line-height:1.9;color:#6A5861}
+.write-card textarea::placeholder{color:#C9B4BE}
+.write-card .btn-sm{padding:7px 16px}
+.fuko-letter .fl-text{font-family:var(--serif);font-size:14.5px;line-height:1.95;color:#75646D;margin:6px 0 0}
+.fuko-letter .head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.fuko-letter .head b{font-family:var(--script);font-size:20px;color:#B57D97;font-weight:400}
+.fuko-letter .head em{font-family:var(--serif);font-style:italic;font-size:10px;letter-spacing:.16em;color:#C2ACB6}
+.fuko-letter p{font-family:var(--serif);font-size:14.5px;line-height:1.95;color:#75646D;margin:0}
+.fuko-letter .sign{text-align:right;font-family:var(--script);font-size:22px;color:#C98CA6;margin-top:8px}
+.fl-pics{display:flex;gap:12px;margin:2px 0 14px;flex-wrap:wrap}
+.fl-pic{position:relative;margin:0;width:min(47%,318px);padding:7px 7px 19px;background:#fff;border-radius:5px 10px 6px 11px;box-shadow:0 10px 24px rgba(235,210,222,.5);transform:rotate(var(--r,-1.8deg));transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.fl-pic:hover{transform:rotate(0) translateY(-4px)}
+.fl-pic img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#FFF7FB}
+.fl-pic .pg{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-family:var(--serif);font-style:italic;font-size:9.5px;letter-spacing:.18em;color:#B79AA7}
+.fl-wide{position:relative;margin:2px 0 14px;padding:8px 8px 20px;background:#fff;border-radius:6px 11px 7px 12px;box-shadow:0 12px 28px rgba(235,210,222,.45);transform:rotate(-.7deg)}
+.fl-wide img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;background:#FFF7FB}
+.fl-wide .pg{position:absolute;left:0;right:0;bottom:5px;text-align:center;font-family:var(--serif);font-style:italic;font-size:9.5px;letter-spacing:.18em;color:#B79AA7}
+.fuko-letter .body p{font-family:var(--serif);font-size:14.5px;line-height:1.95;color:#75646D;margin:0 0 11px}
+.fuko-letter .body p:first-child{color:#8B6D7A}
+.fl-orig{margin-top:4px}
+.fl-orig summary{cursor:pointer;font-size:10px;letter-spacing:.16em;color:#C6ADB7;list-style:none}
+.fl-orig p{margin:8px 0 0;font-size:12px;line-height:1.9;color:#A08C95}
+
+/* ================= Fumimi 游戏 ================= */
+.game-wrap{text-align:center;padding:10px 0 4px}
+.fumi-stage{position:relative;width:min(74vw,300px);margin:0 auto 6px}
+.fumi-stage::before{content:"";position:absolute;inset:-6% -10%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(247,217,228,.3) 55%,rgba(247,217,228,0) 72%);filter:blur(10px);z-index:0}
+#fumi{position:relative;z-index:1;width:100%;cursor:pointer;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#fumi.happy{animation:bounce .6s ease}
+@keyframes bounce{0%,100%{transform:translateY(0) scale(1)}30%{transform:translateY(-10px) scale(1.04)}60%{transform:translateY(0) scale(.98)}}
+.heart-bar{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0 4px;font-size:12px;color:#9B7285}
+.heart-bar .h{font-family:var(--serif);font-size:20px;color:#C98CA6}
+.progress{width:min(80%,280px);height:8px;border-radius:999px;background:rgba(247,217,228,.55);margin:8px auto 0;overflow:hidden;border:1px solid rgba(255,255,255,.9)}
+.progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#F9DCE8,#EEC7D6,#E8DDF2);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.game-btns{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.game-btns .btn{flex:1;min-width:130px;max-width:190px}
+.lv-note{margin-top:10px;font-size:11px;letter-spacing:.1em;color:#B79AA7}
+.float-heart{position:fixed;z-index:95;pointer-events:none;font-size:16px;color:#EE9FBB;animation:floatUp 1.1s ease-out forwards;text-shadow:0 2px 8px rgba(255,255,255,.9)}
+@keyframes floatUp{0%{opacity:1;transform:translate(-50%,0) scale(.8)}100%{opacity:0;transform:translate(-50%,-70px) scale(1.25)}}
+
+/* ================= 个人中心 ================= */
+.me-card{display:flex;gap:14px;align-items:center;padding:18px 16px}
+.me-ava{flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 48% 38%,#fff,#FBEAF0 52%,#F2DCE6);box-shadow:inset 0 0 0 4px rgba(255,255,255,.92),0 8px 18px rgba(235,210,222,.5);font-family:var(--script);font-size:30px;color:#C98CA6}
+.me-info b{display:block;font-size:16px;font-weight:500;letter-spacing:.06em}
+.me-info span{font-size:11px;letter-spacing:.12em;color:#B79AA7}
+.me-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+@media(min-width:760px){.me-grid{grid-template-columns:repeat(4,1fr)}}
+.me-stat{padding:14px 10px;border-radius:14px;text-align:center;background:linear-gradient(170deg,rgba(255,255,255,.8),rgba(253,243,248,.6));border:1px solid rgba(255,255,255,.9);box-shadow:0 8px 18px rgba(235,210,222,.25)}
+.me-stat b{display:block;font-family:var(--serif);font-size:22px;font-weight:400;color:#B57D97;line-height:1.2}
+.me-stat span{font-size:10px;letter-spacing:.14em;color:#B79AA7}
+
+/* ================= 页脚 ================= */
+.footer{padding:40px 0 34px;text-align:center;position:relative;z-index:2}
+.footer .f-script{font-family:var(--script);font-size:25px;color:#D2A8B9;line-height:1.4}
+.footer .f-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.footer .f-links a{font-size:11px;letter-spacing:.14em;color:#B9A2AC;text-decoration:none}
+.footer p{font-size:10.5px;letter-spacing:.14em;color:#BFA9B3;margin:10px 0 0}
+.footer .f-line{width:44px;height:1px;background:var(--line);margin:14px auto 0}
+
+/* toast & spark */
+.toast{position:fixed;left:50%;bottom:30px;translate:-50% 0;z-index:120;padding:9px 16px;border-radius:999px;background:rgba(254,251,252,.95);border:1px solid var(--line);box-shadow:0 10px 30px rgba(235,210,222,.6);font-size:12px;color:var(--ink);letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.toast.on{opacity:1;transform:translateY(0)}
+.spark{position:fixed;z-index:99;pointer-events:none;color:#F2BFD2;font-size:13px;animation:sparkOut .9s ease-out forwards}
+@keyframes sparkOut{0%{opacity:1;transform:translate(-50%,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2)}}
+@media(prefers-reduced-motion:reduce){.blob,.floaty,.bokeh i,.words span,.gate-hint,.frame-ghost,#fumi{animation:none!important}}
+</style>
+</head>
+<body data-lang="zh">
+
+<!-- 开门 -->
+<div id="gate" role="button" aria-label="轻触推开门">
+  <div class="gate-stage">
+    <div class="gate-glow"></div>
+    <div class="gate-arch">
+      <div class="leaf leaf-l">
+        <svg viewBox="0 0 138 416" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF6FA"/><stop offset=".45" stop-color="#FBE3EE"/><stop offset="1" stop-color="#F3C9DB"/></linearGradient>
+            <linearGradient id="mm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F9DEE9"/><stop offset="1" stop-color="#EBBFD1"/></linearGradient>
+          </defs>
+          <rect width="138" height="416" fill="url(#gg)"/>
+          <ellipse cx="60" cy="120" rx="80" ry="105" fill="#FFF" opacity=".55"/>
+          <g stroke="#D59FB4" stroke-width="4.6" fill="none" stroke-linecap="round">
+            <path d="M26 78 V322"/><path d="M69 58 V322"/><path d="M112 78 V322"/>
+            <path d="M26 78 C26 58 8 58 8 78 C8 92 22 92 22 78"/>
+            <path d="M112 78 C112 58 130 58 130 78 C130 92 116 92 116 78"/>
+            <path d="M69 58 C69 40 51 40 51 58 C51 70 62 70 62 58"/>
+          </g>
+          <g stroke="#C88CA4" stroke-width="4.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M69 128 C42 128 42 186 69 186 C88 186 88 156 69 156 C58 156 58 172 69 172"/>
+            <path d="M69 128 C96 128 96 186 69 186"/>
+            <path d="M69 226 C52 210 40 228 52 242 C62 254 69 244 69 232 C69 244 76 254 86 242 C98 228 86 210 69 226"/>
+          </g>
+          <g stroke="#E2B4C6" stroke-width="3" fill="none">
+            <path d="M0 322 C14 310 28 334 42 322 C56 310 70 334 84 322 C98 310 112 334 126 322 C133 316 138 318 138 322"/>
+          </g>
+          <rect y="334" width="138" height="82" fill="url(#mm)"/>
+          <g stroke="#DAAABB" stroke-width="2.4" fill="none">
+            <path d="M10 352 C22 366 34 366 46 352 C58 366 70 366 82 352 C94 366 106 366 118 352 C126 360 132 360 138 354"/>
+            <path d="M10 396 C22 382 34 382 46 396 C58 382 70 382 82 396 C94 382 106 382 118 396 C126 388 132 388 138 394"/>
+          </g>
+          <g fill="#FFF" opacity=".85"><path d="M69 366 l3.4 7.6 7.6 1.4-5.7 5.4 1.6 8-6.9-4-6.9 4 1.6-8-5.7-5.4 7.6-1.4z"/></g>
+          <circle cx="118" cy="256" r="8.5" fill="#FFF" stroke="#DAAABB" stroke-width="2"/>
+          <circle cx="118" cy="256" r="3.4" fill="#EBC4D3"/>
+        </svg>
+      </div>
+      <div class="leaf leaf-r">
+        <svg viewBox="0 0 138 416" preserveAspectRatio="none" aria-hidden="true">
+          <rect width="138" height="416" fill="url(#gg)"/>
+          <ellipse cx="78" cy="120" rx="80" ry="105" fill="#FFF" opacity=".55"/>
+          <g stroke="#D59FB4" stroke-width="4.6" fill="none" stroke-linecap="round">
+            <path d="M26 78 V322"/><path d="M69 58 V322"/><path d="M112 78 V322"/>
+            <path d="M26 78 C26 58 8 58 8 78 C8 92 22 92 22 78"/>
+            <path d="M112 78 C112 58 130 58 130 78 C130 92 116 92 116 78"/>
+            <path d="M69 58 C69 40 51 40 51 58 C51 70 62 70 62 78"/>
+          </g>
+          <g stroke="#C88CA4" stroke-width="4.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M69 128 C42 128 42 186 69 186 C88 186 88 156 69 156 C58 156 58 172 69 172"/>
+            <path d="M69 128 C96 128 96 186 69 186"/>
+            <path d="M69 226 C52 210 40 228 52 242 C62 254 69 244 69 232 C69 244 76 254 86 242 C98 228 86 210 69 226"/>
+          </g>
+          <g stroke="#E2B4C6" stroke-width="3" fill="none">
+            <path d="M0 322 C14 310 28 334 42 322 C56 310 70 334 84 322 C98 310 112 334 126 322 C133 316 138 318 138 322"/>
+          </g>
+          <rect y="334" width="138" height="82" fill="url(#mm)"/>
+          <g stroke="#DAAABB" stroke-width="2.4" fill="none">
+            <path d="M10 352 C22 366 34 366 46 352 C58 366 70 366 82 352 C94 366 106 366 118 352 C126 360 132 360 138 354"/>
+            <path d="M10 396 C22 382 34 382 46 396 C58 382 70 382 82 396 C94 382 106 382 118 396 C126 388 132 388 138 394"/>
+          </g>
+          <g fill="#FFF" opacity=".85"><path d="M69 366 l3.4 7.6 7.6 1.4-5.7 5.4 1.6 8-6.9-4-6.9 4 1.6-8-5.7-5.4 7.6-1.4z"/></g>
+          <circle cx="118" cy="256" r="8.5" fill="#FFF" stroke="#DAAABB" stroke-width="2"/>
+          <circle cx="118" cy="256" r="3.4" fill="#EBC4D3"/>
+        </svg>
+      </div>
+    </div>
+    <div class="gate-hint" id="gateHint" data-i18n="gate_hint">轻 触 推 开 门</div>
+  </div>
+  <div class="gate-mini">A DREAM DOOR · pink &amp; quiet</div>
+</div>
+
+<!-- 管理员后台（默认隐藏，仅站长访问 #/admin） -->
+<div id="admin" class="admin-layer" aria-live="polite">
+  <div class="admin-shell">
+    <div class="ad-top">
+      <div><span class="kicker">ADMIN ONLY</span><h2 id="adTitle">Fuko 的小世界 · 后台</h2></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="ad-lang" id="adLang">
+          <button data-l="zh" class="on">中</button><button data-l="en">EN</button><button data-l="ja">日</button><button data-l="ko">한</button>
+        </div>
+        <span class="cl-state" id="clState" data-s="off">未连接</span>
+        <a class="btn btn-ghost btn-sm" href="#/home" id="adBack">回前台</a>
+        <button class="btn btn-sm" id="adOut" hidden>退出登录</button>
+      </div>
+    </div>
+    <div id="adBody"></div>
+  </div>
+</div>
+
+<!-- 登录 / 注册 -->
+<div id="auth" role="dialog" aria-modal="true">
+  <form class="auth-card" id="authForm" autocomplete="off">
+    <span class="auth-deco"></span>
+    <img class="auth-fumi" alt="Fumimi" src="fumi/hero.png">
+    <span class="kicker auth-kicker">MEMBERS ONLY</span>
+    <h2 class="auth-title" id="authTitle" data-i18n="auth_title">请先签到，再进小世界</h2>
+    <p class="auth-sub" data-i18n="auth_sub">门只为一句话打开：告诉我是你。</p>
+
+    <div class="auth-tabs" id="authTabs">
+      <button type="button" data-mode="login" class="on" data-i18n="tab_login">登录</button>
+      <button type="button" data-mode="reg" data-i18n="tab_reg">注册</button>
+    </div>
+
+    <div class="field">
+      <label data-i18n="f_nick">昵称</label>
+      <input class="input" id="aNick" maxlength="16" data-i18n-ph="ph_nick" placeholder="给自己一个软软的名字">
+    </div>
+    <div class="field">
+      <label data-i18n="f_pw">密码</label>
+      <input class="input" id="aPw" type="password" maxlength="24" data-i18n-ph="ph_pw" placeholder="至少 4 位，记得住就好">
+    </div>
+    <div class="field" id="genderField">
+      <label data-i18n="f_gender">性别</label>
+      <div class="genders">
+        <label><input type="radio" name="gender" value="f" checked><span data-i18n="g_f">女生</span></label>
+        <label><input type="radio" name="gender" value="m"><span data-i18n="g_m">男生</span></label>
+        <label><input type="radio" name="gender" value="x"><span data-i18n="g_x">保密</span></label>
+      </div>
+    </div>
+
+    <div class="auth-err" id="authErr"></div>
+    <button class="btn auth-btn" type="submit" id="authBtn" data-i18n="btn_login">轻轻推门进去 ♡</button>
+    <p class="auth-tip" data-i18n="auth_tip">昵称只能有一个，选一个会长久陪你走下去的。</p>
+    <p class="auth-lock" data-i18n="auth_lock">没有关闭按钮 · 登录后门才会真正打开</p>
+  </form>
+</div>
+
+<!-- 页面 -->
+<div class="page" id="page">
+  <div class="bgdeco" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <div class="bokeh" id="bokeh"></div>
+    <div class="twinkles" id="twinkles"></div>
+    <div class="words" aria-hidden="true">
+      <span style="left:-2%;top:16vh;font-size:64px;--r:-8deg">softly</span>
+      <span style="right:-4%;top:38vh;font-size:76px;--r:7deg">dream</span>
+      <span style="left:6%;bottom:16vh;font-size:52px;--r:4deg">hazy day</span>
+      <span style="right:2%;bottom:6vh;font-size:58px;--r:-6deg">pink</span>
+    </div>
+    <span class="frame-ghost" style="width:78px;height:104px;left:4%;top:26vh"></span>
+    <span class="frame-ghost" style="width:64px;height:64px;right:8%;top:12vh;animation-delay:-9s"></span>
+    <span class="frame-ghost" style="width:96px;height:72px;right:12%;bottom:18vh;animation-delay:-16s"></span>
+    <div class="floaties" id="floaties"></div>
+    <div class="leaks"></div><div class="haze"></div><div class="paper"></div><div class="vignette"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-in">
+      <div class="brand-row">
+        <a class="brand" href="#/home"><span class="dot"></span><span>Fuko's Little World<small>a small pink archive</small></span></a>
+        <div class="lang" id="lang">
+          <button data-lang="zh" class="on" type="button">中</button>
+          <button data-lang="en" type="button">EN</button>
+          <button data-lang="ja" type="button">日</button>
+          <button data-lang="ko" type="button">한</button>
+        </div>
+      </div>
+      <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
+      <div class="ticker">
+        <span class="note"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#9C8CB4" stroke-width="1.6"><path d="M9 17V6l9-2v11"/><circle cx="7" cy="17.5" r="2.2"/><circle cx="16" cy="15.5" r="2.2"/></svg></span>
+        <b data-i18n="notice">欢迎来到 Fuko 的小世界 · 门已经为你打开</b>
+        <span class="arrows">‹ › ✕</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <footer class="footer">
+    <div class="f-script">good night, little world</div>
+    <div class="f-links">
+      <a href="#/home" data-i18n="f_home">首页</a>
+      <a href="#/profile" data-i18n="f_profile">个人简介</a>
+      <a href="#/letters" data-i18n="f_letters">留言</a>
+      <a href="#/game" data-i18n="f_game">Fumimi</a>
+    </div>
+    <div class="f-line"></div>
+    <p data-i18n="foot">个人粉丝应援站 · 非官方 · 仅用于欣赏与记录</p>
+    <p style="opacity:.72">© 2026 Fuko's Little World · made with ♡</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 0. 工具 ============ */
+const $=function(s,r){return (r||document).querySelector(s)};
+const $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function hashPw(s){let h=5381;for(let i=0;i<s.length;i++){h=((h<<5)+h)^s.charCodeAt(i);}return 'f'+(h>>>0).toString(36)}
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fmtDate(ts,lang){const d=new Date(ts);const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');
+  return lang==='en'?(m+'/'+dd+'/'+y):(y+'.'+m+'.'+dd)}
+
+/* ============ 1. 账号 ============ */
+const USERS_KEY='fuko_users', SESSION_KEY='fuko_session';
+function users(){return lsGet(USERS_KEY,[])}
+function saveUsers(u){lsSet(USERS_KEY,u)}
+function currentNick(){
+  try{const n=localStorage.getItem(SESSION_KEY);return n?JSON.parse(n):null}catch(e){return null}
+}
+function me(){
+  const n=currentNick(); if(!n) return null;
+  return users().find(function(u){return u.nick.toLowerCase()===String(n).toLowerCase()})||null;
+}
+function updateMe(patch){
+  const m=me(); if(!m) return null;
+  const list=users().map(function(u){return u.nick.toLowerCase()===m.nick.toLowerCase()?Object.assign({},u,patch):u});
+  saveUsers(list); return me();
+}
+function setSession(nick){try{localStorage.setItem(SESSION_KEY,JSON.stringify(nick))}catch(e){}}
+function clearSession(){try{localStorage.removeItem(SESSION_KEY)}catch(e){}}
+
+/* ============ 2. 文案（四语言） ============ */
+const T={
+zh:{
+ notice:'欢迎来到 Fuko 的小世界 · 门已经为你打开',gate_hint:'轻 触 推 开 门',mu_blank:'还没放歌',
+ home:'首页',f_home:'首页',f_profile:'个人简介',f_letters:'留言',f_game:'Fumimi',
+ auth_title:'请先签到，再进小世界',auth_sub:'门只为一句话打开：告诉我是你。',
+ tab_login:'登录',tab_reg:'注册',f_nick:'昵称',f_pw:'密码',f_gender:'性别',
+ ph_nick:'给自己一个软软的名字',ph_pw:'至少 4 位，记得住就好',
+ g_f:'女生',g_m:'男生',g_x:'保密',
+ btn_login:'轻轻推门进去 ♡',btn_reg:'注册并推门 ♡',
+ auth_tip:'昵称只能有一个，选一个会长久陪你走下去的。',
+ auth_lock:'没有关闭按钮 · 登录后门才会真正打开',
+ e_empty:'昵称和密码都要写一点点哦 ♡',e_short:'密码再长一点点，至少 4 位～',
+ e_dup:'这个名字已经有人用了，换一个更可爱的吧 ♡',e_no:'还没有这个名字，要先注册哦',
+ e_pw:'密码好像不太对，再想一想？',
+ ok_reg:'注册好啦，欢迎来到小世界 ♡',ok_back:'欢迎回来 ♡',
+ hero_sub:'一个装满了粉色的小世界',hero_quote:'“天空是草莓汽水味的。”',
+ nine:'九个板块',nine_sub:'九扇小门，随便进',numbers:'一点点数字',
+ s_boards:'个板块',s_msgs:'条留言',s_hearts:'颗爱心',s_photos:'张照片',
+ dir_title:'板块导览',dir_sub:'栏目内目录 · 随时切换',
+ prev:'上一扇门',next:'下一扇门',back_home:'回到首页',
+ foot:'个人粉丝应援站 · 非官方 · 仅用于欣赏与记录',
+ b1:'个人简介',d1:'Fuko 的小档案与贴纸',b2:'表演',d2:'舞台、饭拍与花絮',b3:'相册',d3:'拍立得手账图集',
+ b4:'音乐',d4:'歌单与翻唱存档',b5:'重要日期',d5:'三组实时倒计时',b6:'写给 Fuko 的话',d6:'公开留言板',
+ b7:'Fuko 的话',d7:'站长更新的语录与手信',b8:'Fumimi 小游戏',d8:'摸摸头，攒爱心',b9:'个人中心',d9:'我的数据与等级',
+ p_birth:'生日',p_join:'入社',p_bio:'小简介',p_bio_text:'（这里写一段 Fuko 的小简介：性格、喜欢的东西、最近在练习什么。）',
+ p_tags:'职业标签',p_t1:'歌手',p_t2:'舞者',p_t3:'忙内',p_fumi:'Fumimi 的邻居',
+ st_title:'表演',st_sub:'舞台、饭拍与花絮，都可以放进来',
+ st_g1:'舞台视频',st_g2:'舞台饭拍',st_g3:'花絮',
+ st_ph:'粘贴视频链接（一行一个，支持 YouTube / B站 / mp4）',st_btn:'放进去',st_empty:'这里还空着，等一段舞台～',
+ al_title:'相册',al_sub:'拍立得手账拼贴',
+ al_ph:'批量粘贴图片链接，一行一张',al_btn:'贴进相册',al_empty:'相册还空空的 ♡',al_count:'张照片',
+ mu_title:'音乐',mu_sub:'歌单、翻唱与循环的小曲子',mu_now:'正在播放',mu_ph:'粘贴音乐链接（mp3 / 网易云 / YouTube 都可以）',mu_btn:'加入歌单',mu_empty:'歌单还没开始，先放一首吧 ♡',
+ c_title:'重要日期',c_sub:'三组实时的时间，一直在走',
+ c_1:'Fuko 生日倒计时',c_2:'加入 THE L1VE 累计',c_3:'来到世界的日子',
+ c_1s:'八月二十二日 · 每年一次的粉色日子',c_2s:'2025.07.16 起，一直在',c_3s:'2004.08.22 起，慢慢长大',
+ u_d:'天',u_h:'时',u_m:'分',u_s:'秒',c_next:'下一次',
+ le_title:'写给 Fuko 的话',le_sub:'公开留言板 · 按时间顺序排',
+ le_ph:'想对 Fuko 说一句什么？',le_btn:'贴上去 ♡',le_empty:'还没有人留言，来写下第一句吧 ♡',le_count:'条留言',
+ no_title:'Fuko 的话',no_sub:'站长更新 · 语录、手信与官方发言',
+ ga_title:'Fumimi 小游戏',ga_sub:'一直住在这里的小家伙',
+ ga_pet:'摸摸头 +1',ga_feed:'喂食 +2',ga_lv:'等级',ga_hearts:'爱心',
+ ga_next:'再攒 {n} 颗就升级啦',ga_max:'已经是满级啦，谢谢你 ♡',ga_up:'升级啦！✦',
+ me_title:'个人中心',me_sub:'你的小世界记录',
+ me_joined:'来到小世界',me_days:'天',me_lv:'当前等级',me_h:'爱心',me_notes:'留言',me_gender:'性别',me_out:'退出登录',
+ me_since:'注册于'
+},
+en:{
+ notice:'welcome to Fuko\'s little world · the door is open',gate_hint:'tap to open the door',mu_blank:'no song yet',
+ home:'Home',f_home:'Home',f_profile:'Profile',f_letters:'Letters',f_game:'Fumimi',
+ auth_title:'A little check-in first',auth_sub:'The door opens for one sentence: it\'s you.',
+ tab_login:'Login',tab_reg:'Register',f_nick:'Nickname',f_pw:'Password',f_gender:'Gender',
+ ph_nick:'a soft name for yourself',ph_pw:'at least 4 characters you\'ll remember',
+ g_f:'girl',g_m:'boy',g_x:'secret',
+ btn_login:'open the door ♡',btn_reg:'register & enter ♡',
+ auth_tip:'Nicknames are unique — pick one that stays with you.',
+ auth_lock:'no close button · the door opens only after login',
+ e_empty:'a nickname and a password, please ♡',e_short:'a little longer — at least 4 characters',
+ e_dup:'that name is taken, try a sweeter one ♡',e_no:'no one by that name yet — register first',
+ e_pw:'the password seems off, think again?',
+ ok_reg:'you\'re in — welcome to the little world ♡',ok_back:'welcome back ♡',
+ hero_sub:'a little world filled with pink',hero_quote:'“the sky tastes like strawberry soda.”',
+ nine:'Nine Rooms',nine_sub:'nine doors, step in as you like',numbers:'Little numbers',
+ s_boards:'rooms',s_msgs:'notes',s_hearts:'hearts',s_photos:'photos',
+ dir_title:'Directory',dir_sub:'in-page index · switch anytime',
+ prev:'previous door',next:'next door',back_home:'back home',
+ foot:'personal fan station · unofficial · for appreciation only',
+ b1:'Profile',d1:'Fuko\'s file, in stickers',b2:'Stage',d2:'stages, fancams, behind',b3:'Album',d3:'polaroid journal',
+ b4:'Music',d4:'playlist & covers',b5:'Dates',d5:'three live countdowns',b6:'Letters to Fuko',d6:'a public board',
+ b7:'From Fuko',d7:'quotes & letters',b8:'Fumimi',d8:'pat the head, collect hearts',b9:'My Page',d9:'my numbers & level',
+ p_birth:'Birthday',p_join:'Joined',p_bio:'About',p_bio_text:'(a short intro for Fuko: personality, favourites, what she is practising lately.)',
+ p_tags:'Tags',p_t1:'singer',p_t2:'dancer',p_t3:'maknae',p_fumi:'Fumimi\'s neighbour',
+ st_title:'Stage',st_sub:'stages, fancams and behind-the-scenes',
+ st_g1:'Stage videos',st_g2:'Fancams',st_g3:'Behind',
+ st_ph:'paste a video link (one per line · YouTube / Bilibili / mp4)',st_btn:'add it',st_empty:'still empty — waiting for a stage ♡',
+ al_title:'Album',al_sub:'polaroid collage journal',
+ al_ph:'paste image links, one per line',al_btn:'put them in',al_empty:'the album is still empty ♡',al_count:'photos',
+ mu_title:'Music',mu_sub:'playlists, covers and loops',mu_now:'now playing',mu_ph:'paste a music link (mp3 / netease / YouTube)',mu_btn:'add to playlist',mu_empty:'no song yet — add the first one ♡',
+ c_title:'Important dates',c_sub:'three live clocks, always running',
+ c_1:'Fuko\'s birthday',c_2:'Days with THE L1VE',c_3:'Days in this world',
+ c_1s:'August 22 · one pink day every year',c_2s:'since 2025.07.16, always here',c_3s:'since 2004.08.22, growing slowly',
+ u_d:'D',u_h:'H',u_m:'M',u_s:'S',c_next:'next',
+ le_title:'Letters to Fuko',le_sub:'public board · newest last',
+ le_ph:'what would you like to tell Fuko?',le_btn:'pin it ♡',le_empty:'no letters yet — write the first one ♡',le_count:'letters',
+ no_title:'From Fuko',no_sub:'updated by the admin · quotes & letters',
+ ga_title:'Fumimi\'s little game',ga_sub:'the little one who lives here',
+ ga_pet:'pat +1',ga_feed:'feed +2',ga_lv:'Level',ga_hearts:'hearts',
+ ga_next:'{n} more hearts to level up',ga_max:'already max level, thank you ♡',ga_up:'level up! ✦',
+ me_title:'My Page',me_sub:'your little record',
+ me_joined:'here for',me_days:'days',me_lv:'Level',me_h:'hearts',me_notes:'letters',me_gender:'gender',me_out:'log out',
+ me_since:'joined on'
+},
+ja:{
+ notice:'Fukoの小さな世界へようこそ · 扉は開いています',gate_hint:'そっと押して開ける',mu_blank:'まだ曲なし',
+ home:'ホーム',f_home:'ホーム',f_profile:'プロフィール',f_letters:'メッセージ',f_game:'Fumimi',
+ auth_title:'まずはチェックイン',auth_sub:'扉はひとことだけ：あなたです。',
+ tab_login:'ログイン',tab_reg:'新規登録',f_nick:'ニックネーム',f_pw:'パスワード',f_gender:'性別',
+ ph_nick:'やわらかい名前をひとつ',ph_pw:'4文字以上、覚えられるもの',
+ g_f:'女の子',g_m:'男の子',g_x:'秘密',
+ btn_login:'そっと扉を開く ♡',btn_reg:'登録して入る ♡',
+ auth_tip:'名前はひとつだけ。ずっと一緒にいたい名前にしてね。',
+ auth_lock:'閉じるボタンはありません · ログインで扉が開きます',
+ e_empty:'名前とパスワードを少しずつ ♡',e_short:'もう少し長く、4文字以上で',
+ e_dup:'その名前はもう使われています、別のかわいい名前に ♡',e_no:'その名前はまだいません、先に登録を',
+ e_pw:'パスワードが少し違うみたい、もう一度？',
+ ok_reg:'登録できました、ようこそ ♡',ok_back:'おかえりなさい ♡',
+ hero_sub:'ピンクでいっぱいの小さな世界',hero_quote:'「空は いちごソーダの味がする。」',
+ nine:'九つの部屋',nine_sub:'九つの扉、好きに入って',numbers:'すこしの数字',
+ s_boards:'部屋',s_msgs:'メッセージ',s_hearts:'ハート',s_photos:'写真',
+ dir_title:'部屋ガイド',dir_sub:'ページ内目次 · いつでも切替',
+ prev:'前の扉',next:'次の扉',back_home:'ホームへ',
+ foot:'個人ファンサイト · 非公式 · 鑑賞用',
+ b1:'プロフィール',d1:'Fukoのファイルとシール',b2:'ステージ',d2:'ステージ・ファンカム・裏側',b3:'アルバム',d3:'ポラロイド手帳',
+ b4:'音楽',d4:'歌とカバーの保存',b5:'大切な日',d5:'三つのライブカウント',b6:'Fukoへの手紙',d6:'公開メッセージ',
+ b7:'Fukoの言葉',d7:'管理人更新の言葉と手紙',b8:'Fumimiゲーム',d8:'なでて、ハートを集める',b9:'マイページ',d9:'記録とレベル',
+ p_birth:'誕生日',p_join:'加入',p_bio:'すこし紹介',p_bio_text:'（Fukoの紹介をここに：性格、好きなもの、最近の練習。）',
+ p_tags:'タグ',p_t1:'歌',p_t2:'ダンス',p_t3:'末っ子',p_fumi:'Fumimiのおとなり',
+ st_title:'ステージ',st_sub:'ステージ、ファンカム、裏側',
+ st_g1:'ステージ動画',st_g2:'ファンカム',st_g3:'裏側',
+ st_ph:'動画リンクを貼る（1行に1つ / YouTube・B站・mp4）',st_btn:'入れる',st_empty:'まだ空っぽ、ステージを待っています ♡',
+ al_title:'アルバム',al_sub:'ポラロイド手帳コラージュ',
+ al_ph:'画像リンクをまとめて貼る（1行に1枚）',al_btn:'アルバムへ',al_empty:'アルバムはまだ空っぽ ♡',al_count:'枚',
+ mu_title:'音楽',mu_sub:'プレイリストとカバー',mu_now:'再生中',mu_ph:'音楽リンクを貼る（mp3 / YouTube など）',mu_btn:'追加',mu_empty:'まだ曲がありません ♡',
+ c_title:'大切な日',c_sub:'三つの時計、ずっと動いています',
+ c_1:'Fukoの誕生日',c_2:'THE L1VEと過ごした日',c_3:'この世界に来た日',
+ c_1s:'8月22日 · 年に一度のピンクの日',c_2s:'2025.07.16 から、ずっと',c_3s:'2004.08.22 から、ゆっくり',
+ u_d:'日',u_h:'時',u_m:'分',u_s:'秒',c_next:'次',
+ le_title:'Fukoへの手紙',le_sub:'公開ボード · 新しい順ではなく時系列',
+ le_ph:'Fukoにひとこと',le_btn:'貼る ♡',le_empty:'まだ誰もいません、最初のひとことを ♡',le_count:'件',
+ no_title:'Fukoの言葉',no_sub:'管理人更新 · 言葉と手紙',
+ ga_title:'Fumimiのゲーム',ga_sub:'ここに住んでいる小さな子',
+ ga_pet:'なでる +1',ga_feed:'ごはん +2',ga_lv:'レベル',ga_hearts:'ハート',
+ ga_next:'あと {n} でレベルアップ',ga_max:'もう満レベル、ありがとう ♡',ga_up:'レベルアップ！✦',
+ me_title:'マイページ',me_sub:'あなたの小さな記録',
+ me_joined:'ここにいる',me_days:'日',me_lv:'レベル',me_h:'ハート',me_notes:'メッセージ',me_gender:'性別',me_out:'ログアウト',
+ me_since:'登録日'
+},
+ko:{
+ notice:'Fuko의 작은 세계에 오신 것을 환영해요 · 문이 열렸어요',gate_hint:'살며시 눌러 열기',mu_blank:'아직 곡 없음',
+ home:'홈',f_home:'홈',f_profile:'프로필',f_letters:'메시지',f_game:'Fumimi',
+ auth_title:'먼저 체크인부터',auth_sub:'문은 한 마디로 열려요: 당신이에요.',
+ tab_login:'로그인',tab_reg:'회원가입',f_nick:'닉네임',f_pw:'비밀번호',f_gender:'성별',
+ ph_nick:'자신에게 부드러운 이름 하나',ph_pw:'4자 이상, 기억할 수 있는 것',
+ g_f:'여자',g_m:'남자',g_x:'비밀',
+ btn_login:'살며시 문 열기 ♡',btn_reg:'가입하고 들어가기 ♡',
+ auth_tip:'닉네임은 하나뿐이에요. 오래 함께할 이름으로.',
+ auth_lock:'닫기 버튼 없음 · 로그인해야 문이 열려요',
+ e_empty:'닉네임과 비밀번호를 조금씩 ♡',e_short:'조금 더 길게, 4자 이상이요',
+ e_dup:'이미 쓰고 있는 이름이에요, 더 귀여운 걸로 ♡',e_no:'그 이름은 아직 없어요, 먼저 가입해 주세요',
+ e_pw:'비밀번호가 조금 달라요, 다시 볼까요?',
+ ok_reg:'가입 완료, 작은 세계에 오신 것을 환영해요 ♡',ok_back:'다시 오셨네요 ♡',
+ hero_sub:'분홍빛으로 가득한 작은 세계',hero_quote:'“하늘은 딸기 소다 맛이에요.”',
+ nine:'아홉 개의 방',nine_sub:'아홉 개의 문, 마음대로',numbers:'작은 숫자들',
+ s_boards:'개의 방',s_msgs:'개의 메시지',s_hearts:'개의 하트',s_photos:'장의 사진',
+ dir_title:'방 안내',dir_sub:'페이지 내 목차 · 언제든 이동',
+ prev:'이전 문',next:'다음 문',back_home:'홈으로',
+ foot:'개인 팬사이트 · 비공식 · 감상용',
+ b1:'프로필',d1:'Fuko의 파일과 스티커',b2:'무대',d2:'무대·팬캠·비하인드',b3:'앨범',d3:'폴라로이드 다이어리',
+ b4:'음악',d4:'플레이리스트와 커버',b5:'중요한 날',d5:'세 개의 실시간 카운트',b6:'Fuko에게',d6:'공개 메시지판',
+ b7:'Fuko의 말',d7:'관리자 업데이트',b8:'Fumimi 게임',d8:'머리 쓰다듬고 하트 모으기',b9:'마이페이지',d9:'나의 기록과 레벨',
+ p_birth:'생일',p_join:'입사',p_bio:'소개',p_bio_text:'(Fuko의 소개를 적어 주세요: 성격, 좋아하는 것, 요즘 연습.)',
+ p_tags:'태그',p_t1:'보컬',p_t2:'댄서',p_t3:'막내',p_fumi:'Fumimi의 이웃',
+ st_title:'무대',st_sub:'무대, 팬캠, 비하인드',
+ st_g1:'무대 영상',st_g2:'팬캠',st_g3:'비하인드',
+ st_ph:'영상 링크 붙여넣기 (한 줄에 하나 / YouTube·B站·mp4)',st_btn:'넣기',st_empty:'아직 비어 있어요, 무대를 기다려요 ♡',
+ al_title:'앨범',al_sub:'폴라로이드 콜라주',
+ al_ph:'이미지 링크를 한 번에 (한 줄에 하나)',al_btn:'앨범에 넣기',al_empty:'앨범이 아직 비었어요 ♡',al_count:'장',
+ mu_title:'음악',mu_sub:'플레이리스트와 커버',mu_now:'재생 중',mu_ph:'음악 링크 붙여넣기 (mp3 / YouTube 등)',mu_btn:'추가',mu_empty:'아직 곡이 없어요 ♡',
+ c_title:'중요한 날',c_sub:'세 개의 시계, 계속 흘러요',
+ c_1:'Fuko 생일',c_2:'THE L1VE와 함께한 날',c_3:'이 세상에 온 날',
+ c_1s:'8월 22일 · 해마다 한 번의 분홍 날',c_2s:'2025.07.16부터, 늘',c_3s:'2004.08.22부터, 천천히',
+ u_d:'일',u_h:'시',u_m:'분',u_s:'초',c_next:'다음',
+ le_title:'Fuko에게',le_sub:'공개 게시판 · 시간 순서',
+ le_ph:'Fuko에게 한마디',le_btn:'붙이기 ♡',le_empty:'아직 아무도 없어요, 첫 마디를 ♡',le_count:'개',
+ no_title:'Fuko의 말',no_sub:'관리자 업데이트 · 말과 편지',
+ ga_title:'Fumimi 게임',ga_sub:'여기 사는 작은 친구',
+ ga_pet:'머리 쓰다듬기 +1',ga_feed:'먹이 주기 +2',ga_lv:'레벨',ga_hearts:'하트',
+ ga_next:'{n}개 더 모으면 레벨 업',ga_max:'이미 만렙이에요, 고마워요 ♡',ga_up:'레벨 업! ✦',
+ me_title:'마이페이지',me_sub:'나의 작은 기록',
+ me_joined:'함께한 지',me_days:'일',me_lv:'레벨',me_h:'하트',me_notes:'메시지',me_gender:'성별',me_out:'로그아웃',
+ me_since:'가입일'
+}
+};
+let LANG='zh';
+function t(k){return (T[LANG]&&T[LANG][k])||T.zh[k]||''}
+
+/* ============ 3. 板块 ============ */
+const BOARDS=[
+ {id:'profile',en:'PROFILE',icon:'profile'},
+ {id:'stage',en:'STAGE',icon:'stage'},
+ {id:'album',en:'ALBUM',icon:'album'},
+ {id:'music',en:'MUSIC',icon:'music'},
+ {id:'clock',en:'DATES',icon:'clock'},
+ {id:'letters',en:'LETTERS',icon:'letters'},
+ {id:'notes',en:'FROM FUKO',icon:'notes'},
+ {id:'game',en:'FUMIMI',icon:'game'},
+ {id:'me',en:'MY PAGE',icon:'me'}
+];
+const FUMI_IMG={
+ profile:'fumi/profile.png', stage:'fumi/stage.png', album:'fumi/album.png',
+ music:'fumi/music.png', clock:'fumi/clock.png', letters:'fumi/letters.png',
+ notes:'fumi/notes.png', game:'fumi/game.png', me:'fumi/me.png', hero:'fumi/hero.png'
+};
+/* 个人简介文案（四语言） */
+const PT={
+ zh:{n_name:'姓名',n_cn:'中文名',n_stage:'艺名',n_nat:'国籍',n_place:'出生地',n_birth:'生日',n_mbti:'MBTI',n_sign:'星座',n_mark:'标志',n_agency:'所属公司',n_nick:'昵称',n_tags:'个人标签',h_tl:'走过的时间',h_fav:'喜欢的小事',f_food:'喜欢的食物',f_sanrio:'最爱三丽鸥',f_hobby:'爱好',f_skill:'特长',f_special:'特殊技能',f_charm:'魅力点',f_reason:'想成为 idol 的理由',
+ t1:'柔软兔子',t2:'哭包大姐姐',t3:'TOPIK 6 级！',
+ y1:'参加 Mnet · NCsoft 女团选秀《Girls Planet 999》',
+ y2:'参加女团选秀《I-LAND2》',
+ y3:'正式官宣成为 THE L1VE LABEL 新女团成员',
+ v_food:'葡萄口味的零食、妈妈做的塔可饭',v_sanrio:'帕恰狗 Pochacco',v_hobby:'Kpop 翻跳',
+ v_skill:'绕口令、模仿主持人（中学加入主持人社团，参加过全国主持人大赛）',
+ v_special:'去除唇色',v_charm:'长睫毛、声音',
+ v_reason:'从懂事的时候就开始喜欢 Kpop，特别喜欢唱歌跳舞，想成为大家心中的支柱和目标'},
+ en:{n_name:'Name',n_cn:'Chinese name',n_stage:'Stage name',n_nat:'Nationality',n_place:'Birthplace',n_birth:'Birthday',n_mbti:'MBTI',n_sign:'Zodiac',n_mark:'Symbol',n_agency:'Agency',n_nick:'Nickname',n_tags:'Tags',h_tl:'Timeline',h_fav:'Little things she loves',f_food:'Favorite food',f_sanrio:'Sanrio favorite',f_hobby:'Hobby',f_skill:'Specialty',f_special:'Odd skill',f_charm:'Charm',f_reason:'Why an idol',
+ t1:'soft bunny',t2:'crybaby unnie',t3:'TOPIK level 6!',
+ y1:'Joined the Mnet · NCsoft girl group audition "Girls Planet 999"',
+ y2:'Joined the girl group audition "I-LAND2"',
+ y3:'Officially announced as a member of THE L1VE LABEL new girl group',
+ v_food:'grape-flavored snacks, mum taco rice',v_sanrio:'Pochacco',v_hobby:'K-pop dance covers',
+ v_skill:'tongue twisters, mimicking MCs (school MC club, national MC contest)',
+ v_special:'can erase her lip color',v_charm:'long lashes, her voice',
+ v_reason:'Loved K-pop since she was little; wants to be a support and a goal for everyone'},
+ ja:{n_name:'名前',n_cn:'中国名',n_stage:'芸名',n_nat:'国籍',n_place:'出身地',n_birth:'誕生日',n_mbti:'MBTI',n_sign:'星座',n_mark:'シンボル',n_agency:'所属',n_nick:'ニックネーム',n_tags:'タグ',h_tl:'歩み',h_fav:'好きなこと',f_food:'好きな食べ物',f_sanrio:'サンリオの推し',f_hobby:'趣味',f_skill:'特技',f_special:'特殊技能',f_charm:'魅力',f_reason:'アイドルになりたい理由',
+ t1:'ふわふわうさぎ',t2:'泣き虫お姉さん',t3:'TOPIK 6級！',
+ y1:'Mnet・NCsoft のオーディション「Girls Planet 999」に参加',
+ y2:'オーディション番組「I-LAND2」に参加',
+ y3:'THE L1VE LABEL の新ガールズグループ メンバーとして正式発表',
+ v_food:'ぶどう味のお菓子、お母さんのタコライス',v_sanrio:'ポチャッコ',v_hobby:'K-POP カバーダンス',
+ v_skill:'早口ことば、MC ものまね(中学で放送部、全国 MC 大会に出場)',
+ v_special:'リップの色を消せる',v_charm:'長いまつげ、声',
+ v_reason:'小さい頃から K-POP が大好きで、みんなの支えと目標になりたい'},
+ ko:{n_name:'이름',n_cn:'중국어 이름',n_stage:'예명',n_nat:'국적',n_place:'출생지',n_birth:'생일',n_mbti:'MBTI',n_sign:'별자리',n_mark:'상징',n_agency:'소속사',n_nick:'별명',n_tags:'태그',h_tl:'발자취',h_fav:'좋아하는 것들',f_food:'좋아하는 음식',f_sanrio:'산리오 최애',f_hobby:'취미',f_skill:'특기',f_special:'특별한 능력',f_charm:'매력 포인트',f_reason:'아이돌이 되고 싶은 이유',
+ t1:'보들보들 토끼',t2:'울보 언니',t3:'TOPIK 6급!',
+ y1:'Mnet·NCsoft 걸그룹 오디션 Girls Planet 999 참가',
+ y2:'걸그룹 오디션 I-LAND2 참가',
+ y3:'THE L1VE LABEL 신인 걸그룹 멤버로 공식 발표',
+ v_food:'포도맛 과자, 엄마가 해준 타코라이스',v_sanrio:'포차코',v_hobby:'K-POP 커버 댄스',
+ v_skill:'잰말놀이, MC 따라하기(중학교 방송부, 전국 MC 대회 참가)',
+ v_special:'립 컬러 지우기',v_charm:'긴 속눈썹, 목소리',
+ v_reason:'어릴 때부터 K-POP을 좋아해서 모두의 버팀목이자 목표가 되고 싶어요'}
+};
+function pt(k){const d=PT[LANG]||PT.zh;return d[k]!==undefined?d[k]:(PT.zh[k]||'')}
+/* Fuko 的话 · 信件译文 */
+const LT={
+ zh:{l1:'你好呀！我是 Fuko :)\n\n最终舞台结束到现在，已经过了一个多月了。这段时间大家过得怎么样呢？\n\n我差不多三年来第一次回了老家，在休息的日子里，真的、真的想了很多很多关于你们的事情。\n\n节目结束之后，我把大家留下的每一条留言都一条一条读了。那些温暖的话真的安慰了我，也给了我很大的力量。\n\n看到大家比我更为我落选而难过，我心里又难受又抱歉，但想出道、想一定要回报大家心意的念头，变得更大了。\n\n直到再次站上舞台的那天，我每一刻都会拼尽全力，然后以更好的样子回来。\n\n一直为我应援、爱我，真的很谢谢你们。我的幸福，永远都是你们。我爱你们。',
+    bd:'8 月 22 日 · 写给所有为我庆祝生日的你们——一直爱着、一直爱着你们 ♡♡ 我一直都在看着你们哦 ♡♡',
+    s1:'후코가 🐰♡', s2:'효진 ♡'},
+ en:{l1:'Hello! It is Fuko :)\n\nIt has already been more than a month since the final stage ended. How have you all been during this time?\n\nI went back to my hometown for the first time in almost three years, and while resting I thought about you all so, so much.\n\nAfter the show ended, I read every single comment you left me, one by one. Those warm words truly comforted me and gave me great strength.\n\nSeeing you be even more heartbroken than I was about the result made my heart ache and feel sorry, but the wish to debut and repay you all grew even bigger.\n\nUntil the day I stand on that stage again, I will do my very best at every moment and come back looking wonderful.\n\nThank you for always cheering for me and loving me. My happiness is always all of you. I love you.',
+    bd:'August 22nd · to everyone who celebrated my birthday — I always love you, love you ♡♡ I am always watching over you ♡♡',
+    s1:'후코가 🐰♡', s2:'효진 ♡'},
+ ja:{l1:'こんにちは！フコです :)\n\nファイナルが終わってから、もう一か月以上経ちましたね。その間、みなさんはどう過ごしていましたか？\n\n私はほぼ3年ぶりに実家にも帰って、休みながらみなさんのことを本当に本当にたくさん考えました。\n\n番組が終わってから、みなさんが残してくれたコメントを一つひとつ読みました。あたたかい言葉が本当に慰めになって、大きな力になりました。\n\n私よりも私の結果を悲しんでくれる姿を見て、胸が痛くて申し訳なかったけれど、デビューして必ず恩返ししたい気持ちがもっと大きくなりました。\n\nいつかまたステージに立てる日まで、毎瞬ベストを尽くして、素敵な姿で戻ってきます。\n\nいつも応援してくれて、愛してくれてありがとう。私の幸せはいつもみなさんです。愛してます。',
+    bd:'8月22日 · 私の誕生日を祝ってくれたすべての皆さんへ——いつも愛して、愛しています ♡♡ ずっと見ていますよ ♡♡',
+    s1:'후코가 🐰♡', s2:'효진 ♡'},
+ ko:{l1:'안녕하세요! 후코예요 :)\n\n파이널이 끝난지 벌써 한달이나 넘었는데 그 동안 어떻게 지내셨나요?\n\n저는 거의 3년만에 본가도 다녀오고 쉬는 시간을 가지면서 여러분들 생각을 정말 정말 많이 했던 것 같아요.\n\n방송이 끝나고, 지금까지 여러분들이 달아주신 댓글을 하나 하나 읽으며 따뜻한 말들이 정말 위로가 됐고 저에게 큰 힘이 됐어요.\n\n제가 떨어진 걸 저만큼, 저보다 더 속상해 하시는 모습이, 마음이 아팠고 미안하기도 했지만 데뷔해서 꼭 보답하겠다는 마음이 더 커진 것 같아요.\n\n언젠가 다시 무대에 서는 날이 올 때까지 매순간 최선을 다하고 멋진 모습으로 꼭 돌아올게요.\n\n항상 응원해 주시고 사랑해 주셔서 감사해요. 저의 행복은 항상 여러분들이에요. 사랑해요.',
+    bd:'8월 22일 · 생일 축하해주는 모든 분들 늘 사랑하고 사랑해요 ♡♡ 보고 있어요 ♡♡',
+    s1:'후코가 🐰♡', s2:'효진 ♡'}
+};
+function lt(k){const d=LT[LANG]||LT.zh;return d[k]!==undefined?d[k]:(LT.zh[k]||'')}
+function ltPara(k){return lt(k).split('\n\n').map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
+function bid(i){return t('b'+(i+1))}
+function bdesc(i){return t('d'+(i+1))}
+
+/* ============ 4. Fumimi / 装饰 SVG ============ */
+const FUMI='<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+
+ '<ellipse cx="60" cy="104" rx="34" ry="6" fill="#F2DCE6" opacity=".7"/>'+
+ '<path d="M38 40 L31 16 L52 28Z" fill="#FBE6EF" stroke="#F1CEDD" stroke-width="1.6"/>'+
+ '<path d="M82 40 L89 16 L68 28Z" fill="#FBE6EF" stroke="#F1CEDD" stroke-width="1.6"/>'+
+ '<path d="M39 34 L35 21 L47 27Z" fill="#F7C6D8" opacity=".8"/>'+
+ '<path d="M81 34 L85 21 L73 27Z" fill="#F7C6D8" opacity=".8"/>'+
+ '<ellipse cx="60" cy="76" rx="33" ry="29" fill="#FFF8FB" stroke="#F1CEDD" stroke-width="1.6"/>'+
+ '<circle cx="60" cy="50" r="26" fill="#FFF8FB" stroke="#F1CEDD" stroke-width="1.6"/>'+
+ '<circle cx="50" cy="50" r="3.2" fill="#5A4A52"/><circle cx="70" cy="50" r="3.2" fill="#5A4A52"/>'+
+ '<circle cx="51" cy="49" r="1.1" fill="#fff"/><circle cx="71" cy="49" r="1.1" fill="#fff"/>'+
+ '<ellipse cx="42" cy="58" rx="5" ry="2.8" fill="#F7C6D8" opacity=".85"/><ellipse cx="78" cy="58" rx="5" ry="2.8" fill="#F7C6D8" opacity=".85"/>'+
+ '<path d="M57 57 q3 3 6 0" stroke="#D79FB4" stroke-width="1.4" fill="none"/>'+
+ '<path d="M60 62 q-4 4 -7 1 M60 62 q4 4 7 1" stroke="#E7B9CB" stroke-width="1.2" fill="none" opacity=".8"/>'+
+ '<ellipse cx="38" cy="92" rx="9" ry="6" fill="#FFF8FB" stroke="#F1CEDD" stroke-width="1.4"/>'+
+ '<ellipse cx="82" cy="92" rx="9" ry="6" fill="#FFF8FB" stroke="#F1CEDD" stroke-width="1.4"/>'+
+ '<path d="M60 24 q-6-10-14-6 q10-3 14 6 q-12-9-14-6" fill="none" stroke="#F2C6D9" stroke-width="1.4" opacity="0"/>'+
+ '<g transform="translate(80,26) rotate(12)"><path d="M0 6C-6-2-14-2-14 4c0 6 8 8 14 2z" fill="#F7D9E4" stroke="#fff"/><path d="M0 6C6-2 14-2 14 4c0 6-8 8-14 2z" fill="#F7D9E4" stroke="#fff"/><circle cx="0" cy="6" r="2.6" fill="#EEC7D6" stroke="#fff"/></g>'+
+ '</svg>';
+const BOW='<svg viewBox="0 0 40 26"><path d="M20 13C13.5 5 3.5 4 2.6 10.2 1.6 16.8 11 18.4 20 13z" fill="#F7D9E4" stroke="#fff" stroke-width="1.4"/><path d="M20 13C26.5 5 36.5 4 37.4 10.2 38.4 16.8 29 18.4 20 13z" fill="#F7D9E4" stroke="#fff" stroke-width="1.4"/><circle cx="20" cy="13" r="3.4" fill="#EEC7D6" stroke="#fff" stroke-width="1.4"/><path d="M18.6 16l-3 7M21.4 16l3 7" stroke="#EEC7D6" stroke-width="2" stroke-linecap="round"/></svg>';
+const MOON='<svg viewBox="0 0 24 24"><path d="M15 3a9 9 0 100 18 7.6 7.6 0 010-18z" fill="#F0E4F8" stroke="#fff" stroke-width="1"/></svg>';
+const STAR4='<svg viewBox="0 0 24 24"><path d="M12 1.6c.9 6.8 3.9 9.8 10.4 10.4-6.5.6-9.5 3.6-10.4 10.4-.9-6.8-3.9-9.8-10.4-10.4 6.5-.6 9.5-3.6 10.4-10.4z" fill="#fff" stroke="#F4DCE6" stroke-width=".8"/></svg>';
+
+/* ============ 5. 路由与渲染骨架 ============ */
+function routeId(){
+  const h=(location.hash||'').replace('#/','').replace('#','');
+  if(h==='home'||h==='') return 'home';
+  if(h==='admin') return 'admin';
+  return BOARDS.some(function(b){return b.id===h;})?h:'home';
+}
+const view=document.getElementById('view'), tabsEl=document.getElementById('tabs');
+function renderTabs(){
+  tabsEl.innerHTML='<a class="tab" data-id="home" href="#/home">'+t('home')+'<em>HOME</em></a>'+
+   BOARDS.map(function(b,i){return '<a class="tab" data-id="'+b.id+'" href="#/'+b.id+'">'+bid(i)+'<em>'+b.en+'</em></a>'}).join('');
+}
+function markTabs(id){
+  $$('.tab').forEach(function(a){a.classList.toggle('on',a.dataset.id===id)});
+  const on=$('.tab.on');
+  if(on&&on.parentElement){const p=on.parentElement;const left=on.offsetLeft-p.clientWidth/2+on.clientWidth/2;p.scrollTo({left:Math.max(0,left),behavior:'smooth'})}
+}
+function applyStatic(){
+  $$('[data-i18n]').forEach(function(el){const k=el.getAttribute('data-i18n');if(T[LANG][k]!=null)el.textContent=T[LANG][k]});
+  $$('[data-i18n-ph]').forEach(function(el){const k=el.getAttribute('data-i18n-ph');if(T[LANG][k]!=null)el.placeholder=T[LANG][k]});
+  document.documentElement.lang=LANG==='zh'?'zh-CN':LANG;
+  document.body.setAttribute('data-lang',LANG);
+  $$('#lang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===LANG)});
+}
+
+/* ============ 6. 首页 ============ */
+function homeHTML(){
+  const heroImg=esc(getHero()||'fumi/hero-main.jpg');
+  const tiles=BOARDS.map(function(b,i){
+    const tint=i%3===0?'rgba(247,217,228,.6)':(i%3===1?'rgba(232,225,242,.6)':'rgba(226,240,239,.55)');
+    return '<a class="tile" href="#/'+b.id+'" style="--tint:'+tint+'">'
+      +'<span class="num">0'+(i+1)+'</span><img class="tile-fumi" alt="" src="'+FUMI_IMG[b.icon]+'">'
+      +'<h4>'+bid(i)+'</h4><span class="en">'+b.en+'</span><p>'+bdesc(i)+'</p></a>';
+  }).join('');
+  return '<div class="wrap">'
+   +'<section class="hero">'
+     +'<img class="hero-fumi" alt="Fumimi" src="'+FUMI_IMG.hero+'">'
+     +'<h1 class="script">Fuko\'s Little World</h1>'
+     +'<p class="hero-cn">'+t('hero_sub')+'</p>'
+     +'<p class="hero-quote">'+t('hero_quote')+'</p>'
+     +'<div class="hero-frame"><span class="tag-float">BANNER</span>'
+       +'<div class="hero-visual">'
+         +'<img class="hv-blur" alt="" aria-hidden="true" src="'+heroImg+'">'
+         +'<span class="hv-glow"></span><span class="hv-word w1">always</span><span class="hv-word w2">with you</span>'
+         +'<figure class="hv-card"><span class="hv-tape"></span><img alt="Fuko" src="'+heroImg+'">'
+           +'<figcaption class="hv-cap">FUKO · a soft little world</figcaption></figure>'
+       +'</div></div>'
+     +'<div class="divider"><span class="l"></span>✦<span>♡</span>✦<span class="r"></span></div>'
+   +'</section>'
+   +'<section style="padding-top:18px">'
+     +'<div class="sec-head"><span class="kicker">NINE ROOMS</span><h2 class="h2">'+t('nine')+'</h2>'
+     +'<span style="font-size:11px;color:#BFA3B0;letter-spacing:.1em">'+t('nine_sub')+'</span></div>'
+     +'<div class="nine">'+tiles+'</div>'
+   +'</section>'
+   +'<div class="divider"><span class="l"></span>✦<span class="r"></span></div></div>';
+}
+
+/* ============ 7. 存储（本地 + 云端） ============ */
+const CLOUD_KEY='fuko_cloud';
+/* 站长填好云端后，把 url 与 anon key 填进下面两行，粉丝打开就能看到内容（mail/pw 只留在站长本机） */
+const CLOUD_FIXED={url:'',k:''};
+let REM=null;                                        // 云端载入的整份数据
+let _cl=lsGet(CLOUD_KEY,null);
+let CLOUD={url:(_cl&&_cl.url)||CLOUD_FIXED.url,k:(_cl&&_cl.k)||CLOUD_FIXED.k,mail:(_cl&&_cl.mail)||'',pw:(_cl&&_cl.pw)||''};
+let CL_TOKEN=null, CL_STATE='off', MSGS=null;
+
+const NOTES_DEFAULT=[
+ {id:'n1',title:'letter 01 · handwritten · 2025',img1:'fumi/letter-01.jpg',img2:'fumi/letter-02.jpg',cap:'',text:''}
+];
+
+function dataGet(k,d){ if(REM && REM[k]!==undefined && REM[k]!==null) return REM[k]; return lsGet('fuko_'+k,d) }
+function dataSet(k,v){ if(!REM)REM={};REM[k]=v;lsSet('fuko_'+k,v);pushCloud() }
+function getMsgs(){return MSGS||lsGet('fuko_msg',[])}
+function getNotes(){return dataGet('notes',NOTES_DEFAULT)}
+function getPhotos(){return dataGet('photos',[])}
+function getVids(){return dataGet('vids',[])}
+function getTracks(){return dataGet('tracks',[])}
+function getHearts(){const m=me();return m?(m.hearts||0):0}
+function getDates(){return dataGet('dates',[])}
+function getLetters(){return getMsgs()}
+function getProfile(){return dataGet('profile',{})}
+function getHero(){return dataGet('hero','fumi/hero-main.jpg')}
+function saveProfile(p){dataSet('profile',p)}
+function saveHero(u){dataSet('hero',u)}
+function saveNotes(n){dataSet('notes',n)}
+
+/* --- 云端 --- */
+function clOn(){return !!(CLOUD && CLOUD.url && CLOUD.k)}
+function clBase(){return String(CLOUD.url||'').replace(/\/+$/,'')}
+function saveCloud(c){CLOUD=c;lsSet(CLOUD_KEY,c);CL_TOKEN=null}
+async function clToken(){
+  if(CL_TOKEN) return CL_TOKEN;
+  const r=await fetch(clBase()+'/auth/v1/token?grant_type=password',{method:'POST',
+    headers:{'Content-Type':'application/json',apikey:CLOUD.k},
+    body:JSON.stringify({email:CLOUD.mail,password:CLOUD.pw})});
+  if(!r.ok) throw new Error('AUTH '+r.status);
+  const j=await r.json();
+  CL_TOKEN=j.access_token;
+  return CL_TOKEN;
+}
+async function clLoad(){
+  if(!clOn()) return false;
+  const r=await fetch(clBase()+'/rest/v1/fuko_site?id=eq.site&select=data',{headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+  if(!r.ok) throw new Error('READ '+r.status);
+  const rows=await r.json();
+  if(rows && rows[0] && rows[0].data) REM=rows[0].data;
+  try{
+    const mr=await fetch(clBase()+'/rest/v1/fuko_msg?select=id,nick,text,img,ts&order=ts.desc&limit=80',{headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+    if(mr.ok){ MSGS=await mr.json(); }
+  }catch(e){}
+  CL_STATE='idle';
+  return true;
+}
+async function postMsg(nick,text,img){
+  const obj={nick:nick||'fumimi',text:text,img:img||'',ts:Date.now()};
+  if(clOn()){
+    try{
+      const r=await fetch(clBase()+'/rest/v1/fuko_msg',{method:'POST',headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify([{nick:obj.nick,text:obj.text,img:obj.img}])});
+      if(r.ok){ const back=await r.json(); MSGS=[back[0]||obj].concat(getMsgs()); return true; }
+    }catch(e){}
+  }
+  const l=lsGet('fuko_msg',[]); l.unshift(Object.assign({id:'m'+Date.now()+Math.random().toString(36).slice(2,6)},obj)); lsSet('fuko_msg',l); MSGS=null;
+  return true;
+}
+async function delMsg(id){
+  if(clOn() && id){
+    try{
+      const r=await fetch(clBase()+'/rest/v1/fuko_msg?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{apikey:CLOUD.k,Authorization:'Bearer '+await clToken()}});
+      if(r.ok && MSGS) MSGS=MSGS.filter(function(x){return String(x.id)!==String(id)});
+      return true;
+    }catch(e){}
+  }
+  const l=lsGet('fuko_msg',[]).filter(function(x){return x.id!==id});
+  lsSet('fuko_msg',l); MSGS=null; return true;
+}
+async function clPushNow(){
+  if(!clOn()) return;
+  CL_STATE='saving';
+  const t=await clToken();
+  const data={};['vids','photos','tracks','dates','letters','profile','hero'].forEach(function(k){data[k]=dataGet(k,k==='hero'?'fumi/hero-main.jpg':(k==='profile'?{}:[]))});
+  const r=await fetch(clBase()+'/rest/v1/fuko_site',{method:'POST',headers:{apikey:CLOUD.k,Authorization:'Bearer '+t,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{id:'site',data:data}])});
+  if(!r.ok) throw new Error('WRITE '+r.status);
+  CL_STATE='ok';
+}
+let clTimer=null;
+function paintCloud(){
+  ['clState','clState2'].forEach(function(id){
+    const n=document.getElementById(id);
+    if(n){ n.textContent=clText(); n.dataset.s=CL_STATE; }
+  });
+}
+function pushCloud(){
+  if(!clOn()) return;
+  clearTimeout(clTimer);
+  CL_STATE='saving';
+  paintCloud();
+  clTimer=setTimeout(function(){
+    clPushNow().catch(function(){CL_STATE='err'}).then(function(){paintCloud()});
+  },900);
+}
+function clText(){
+  const m={off:'未连接 · 只存本机',idle:'已连接 · 已同步',saving:'同步中…',ok:'已发布到云端 ♡',err:'同步失败，检查设置'};
+  return m[CL_STATE]||m.off;
+}
+async function shk(file,max){
+  const blob=await new Promise(function(res){const fr=new FileReader();fr.onload=function(){res(fr.result)};fr.readAsDataURL(file)});
+  const img=await new Promise(function(res,rej){const i=new Image();i.onload=function(){res(i)};i.onerror=rej;i.src=blob});
+  let w=img.width,h=img.height;
+  if(w>max||h>max){const s=max/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s)}
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  c.getContext('2d').drawImage(img,0,0,w,h);
+  return await new Promise(function(res){c.toBlob(function(b){res(b)},'image/jpeg',0.82)});
+}
+/* 图片统一放在仓库 fumi 文件夹里，后台只填路径 / 直链，不再上传到云存储 */
+function imgUp(){return Promise.resolve('')}
+
+/* ============ 8. 各板块 ============ */
+function profileHTML(){
+  const P=getProfile()||{};
+  const DEF=['FUKO','후코 · HAYASHI FUKO','林枫子','日本 · Japan','福冈 · Fukuoka','2004.08.22','ISFP','狮子座 · Leo','🍁 枫叶','THE L1VE LABEL','fukosama'];
+  const KEY=['stage','name','cn','nat','place','birth','mbti','sign','mark','agency','nick'];
+  const v=k=>esc(P[k]||DEF[KEY.indexOf(k)]);
+  const rows=[
+    ['n_stage',v('stage')],['n_name',v('name')],['n_cn',v('cn')],
+    ['n_nat',v('nat')],['n_place',v('place')],['n_birth',v('birth')],
+    ['n_mbti',v('mbti')],['n_sign',v('sign')],['n_mark',v('mark')],
+    ['n_agency',v('agency')],['n_nick',v('nick')]
+  ].map(function(r){return '<div class="ir"><span>'+pt(r[0])+'</span><i></i><b>'+r[1]+'</b></div>'}).join('');
+  const years=['2021','2024','2025.07.16'], ys=['y1','y2','y3'];
+  const tl=years.map(function(y,idx){return '<div class="tl-item"><b>'+y+'</b><p>'+pt(ys[idx])+'</p></div>'}).join('');
+  const facts=[['f_food','v_food'],['f_sanrio','v_sanrio'],['f_hobby','v_hobby'],['f_skill','v_skill'],['f_special','v_special'],['f_charm','v_charm']]
+    .map(function(f){return '<div class="fact"><span>'+pt(f[0])+'</span><b>'+pt(f[1])+'</b></div>'}).join('');
+  const photo=esc(P.photo||'fumi/fuko.jpg');
+  return '<div class="card" style="position:relative">'
+   +'<span class="bow-deco b-a">'+BOW+'</span><span class="bow-deco b-b">'+BOW+'</span>'
+   +'<div class="profile-grid">'
+     +'<div class="portrait"><span class="crown">♡</span><img class="ph-photo" alt="Fuko" src="'+photo+'"></div>'
+     +'<div>'
+       +'<div class="p-name">'+v('cn')+'<em>'+v('name')+'</em></div>'
+       +'<div class="p-sub">'+v('stage')+' <span class="p-maple">✦</span> '+v('agency')+' <span class="p-maple">✦</span> '+v('mbti')+'</div>'
+       +'<div class="info-rows">'+rows+'</div>'
+       +'<div class="tags"><span class="tag pink">'+esc(P.t1||pt('t1'))+'</span><span class="tag">'+esc(P.t2||pt('t2'))+'</span><span class="tag mint">'+esc(P.t3||pt('t3'))+'</span></div>'
+     +'</div>'
+   +'</div></div>'
+   +'<div style="height:14px"></div>'
+   +'<div class="card"><span class="mini-label">TIMELINE</span><h4 class="p-sec">'+pt('h_tl')+'</h4><div class="tl">'+tl+'</div></div>'
+   +'<div style="height:14px"></div>'
+   +'<div class="card"><span class="mini-label">LITTLE THINGS</span><h4 class="p-sec">'+pt('h_fav')+'</h4><div class="facts">'+facts
+     +'<div class="fact wide"><span>'+pt('f_reason')+'</span><b>'+esc(P.reason||pt('v_reason'))+'</b></div></div></div>';
+}
+function stageHTML(){
+  const vids=getVids();
+  const groups=[{n:t('st_g1'),e:'♪'},{n:t('st_g2'),e:'♥'},{n:t('st_g3'),e:'✎'}];
+  const cards=vids.length?vids.map(function(v){
+    return '<div class="vcard"><div class="media">'+embedHTML(v.url)+'</div><div class="cap"><span>'+esc(v.title||v.url)+'</span><em>♪</em></div></div>';
+  }).join(''):groups.map(function(g){
+    return '<div class="vcard"><div class="media"><div class="slot" style="width:100%;height:100%;border:none;border-radius:0"><b>blank</b><i>16 : 9</i></div></div><div class="cap"><span>'+g.n+'</span><em>'+g.e+'</em></div></div>';
+  }).join('');
+  return '<div class="canvas"><div class="grid g2 g3-md" id="vidGrid">'+cards+'</div>'
+   +(vids.length?'':'<p class="note-empty">'+t('st_empty')+'</p>')+'</div>';
+}
+function embedHTML(url){
+  const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if(yt) return '<iframe src="https://www.youtube.com/embed/'+yt[1]+'" allow="accelerometer;autoplay;clipboard-write;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url)) return '<video src="'+esc(url)+'" controls preload="metadata"></video>';
+  const bili=url.match(/bilibili\.com\/video\/(BV[\w]+)/);
+  if(bili) return '<a href="'+esc(url)+'" target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%;text-decoration:none;color:#9B8590;font-size:12px;letter-spacing:.1em;background:#FDF3F8">Bilibili · ↗</a>';
+  return '<a href="'+esc(url)+'" target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%;text-decoration:none;color:#9B8590;font-size:12px;letter-spacing:.1em;background:#FDF3F8;text-align:center;padding:8px;word-break:break-all">'+esc(url)+' ↗</a>';
+}
+function albumHTML(){
+  const ph=getPhotos();
+  const items=ph.length?ph.map(function(p,i){
+    return '<figure class="polaroid" style="--rot:'+((i%3-1)*2)+'deg"><span class="tape"></span><div class="ph"><img src="'+esc(p.url)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"></div><figcaption class="cap">'+(p.title?esc(p.title):'photo 0'+(i+1))+'</figcaption></figure>';
+  }).join(''):'';
+  const blanks=ph.length?'':[1,2,3,4,5,6].map(function(n){return '<figure class="polaroid" style="--rot:'+((n%3-1)*2)+'deg"><span class="tape"></span><div class="ph"><div class="slot" style="height:100%;border:none;border-radius:4px"><b>photo</b><i>1 : 1</i></div></div><figcaption class="cap">0'+n+'</figcaption></figure>'}).join('');
+  return '<div class="canvas"><p class="mini-label">SPOTLIGHT · '+ph.length+' '+t('al_count')+'</p>'
+   +'<div class="album">'+items+blanks+'</div>'
+   +(ph.length?'':'<p class="note-empty">'+t('al_empty')+'</p>')+'</div>';
+}
+function musicHTML(){
+  const tr=getTracks();
+  const first=tr[0];
+  const player='<div class="player"><div class="disc"></div><div class="meta"><b>'+(first?esc(first.title):t('mu_blank'))+'</b><span>'+(first?(t('mu_now')+' · 0'+tr.length):t('mu_empty'))+'</span>'
+    +(first&&/\.(mp3|wav|m4a|ogg)(\?|$)/i.test(first.url)?'<audio src="'+esc(first.url)+'" controls preload="none"></audio>':'')
+    +(first&&!/\.(mp3|wav|m4a|ogg)(\?|$)/i.test(first.url)?'<a class="btn btn-sm" style="margin-top:6px" href="'+esc(first.url)+'" target="_blank" rel="noopener">↗</a>':'')
+    +'</div></div>';
+  const list=tr.length?tr.map(function(x,i){
+    return '<a class="track" href="'+esc(x.url)+'" target="_blank" rel="noopener"><span class="n">0'+(i+1)+'</span><span class="t">'+esc(x.title||x.url)+'</span><span class="p">♫</span></a>';
+  }).join(''):[1,2,3,4].map(function(i){
+    return '<div class="track" style="border-style:dashed;color:#C6ADB7"><span class="n">0'+i+'</span><span class="t" style="font-family:var(--serif);font-style:italic">track 0'+i+' · blank</span><span class="p">♫</span></div>';
+  }).join('');
+  return '<div class="canvas">'+player
+   +'<div style="margin-top:14px">'+list+'</div></div>';
+}
+function clockHTML(){
+  return '<div class="clock-grid">'
+   +'<div class="clock-card" id="c1"><span class="mo">'+MOON+'</span><span class="star">'+STAR4+'</span>'
+     +'<h4>'+t('c_1')+'</h4><div class="big"><span id="c1d">0</span><small>'+t('u_d')+'</small></div>'
+     +'<div class="units"><div class="unit"><b id="c1h">00</b><span>'+t('u_h')+'</span></div><div class="unit"><b id="c1m">00</b><span>'+t('u_m')+'</span></div><div class="unit"><b id="c1s">00</b><span>'+t('u_s')+'</span></div></div>'
+     +'<div class="jp">'+t('c_1s')+'</div></div>'
+   +'<div class="clock-card"><span class="mo">'+MOON+'</span><span class="star">'+STAR4+'</span>'
+     +'<h4>'+t('c_2')+'</h4><div class="big"><span id="c2d">0</span><small>'+t('u_d')+'</small></div>'
+     +'<div class="units"><div class="unit"><b id="c2h">00</b><span>'+t('u_h')+'</span></div><div class="unit"><b id="c2m">00</b><span>'+t('u_m')+'</span></div><div class="unit"><b id="c2s">00</b><span>'+t('u_s')+'</span></div></div>'
+     +'<div class="jp">'+t('c_2s')+'</div></div>'
+   +'<div class="clock-card"><span class="mo">'+MOON+'</span><span class="star">'+STAR4+'</span>'
+     +'<h4>'+t('c_3')+'</h4><div class="big"><span id="c3d">0</span><small>'+t('u_d')+'</small></div>'
+     +'<div class="units"><div class="unit"><b id="c3h">00</b><span>'+t('u_h')+'</span></div><div class="unit"><b id="c3m">00</b><span>'+t('u_m')+'</span></div><div class="unit"><b id="c3s">00</b><span>'+t('u_s')+'</span></div></div>'
+     +'<div class="jp">'+t('c_3s')+'</div></div>'
+   +'</div>'+customDatesHTML();
+}
+function customDatesHTML(){
+  const ds=getDates();if(!ds.length)return '';
+  const today=new Date();today.setHours(0,0,0,0);
+  const rows=ds.map(function(d){
+    const dt=new Date(d.date+'T00:00:00');
+    const diff=Math.round((dt-today)/86400000);
+    const tag=diff>0?('D-'+diff):(diff===0?'D-DAY':'D+'+(-diff));
+    return '<div class="date-row"><b>'+esc(d.date)+'</b><span>'+esc(d.note||'')+'</span><i>'+tag+'</i></div>';
+  }).join('');
+  return '<div class="canvas" style="margin-top:16px"><p class="mini-label">REMEMBER · 纪念日</p>'+rows+'</div>';
+}
+function lettersHTML(){
+  const ls=getMsgs();
+  const m=me();
+  const list=ls.length?ls.map(function(x,i){
+    return '<div class="note-card" style="--rot:'+((i%3-1)*1.2)+'deg">'
+      +'<span class="pin"></span>'
+      +(x.img?'<div class="nc-img"><img alt="" src="'+esc(x.img)+'" loading="lazy" onerror="this.parentNode.style.display=\'none\'"></div>':'')
+      +(x.text?'<div class="txt">'+esc(x.text)+'</div>':'')
+      +'<div class="when">'+(x.nick?esc(x.nick)+' · ':'')+fmtDate(x.ts,LANG)+'</div></div>';
+  }).join(''):'<p class="note-empty">'+t('le_empty')+'</p>';
+  return '<div class="canvas"><p class="mini-label">PUBLISHED · '+ls.length+' '+t('le_count')+'</p>'
+   +'<div class="write-card"><textarea id="msgText" maxlength="200" placeholder="'+mt('ph')+'"></textarea>'
+     +'<div class="ad-row" style="margin:8px 0 0"><input class="input" id="msgNick" placeholder="'+mt('nick')+'" value="'+(m?esc(m.nick):'')+'">'
+     +'<button class="btn btn-sm" id="msgSend">'+mt('send')+'</button></div></div>'
+   +'<div id="msgList">'+list+'</div></div>';
+}
+function notesHTML(){
+  const ns=getNotes();
+  const body=ns.length?ns.map(function(n,idx){
+    const head='<div class="head"><b>Fuko</b><em>'+esc(n.title||('letter 0'+(idx+1)))+'</em></div>';
+    const inner=n.img2
+      ? '<div class="fl-pics"><figure class="fl-pic" style="--r:-2deg"><img alt="" src="'+esc(n.img1)+'"><span class="pg">p. 01</span></figure>'
+        +'<figure class="fl-pic" style="--r:1.8deg"><img alt="" src="'+esc(n.img2)+'"><span class="pg">p. 02</span></figure></div>'
+      : (n.img1?'<figure class="fl-wide"><img alt="" src="'+esc(n.img1)+'">'+(n.cap?'<span class="pg">'+esc(n.cap)+'</span>':'')+'</figure>':'');
+    return '<div class="letter-paper fuko-letter" style="margin-bottom:16px">'+head+inner
+      +(n.text?'<p class="fl-text">'+esc(n.text)+'</p>':'')+'</div>';
+  }).join(''):'<div class="letter-paper fuko-letter"><div class="head"><b>Fuko</b><em>letter</em></div>'
+    +'<div class="slot" style="border:none;background:transparent;min-height:104px"><b style="font-size:22px;opacity:.5">blank</b></div></div>';
+  return '<div class="canvas">'+body+'</div>';
+}
+const MT={
+ zh:{ph:'写一句想对 Fuko 说的话…（最多 200 字）',nick:'你的名字',send:'送出 ♡',ok:'话已经送到 Fuko 那里啦 ♡',empty:'先写一点点吧 ♡'},
+ en:{ph:'leave a few words for Fuko… (max 200)',nick:'your name',send:'Send ♡',ok:'your words reached Fuko ♡',empty:'write a little first ♡'},
+ ja:{ph:'Fukoへひとこと…（200字まで）',nick:'あなたの名前',send:'送る ♡',ok:'Fukoに届きました ♡',empty:'少し書いてね ♡'},
+ ko:{ph:'Fuko에게 한마디… (200자까지)',nick:'당신의 이름',send:'보내기 ♡',ok:'Fuko에게 전해졌어요 ♡',empty:'조금만 적어 주세요 ♡'}
+};
+function mt(k){const d=MT[LANG]||MT.zh;return d[k]||MT.zh[k]}
+function gameHTML(){
+  const m=me(); const h=getHearts(); const lv=Math.floor(h/10)+1; const rest=10-(h%10||0);
+  return '<div class="canvas game-wrap">'
+   +'<div class="fumi-stage"><div id="fumi"><img alt="Fumimi" src="'+FUMI_IMG.game+'"></div></div>'
+   +'<div class="heart-bar">♥ <span class="h" id="heartNum">'+h+'</span> <span>'+t('ga_hearts')+'</span> <span style="color:#C2ACB6">·</span> <span id="lvNum">'+t('ga_lv')+' '+lv+'</span></div>'
+   +'<div class="progress"><i id="prog" style="width:'+((h%10||(h>0?10:0))*10)+'%"></i></div>'
+   +'<div class="lv-note" id="lvNote">'+(h%10===0&&h>0?t('ga_max'):t('ga_next').replace('{n}',rest))+'</div>'
+   +'<div class="game-btns">'
+     +'<button class="btn" id="petBtn">'+t('ga_pet')+'</button>'
+     +'<button class="btn btn-ghost" id="feedBtn">'+t('ga_feed')+'</button>'
+   +'</div></div>';
+}
+function meHTML(){
+  const m=me(); if(!m) return '<p class="note-empty">…</p>';
+  const h=m.hearts||0, lv=Math.floor(h/10)+1;
+  const days=Math.max(1,Math.ceil((Date.now()-(m.joined||Date.now()))/86400000));
+  const mine=getLetters().length;
+  const g={f:t('g_f'),m:t('g_m'),x:t('g_x')}[m.gender]||t('g_x');
+  return '<div class="card me-card"><div class="me-ava">'+esc(m.nick.slice(0,1).toUpperCase())+'</div>'
+   +'<div class="me-info"><b>'+esc(m.nick)+'</b><span>'+t('me_since')+' '+fmtDate(m.joined,LANG)+' · '+g+'</span></div></div>'
+   +'<div class="me-grid">'
+   +'<div class="me-stat"><b>'+days+'</b><span>'+t('me_joined')+' · '+t('me_days')+'</span></div>'
+   +'<div class="me-stat"><b>'+lv+'</b><span>'+t('me_lv')+'</span></div>'
+   +'<div class="me-stat"><b>'+h+'</b><span>'+t('me_h')+'</span></div>'
+   +'<div class="me-stat"><b>'+mine+'</b><span>'+t('me_notes')+'</span></div>'
+   +'</div>'
+   +'<div style="text-align:center;margin-top:16px"><button class="btn btn-ghost btn-sm" id="logoutBtn">'+t('me_out')+'</button></div>';
+}
+
+/* ============ 9. 栏目页组装 ============ */
+function dirHTML(cur){
+  return '<section class="dir"><div class="dir-head"><span class="kicker">DIRECTORY</span><h2 class="h2">'+t('dir_title')+'</h2>'
+   +'<span style="font-size:11px;color:#BFA3B0;letter-spacing:.1em">'+t('dir_sub')+'</span></div><div class="dir-grid">'
+   +BOARDS.map(function(b,i){return '<a class="dir-item'+(b.id===cur?' on':'')+'" href="#/'+b.id+'"><span class="no">0'+(i+1)+'</span><span class="dn">'+bid(i)+'</span><span class="de">'+b.en+'</span></a>'}).join('')
+   +'</div></section>';
+}
+function boardHTML(b){
+  const i=BOARDS.indexOf(b);
+  const prev=BOARDS[(i-1+BOARDS.length)%BOARDS.length], next=BOARDS[(i+1)%BOARDS.length];
+  let body='';
+  if(b.id==='profile') body=profileHTML();
+  else if(b.id==='stage') body=stageHTML();
+  else if(b.id==='album') body=albumHTML();
+  else if(b.id==='music') body=musicHTML();
+  else if(b.id==='clock') body=clockHTML();
+  else if(b.id==='letters') body=lettersHTML();
+  else if(b.id==='notes') body=notesHTML();
+  else if(b.id==='game') body=gameHTML();
+  else body=meHTML();
+  return '<div class="wrap"><section class="mod">'
+   +'<div class="crumb"><a href="#/home">'+t('back_home')+'</a><span>·</span><span>'+b.en+'</span></div>'
+   +'<div class="mod-head"><span class="mod-no">0'+(i+1)+'</span><span class="kicker mod-kicker">'+b.en+' · ROOM</span>'
+     +'<div class="mod-title-row"><h1 class="mod-title">'+bid(i)+'</h1><img class="fumi-mark" alt="Fumimi" src="'+FUMI_IMG[b.icon]+'"></div><p class="mod-sub">'+bdesc(i)+'</p></div>'
+   +(b.id==='profile'||b.id==='me'||b.id==='notes'?'<div style="height:14px"></div>':'')
+   +body+dirHTML(b.id)
+   +'<div class="pager"><a href="#/'+prev.id+'">‹ '+t('prev')+' · '+bid(BOARDS.indexOf(prev))+'</a>'
+     +'<a href="#/'+next.id+'">'+t('next')+' · '+bid(BOARDS.indexOf(next))+' ›</a></div>'
+   +'</section><div style="height:24px"></div></div>';
+}
+
+/* ============ 10. 渲染与事件 ============ */
+let clockTimer=null;
+function render(){
+  const id=routeId();
+  applyStatic();
+  clearInterval(clockTimer);clockTimer=null;
+  if(id==='admin'){openAdmin();return}
+  closeAdmin();
+  if(id==='home'){view.innerHTML=homeHTML();markTabs('home')}
+  else{
+    const b=BOARDS.find(function(x){return x.id===id});markTabs(id);
+    view.innerHTML=boardHTML(b);
+  }
+  view.classList.remove('enter');void view.offsetWidth;view.classList.add('enter');
+  bindView(id);
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function bindView(id){
+  if(id==='game'){
+    const pet=$('#petBtn'),feed=$('#feedBtn');
+    function add(n,ev){
+      const m=me();const old=Math.floor((m.hearts||0)/10);
+      const nh=(m.hearts||0)+n;updateMe({hearts:nh});
+      const nl=Math.floor(nh/10);
+      const hEl=$('#heartNum'),lvEl=$('#lvNum'),pg=$('#prog'),note=$('#lvNote');
+      if(hEl)hEl.textContent=nh;
+      if(lvEl)lvEl.textContent=t('ga_lv')+' '+nl;
+      if(pg)pg.style.width=((nh%10||(nh>0?10:0))*10)+'%';
+      if(note)note.textContent=(nh%10===0&&nh>0)?t('ga_max'):t('ga_next').replace('{n}',10-nh%10);
+      const f=$('#fumi');if(f){f.classList.remove('happy');void f.offsetWidth;f.classList.add('happy')}
+      heartsFx(ev,n);
+      if(nl>old){toast(t('ga_up')+' Lv.'+nl);starBurst(ev)}
+    }
+    pet.addEventListener('click',function(e){add(1,e)});
+    feed.addEventListener('click',function(e){add(2,e)});
+    const f=$('#fumi');if(f)f.addEventListener('click',function(e){add(1,e)});
+  }
+  if(id==='me'){
+    const out=$('#logoutBtn');
+    if(out)out.addEventListener('click',function(){clearSession();location.hash='#/home';location.reload()});
+  }
+  if(id==='clock'){startClock()}
+  if(id==='letters'){
+    const send=$('#msgSend'),tx=$('#msgText'),nk=$('#msgNick');
+    if(send)send.addEventListener('click',async function(){
+      const txt=(tx.value||'').trim();
+      if(!txt){toast(mt('empty'));return}
+      send.disabled=true;
+      await postMsg((nk.value||'').trim(),txt,'');
+      toast(mt('ok'));
+      send.disabled=false;
+      render();
+    });
+  }
+}
+
+/* 倒计时 */
+function startClock(){
+  const BIRTH={m:8,d:22};
+  const JOIN=new Date(2025,6,16,0,0,0);
+  const BORN=new Date(2004,7,22,0,0,0);
+  function nextBirthday(){
+    const now=new Date();let y=now.getFullYear();
+    let t0=new Date(y,BIRTH.m-1,BIRTH.d,0,0,0);
+    if(t0.getTime()<=now.getTime()) t0=new Date(y+1,BIRTH.m-1,BIRTH.d,0,0,0);
+    return t0;
+  }
+  function split(ms){
+    const s=Math.max(0,Math.floor(ms/1000));
+    return {d:Math.floor(s/86400),h:Math.floor(s%86400/3600),m:Math.floor(s%3600/60),s:s%60};
+  }
+  function put(p,o){
+    const el1=$('#'+p+'d'),el2=$('#'+p+'h'),el3=$('#'+p+'m'),el4=$('#'+p+'s');
+    if(!el1)return;
+    el1.textContent=o.d;el2.textContent=String(o.h).padStart(2,'0');el3.textContent=String(o.m).padStart(2,'0');el4.textContent=String(o.s).padStart(2,'0');
+  }
+  function tick(){
+    const now=new Date();
+    put('c1',split(nextBirthday().getTime()-now.getTime()));
+    const sinceJoin=now-JOIN;
+    const jh=Math.floor((sinceJoin/3600000)%24),jm=Math.floor((sinceJoin/60000)%60),js=Math.floor((sinceJoin/1000)%60);
+    const jd=Math.floor(sinceJoin/86400000);
+    const c2=$('#c2d');if(c2){c2.textContent=jd;$('#c2h').textContent=String(jh).padStart(2,'0');$('#c2m').textContent=String(jm).padStart(2,'0');$('#c2s').textContent=String(js).padStart(2,'0')}
+    const sinceBorn=now-BORN;
+    const c3=$('#c3d');if(c3){c3.textContent=Math.floor(sinceBorn/86400000);$('#c3h').textContent=String(Math.floor((sinceBorn/3600000)%24)).padStart(2,'0');$('#c3m').textContent=String(Math.floor((sinceBorn/60000)%60)).padStart(2,'0');$('#c3s').textContent=String(Math.floor((sinceBorn/1000)%60)).padStart(2,'0')}
+  }
+  tick();clockTimer=setInterval(tick,1000);
+}
+
+/* 特效 */
+function heartsFx(ev,n){
+  const x=(ev&&ev.clientX)||window.innerWidth/2, y=(ev&&ev.clientY)||window.innerHeight/2;
+  for(let i=0;i<n+2;i++){
+    const s=document.createElement('span');s.className='float-heart';s.textContent=i%2?'♡':'♥';
+    s.style.left=(x+(Math.random()*60-30))+'px';s.style.top=(y-10)+'px';
+    s.style.animationDelay=(i*0.05)+'s';document.body.appendChild(s);
+    setTimeout(function(){s.remove()},1200);
+  }
+}
+function starBurst(ev){
+  const x=(ev&&ev.clientX)||window.innerWidth/2, y=(ev&&ev.clientY)||window.innerHeight/2;
+  for(let i=0;i<12;i++){
+    const s=document.createElement('span');s.className='spark';s.textContent='✦';
+    s.style.left=x+'px';s.style.top=y+'px';
+    const a=Math.random()*Math.PI*2,r=60+Math.random()*70;
+    s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r+'px');
+    document.body.appendChild(s);setTimeout(function(){s.remove()},1100);
+  }
+}
+
+/* toast */
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('on')},2200);
+}
+
+/* ============ 11. 登录 / 注册 ============ */
+let authMode='login';
+const authEl=$('#auth'),authForm=$('#authForm');
+function showAuth(){
+  authEl.classList.add('show');
+  $('#page').classList.add('locked');
+  document.body.style.overflow='hidden';
+  setTimeout(function(){const n=$('#aNick');if(n)n.focus()},320);
+}
+function hideAuth(){
+  authEl.classList.remove('show');
+  $('#page').classList.remove('locked');
+  document.body.style.overflow='';
+}
+function setMode(mode){
+  authMode=mode;
+  $$('#authTabs button').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
+  $('#genderField').style.display=mode==='reg'?'block':'none';
+  $('#authBtn').setAttribute('data-i18n',mode==='reg'?'btn_reg':'btn_login');
+  $('#authBtn').textContent=t(mode==='reg'?'btn_reg':'btn_login');
+  $('#authErr').textContent='';
+}
+$$('#authTabs button').forEach(function(b){
+  b.addEventListener('click',function(){setMode(b.dataset.mode)});
+});
+authForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  const nick=$('#aNick').value.trim(), pw=$('#aPw').value;
+  const err=$('#authErr');
+  if(!nick||!pw){err.textContent=t('e_empty');return}
+  if(pw.length<4){err.textContent=t('e_short');return}
+  const list=users();
+  if(authMode==='reg'){
+    if(nick.toLowerCase()==='fuko'){err.textContent=t('e_dup');shake();return}
+    if(list.some(function(u){return u.nick.toLowerCase()===nick.toLowerCase()})){
+      err.textContent=t('e_dup');shake();return;
+    }
+    const g=($('input[name=gender]:checked')||{}).value||'x';
+    const u={nick:nick,pw:hashPw(pw),gender:g,joined:Date.now(),hearts:0};
+    list.push(u);saveUsers(list);setSession(nick);
+    err.textContent='';
+    hideAuth();toast(t('ok_reg'));render();
+  }else{
+    if(nick.toLowerCase()==='fuko'&&pw==='082200'){
+      ADM=true;err.textContent='';hideAuth();$('#gate').classList.add('done');
+      $('#page').classList.add('show');location.hash='#/admin';return;
+    }
+    const u=list.find(function(x){return x.nick.toLowerCase()===nick.toLowerCase()});
+    if(!u){err.textContent=t('e_no');shake();return}
+    if(u.pw!==hashPw(pw)){err.textContent=t('e_pw');shake();return}
+    setSession(u.nick);err.textContent='';
+    hideAuth();toast(t('ok_back'));render();
+  }
+});
+function shake(){
+  const c=document.querySelector('.auth-card');
+  c.animate?c.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:320,easing:'ease-in-out'}):0;
+}
+
+/* ============ 12. 开门 ============ */
+(function(){
+  const gate=$('#gate');let opened=false;
+  function openGate(){
+    if(opened)return;opened=true;
+    gate.classList.add('open');
+    setTimeout(function(){
+      gate.classList.add('done');
+      $('#page').classList.add('show');
+      if(!me()) showAuth(); else {toast(t('ok_back'))}
+    },1500);
+  }
+  gate.addEventListener('click',openGate);
+  document.addEventListener('keydown',function(e){if(!opened&&(e.key==='Enter'||e.key===' '))openGate()});
+  setTimeout(openGate,3000);
+})();
+
+/* ============ 13. 背景装饰 / 点击星光 ============ */
+(function floats(){
+  const box=$('#floaties');
+  const shapes=[STAR4.replace('<svg','<svg fill="#F7D9E4" stroke="#fff"'),BOW,MOON];
+  for(let i=0;i<9;i++){
+    const d=document.createElement('div');d.className='floaty';
+    d.style.left=(Math.random()*96)+'vw';
+    const sz=10+Math.random()*12;d.style.width=sz+'px';d.style.height=sz+'px';
+    d.style.animationDuration=(28+Math.random()*24)+'s';d.style.animationDelay=(-Math.random()*44)+'s';
+    d.style.opacity=.28+Math.random()*.3;
+    d.innerHTML=shapes[i%shapes.length];box.appendChild(d);
+  }
+  for(let i=0;i<8;i++){
+    const b=document.createElement('i');const sz=16+Math.random()*54;
+    b.style.width=sz+'px';b.style.height=sz+'px';b.style.left=(Math.random()*94)+'%';
+    b.style.animationDuration=(22+Math.random()*20)+'s';b.style.animationDelay=(-Math.random()*36)+'s';
+    b.style.opacity=.35+Math.random()*.35;$('#bokeh').appendChild(b);
+  }
+  for(let i=0;i<12;i++){
+    const s=document.createElement('span');s.className='twinkle';
+    const sz=7+Math.random()*11;s.style.width=sz+'px';s.style.height=sz+'px';
+    s.style.left=(Math.random()*96)+'%';s.style.top=(Math.random()*88)+'%';
+    s.style.animationDelay=(-Math.random()*6)+'s';s.style.animationDuration=(3.4+Math.random()*3)+'s';
+    s.innerHTML=STAR4;$('#twinkles').appendChild(s);
+  }
+})();
+
+document.addEventListener('click',function(e){
+  if(!$('#page').classList.contains('show'))return;
+  for(let i=0;i<3;i++){
+    const s=document.createElement('span');s.className='spark';s.textContent=i?'✦':'♡';
+    s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';
+    s.style.setProperty('--dx',(Math.random()*70-35)+'px');s.style.setProperty('--dy',(-20-Math.random()*50)+'px');
+    s.style.animationDelay=(i*.04)+'s';document.body.appendChild(s);
+    setTimeout(function(){s.remove()},1200);
+  }
+});
+
+/* ============ 13.5 管理员后台 ============ */
+const AD_ACC='fuko', AD_PW='082200';
+let ADM=false, adEditDate=null, adEditNote=null, admVeil=false;
+
+function openAdmin(){
+  const g=$('#gate'), a=$('#auth');
+  if(g && !g.classList.contains('done')){g.classList.add('done');admVeil=true}
+  if(a && a.classList.contains('show')){a.classList.remove('show');$('#page').classList.remove('locked');admVeil=true}
+  $('#page').classList.add('show');
+  $('#admin').classList.add('on');
+  document.body.style.overflow='hidden';
+  renderAdmin();
+}
+function closeAdmin(){
+  const l=$('#admin');
+  if(!l||!l.classList.contains('on')) return;
+  l.classList.remove('on');
+  document.body.style.overflow='';
+  if(admVeil && !currentNick()){
+    $('#gate').classList.remove('done');
+    setTimeout(showAuth,600);
+  }
+  admVeil=false;
+}
+/* --- 后台界面文字（四语言） --- */
+const AD={
+ zh:{title:'Fuko 的小世界 · 后台',back:'回前台',out:'退出登录',login:'管理员登录',acc:'账号',pwd:'密码',ph_acc:'管理员账号',ph_pwd:'管理员密码',enter:'进入后台',owner:'仅站长可用 · 登录状态只在本次会话有效',wrong:'账号或密码不太对，再试一次吧 ♡',
+  s1:'① 表演视频 & 相片',h1:'视频填 YouTube / B 站 / .mp4 外链；相片填仓库里的文件路径或图片直链',ph_vid:'视频链接 https://…',ph_title:'标题（可留空）',btn_vid:'添加视频',ph_img:'fumi/文件名.jpg 或图片直链',ph_note:'说明（可留空）',btn_img:'添加图片',tip_img:'图片放进仓库 fumi 文件夹（GitHub 里上传），这里填 fumi/文件名.jpg 就能显示',
+  s2:'② 音乐',h2:'填音频直链（mp3 / wav / m4a / ogg），提交后加入音乐页播放列表',ph_audio:'音频链接 https://….mp3',ph_track:'曲名（可留空）',btn_music:'添加音乐',
+  s3:'③ 重要日期',h3:'新增 / 编辑 / 删除自定义纪念日，前台会显示倒数日',ph_date:'备注文字，比如：出道舞台',btn_date:'添加日期',btn_update:'更新日期',
+  s4:'④ Fuko 的话',badge:'手写信',h4:'这里放 Fuko 写给粉丝的信和照片；填一张图会铺满整幅，填两张就并排成两页',ph_nTitle:'标题，比如 letter 01 · 2025',ph_nImg1:'图片①：fumi/文件名.jpg 或直链',ph_nImg2:'图片② 链接（可留空）',ph_nCap:'图下小字（可留空）',ph_nText:'补充文字（可留空）',save:'保存修改',btn_note:'保存这一条',add_note:'＋ 新增一条',t_note:'文字和图片至少留一样吧',s5b:'⑤ 留言管理',h5b:'访客在「写给 Fuko 的话」写下的内容，觉得不合适可以直接删除',em_none:'还没有人留言',t_delmsg:'已删除 ♡',
+  s5:'⑥ 个人简介',h5:'修改档案文字与人像照片，保存后前台「个人简介」立刻更新',f_stage:'艺名',f_name:'韩文名 / 罗马音',f_cn:'中文名',f_nat:'国籍',f_place:'出生地',f_birth:'生日',f_mbti:'MBTI',f_sign:'星座',f_mark:'标志',f_agency:'所属',f_nick:'昵称',f_tags:'三枚标签（用 / 分隔）',f_reason:'想成为 idol 的理由',ph_portrait:'人像图片链接',btn_prof:'保存个人简介',
+  s6:'⑦ 首页主视觉',h6:'替换首页那张拍立得主图，建议竖图 4:5',ph_hero:'主视觉图片链接',btn_hero:'保存主视觉',
+  s7:'⑧ 云端发布（让粉丝看得见）',h7:'填好 Supabase 项目地址与 anon key，再填站长邮箱/密码，内容就会发布到云端，所有访客都能看到',ph_url:'项目地址 https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长邮箱（Supabase 账号）',ph_pw2:'站长密码',test:'测试连接',push:'立即发布',clear:'断开云端',
+  del:'删除',edit:'编辑',cancel:'取消',onlyimg:'（仅图片）',ev:'还没有视频，前台表演页会显示空白位',ep:'相册还是空的',et:'歌单还是空的',ed:'还没有添加日期',el:'还没有发布留言',
+  t_vid:'先填一个视频链接吧',t_img:'先填一个图片链接吧',t_audio:'先填一个音频链接吧',t_date:'先选一个日期吧',t_letter:'文字和图片至少留一样吧',t_ready:'图片已就绪，记得保存',t_upd:'已上传 ',t_up:' 张照片',t_saved:'已保存 ♡',t_cloud:'云端已更新 ♡',t_cfail:'连接失败，检查地址和 key',publish_btn:'发布到云端'},
+ en:{title:'Fuko\'s Little World · Admin',back:'Back to site',out:'Log out',login:'Admin login',acc:'Account',pwd:'Password',ph_acc:'admin account',ph_pwd:'admin password',enter:'Enter',owner:'Station master only · login lasts this session',wrong:'wrong account or password, try again ♡',
+  s1:'① Stage videos & photos',h1:'Videos: YouTube / Bilibili / .mp4 link. Photos: a path inside the repo or a direct image link',ph_vid:'video link https://…',ph_title:'title (optional)',btn_vid:'Add video',ph_img:'fumi/name.jpg or image link',ph_note:'caption (optional)',btn_img:'Add photo',tip_img:'Put images in the fumi folder of the repo, then fill fumi/name.jpg here',
+  s2:'② Music',h2:'Paste a direct audio link (mp3 / wav / m4a / ogg)',ph_audio:'audio link https://….mp3',ph_track:'song name (optional)',btn_music:'Add track',
+  s3:'③ Important dates',h3:'Add / edit / delete custom dates, shown as countdowns',ph_date:'note, e.g. debut stage',btn_date:'Add date',btn_update:'Update date',
+  s4:'④ From Fuko',badge:'HANDWRITTEN',h4:'Letters and photos Fuko wrote for fans; one image fills the width, two images become two pages',ph_nTitle:'title, e.g. letter 01 · 2025',ph_nImg1:'image ①: fumi/name.jpg or link',ph_nImg2:'image ② link (optional)',ph_nCap:'small caption (optional)',ph_nText:'extra text (optional)',save:'Save',btn_note:'Save this letter',add_note:'＋ Add a letter',t_note:'text or image, at least one',s5b:'⑤ Visitor messages',h5b:'What fans wrote on “Words to Fuko” — delete anything you don’t want to keep',em_none:'no message yet',t_delmsg:'deleted ♡',
+  s5:'⑥ Profile',h5:'Edit the profile text and portrait; the profile page updates right away',f_stage:'stage name',f_name:'Korean / romanized',f_cn:'Chinese name',f_nat:'nationality',f_place:'birthplace',f_birth:'birthday',f_mbti:'MBTI',f_sign:'zodiac',f_mark:'symbol',f_agency:'agency',f_nick:'nickname',f_tags:'three tags (split with /)',f_reason:'why she wants to be an idol',ph_portrait:'portrait image link',btn_prof:'Save profile',
+  s6:'⑦ Home hero',h6:'Replace the polaroid hero image, portrait 4:5 works best',ph_hero:'hero image link',btn_hero:'Save hero',
+  s7:'⑧ Publish to cloud (for fans)',h7:'Fill in your Supabase project URL and anon key, plus the owner email/password — then everything goes online for every visitor',ph_url:'project URL https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'owner email (Supabase account)',ph_pw2:'owner password',test:'Test connection',push:'Publish now',clear:'Disconnect',
+  del:'Delete',edit:'Edit',cancel:'Cancel',onlyimg:'(image only)',ev:'no video yet — the stage page shows a blank slot',ep:'the album is still empty',et:'no track yet',ed:'no date added yet',el:'nothing published yet',
+  t_vid:'paste a video link first',t_img:'paste an image link first',t_audio:'paste an audio link first',t_date:'pick a date first',t_letter:'text or image, at least one',t_ready:'image ready, remember to save',t_upd:'uploaded ',t_up:' photo(s)',t_saved:'saved ♡',t_cloud:'cloud updated ♡',t_cfail:'connection failed — check URL and key',publish_btn:'Publish to cloud'},
+ ja:{title:'Fukoの小さな世界 · 管理',back:'サイトへ戻る',out:'ログアウト',login:'管理者ログイン',acc:'アカウント',pwd:'パスワード',ph_acc:'管理者アカウント',ph_pwd:'管理者パスワード',enter:'入る',owner:'站长のみ · このセッションのみ有効',wrong:'アカウントかパスワードが違います ♡',
+  s1:'① ステージ動画 & 写真',h1:'動画は YouTube / Bilibili / .mp4 リンク。写真はリポジトリ内のパスか画像リンク',ph_vid:'動画リンク https://…',ph_title:'タイトル（空でも可）',btn_vid:'動画を追加',ph_img:'fumi/ファイル名.jpg または画像リンク',ph_note:'説明（空でも可）',btn_img:'写真を追加',tip_img:'画像はリポジトリの fumi フォルダに置き、ここに fumi/ファイル名.jpg を入れてください',
+  s2:'② 音楽',h2:'音声の直リンク（mp3 / wav / m4a / ogg）',ph_audio:'音声リンク https://….mp3',ph_track:'曲名（空でも可）',btn_music:'曲を追加',
+  s3:'③ 大事な日',h3:'記念日を追加・編集・削除。カウントダウンで表示',ph_date:'メモ（例：デビュー舞台）',btn_date:'日付を追加',btn_update:'日付を更新',
+  s4:'④ Fukoからの手紙',badge:'手書き',h4:'Fuko がファンに書いた手紙と写真。1枚なら横幅いっぱい、2枚なら2ページ並び',ph_nTitle:'タイトル（例：letter 01 · 2025）',ph_nImg1:'画像① fumi/ファイル名.jpg またはリンク',ph_nImg2:'画像② リンク（空でも可）',ph_nCap:'画像下の小さい文字（空でも可）',ph_nText:'補足テキスト（空でも可）',save:'変更を保存',btn_note:'この手紙を保存',add_note:'＋ 手紙を追加',t_note:'文章か画像、どちらか必要です',s5b:'⑤ ファンのメッセージ',h5b:'「Fukoへ」にファンが書いた内容。不要なものは削除できます',em_none:'まだメッセージはありません',t_delmsg:'削除しました ♡',
+  s5:'⑥ プロフィール',h5:'プロフィール文と肖像写真を編集。保存すると即反映',f_stage:'芸名',f_name:'韓国名 / ローマ字',f_cn:'中国語名',f_nat:'国籍',f_place:'出身地',f_birth:'誕生日',f_mbti:'MBTI',f_sign:'星座',f_mark:'シンボル',f_agency:'所属',f_nick:'ニックネーム',f_tags:'3つのタグ（/ 区切り）',f_reason:'アイドルになりたい理由',ph_portrait:'肖像画像リンク',btn_prof:'プロフィールを保存',
+  s6:'⑦ トップビジュアル',h6:'トップのポラロイド画像を差し替え（縦 4:5 推奨）',ph_hero:'画像リンク',btn_hero:'保存する',
+  s7:'⑧ クラウド公開（ファンに見せる）',h7:'Supabase の URL と anon key、站长のメール/パスワードを入れると、全訪問者に公開されます',ph_url:'プロジェクト URL https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长メール',ph_pw2:'站长パスワード',test:'接続テスト',push:'今すぐ公開',clear:'接続を解除',
+  del:'削除',edit:'編集',cancel:'キャンセル',onlyimg:'（画像のみ）',ev:'動画はまだありません',ep:'アルバムは空です',et:'曲はまだありません',ed:'日付はまだありません',el:'まだ公開されていません',
+  t_vid:'動画リンクを入れてください',t_img:'画像リンクを入れてください',t_audio:'音声リンクを入れてください',t_date:'日付を選んでください',t_letter:'文章か画像、どちらか必要です',t_ready:'画像OK、保存を押してね',t_upd:'アップロード済み ',t_up:' 枚',t_saved:'保存しました ♡',t_cloud:'クラウド更新済み ♡',t_cfail:'接続失敗、URL と key を確認',publish_btn:'クラウドへ公開'},
+ ko:{title:'Fuko의 작은 세계 · 관리',back:'사이트로',out:'로그아웃',login:'관리자 로그인',acc:'계정',pwd:'비밀번호',ph_acc:'관리자 계정',ph_pwd:'관리자 비밀번호',enter:'들어가기',owner:'站长 전용 · 이번 세션에서만 유지',wrong:'계정이나 비밀번호가 달라요 ♡',
+  s1:'① 무대 영상 & 사진',h1:'영상은 YouTube / Bilibili / .mp4 링크. 사진은 저장소 안 경로나 이미지 링크',ph_vid:'영상 링크 https://…',ph_title:'제목 (비워도 됨)',btn_vid:'영상 추가',ph_img:'fumi/파일명.jpg 또는 이미지 링크',ph_note:'설명 (비워도 됨)',btn_img:'사진 추가',tip_img:'이미지는 저장소 fumi 폴더에 올리고, 여기에 fumi/파일명.jpg 를 입력하세요',
+  s2:'② 음악',h2:'오디오 직링크 (mp3 / wav / m4a / ogg)',ph_audio:'오디오 링크 https://….mp3',ph_track:'곡명 (비워도 됨)',btn_music:'곡 추가',
+  s3:'③ 중요한 날',h3:'기념일 추가·수정·삭제, 카운트다운으로 표시',ph_date:'메모 (예: 데뷔 무대)',btn_date:'날짜 추가',btn_update:'날짜 수정',
+  s4:'④ Fuko의 편지',badge:'손편지',h4:'Fuko가 팬에게 쓴 편지와 사진. 한 장이면 폭 전체, 두 장이면 두 페이지로 나란히',ph_nTitle:'제목 (예: letter 01 · 2025)',ph_nImg1:'이미지① fumi/파일명.jpg 또는 링크',ph_nImg2:'이미지② 링크 (비워도 됨)',ph_nCap:'이미지 아래 작은 글 (비워도 됨)',ph_nText:'추가 문구 (비워도 됨)',save:'수정 저장',btn_note:'이 편지 저장',add_note:'＋ 편지 추가',t_note:'문구나 이미지 중 하나는 필요해요',s5b:'⑤ 팬 메시지',h5b:'「Fuko에게」에 팬이 남긴 글. 남기고 싶지 않은 글은 삭제할 수 있어요',em_none:'아직 메시지가 없어요',t_delmsg:'삭제했어요 ♡',
+  s5:'⑥ 프로필',h5:'프로필 문구와 사진을 수정하면 바로 반영됩니다',f_stage:'예명',f_name:'한국명 / 로마자',f_cn:'중문명',f_nat:'국적',f_place:'출생지',f_birth:'생일',f_mbti:'MBTI',f_sign:'별자리',f_mark:'상징',f_agency:'소속',f_nick:'닉네임',f_tags:'태그 3개 (/ 구분)',f_reason:'아이돌이 되고 싶은 이유',ph_portrait:'프로필 이미지 링크',btn_prof:'프로필 저장',
+  s6:'⑦ 홈 메인 비주얼',h6:'홈 폴라로이드 이미지를 교체 (세로 4:5 권장)',ph_hero:'이미지 링크',btn_hero:'저장',
+  s7:'⑧ 클라우드 게시 (팬에게 보이기)',h7:'Supabase 주소와 anon key, 站长 이메일/비번을 넣으면 모든 방문자에게 공개됩니다',ph_url:'프로젝트 주소 https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长 이메일',ph_pw2:'站长 비밀번호',test:'연결 테스트',push:'바로 게시',clear:'연결 해제',
+  del:'삭제',edit:'수정',cancel:'취소',onlyimg:'(이미지만)',ev:'영상이 아직 없어요',ep:'앨범이 비어 있어요',et:'곡이 아직 없어요',ed:'날짜가 아직 없어요',el:'아직 게시된 글이 없어요',
+  t_vid:'영상 링크를 넣어 주세요',t_img:'이미지 링크를 넣어 주세요',t_audio:'오디오 링크를 넣어 주세요',t_date:'날짜를 먼저 선택해요',t_letter:'글 또는 이미지가 필요해요',t_ready:'이미지 준비 완료, 저장을 눌러요',t_upd:'업로드 ',t_up:' 장',t_saved:'저장했어요 ♡',t_cloud:'클라우드 업데이트 ♡',t_cfail:'연결 실패, 주소와 key를 확인',publish_btn:'클라우드에 게시'}
+};
+function A(k){const d=AD[LANG]||AD.zh;return d[k]!==undefined?d[k]:AD.zh[k]}
+document.addEventListener('submit',function(e){
+  if(e.target.id!=='adForm')return;
+  e.preventDefault();
+  const u=$('#adUser').value.trim(), p=$('#adPw').value;
+  if(u===AD_ACC&&p===AD_PW){ADM=true;renderAdmin()}
+  else{ $('#adErr').textContent=A('wrong'); }
+});
+$('#adOut').addEventListener('click',function(){ADM=false;adEditDate=null;adEditNote=null;$('#adBody').innerHTML='';location.hash='#/home'});
+addEventListener('hashchange',function(){if(routeId()!=='admin')closeAdmin()});
+$$('#adLang button').forEach(function(b){
+  b.addEventListener('click',function(){
+    $$('#adLang button').forEach(function(x){x.classList.toggle('on',x===b)});
+    LANG=b.dataset.l;lsSet('fuko_lang',LANG);
+    renderTabs();render();renderAdmin();
+  });
+});
+function adList(items,build,empty){
+  return items.length?items.map(build).join(''):'<p class="hint">'+empty+'</p>';
+}
+function adPanelHTML(){
+  const vids=getVids(),phs=getPhotos(),trs=getTracks(),ds=getDates(),ls=getLetters(),P=getProfile()||{};
+  const vlist=adList(vids,function(x,i){
+    return '<div class="ad-item"><span class="t">'+esc(x.title||x.url)+'</span>'
+      +'<button class="del" data-op="del-vid" data-i="'+i+'">'+A('del')+'</button></div>';
+  },A('ev'));
+  const plist=adList(phs,function(x,i){
+    return '<div class="ad-item"><img class="thumb" alt="" src="'+esc(x.url)+'"><span class="t">'+esc(x.title||('photo 0'+(i+1)))+'</span>'
+      +'<button class="del" data-op="del-ph" data-i="'+i+'">'+A('del')+'</button></div>';
+  },A('ep'));
+  const tlist=adList(trs,function(x,i){
+    return '<div class="ad-item"><span class="t">'+esc(x.title||x.url)+'</span>'
+      +'<button class="del" data-op="del-tr" data-i="'+i+'">'+A('del')+'</button></div>';
+  },A('et'));
+  const dlist=adList(ds,function(x,i){
+    return '<div class="ad-item"><span class="t">'+esc(x.date)+(x.note?' · '+esc(x.note):'')+'</span>'
+      +'<button class="edit" data-op="edit-date" data-i="'+i+'">'+A('edit')+'</button>'
+      +'<button class="del" data-op="del-date" data-i="'+i+'">'+A('del')+'</button></div>';
+  },A('ed'));
+  const msgs=getMsgs();
+  const llist=adList(msgs,function(x,i){
+    return '<div class="ad-item">'+(x.img?'<img class="thumb" alt="" src="'+esc(x.img)+'">':'')
+      +'<span class="t">'+esc(((x.nick?x.nick+' · ':'')+(x.text||A('onlyimg'))).slice(0,46))+'</span>'
+      +'<button class="del" data-op="del-msg" data-i="'+i+'" data-id="'+esc(x.id||'')+'">'+A('del')+'</button></div>';
+  },A('em_none'));
+
+  const DEF={stage:'FUKO',name:'후코 · HAYASHI FUKO',cn:'林枫子',nat:'日本 · Japan',place:'福冈 · Fukuoka',birth:'2004.08.22',mbti:'ISFP',sign:'狮子座 · Leo',mark:'🍁 枫叶',agency:'THE L1VE LABEL',nick:'fukosama'};
+  const fields=['stage','name','cn','nat','place','birth','mbti','sign','mark','agency','nick'].map(function(k){
+    return '<div><label>'+A('f_'+k)+'</label><input class="input" id="adP_'+k+'" value="'+esc(P[k]||DEF[k])+'"></div>';
+  }).join('');
+  const tagsVal=[P.t1||pt('t1'),P.t2||pt('t2'),P.t3||pt('t3')].join(' / ');
+  const dEdit=adEditDate!==null&&ds[adEditDate];
+  const ns=getNotes();
+  const nEdit=adEditNote!==null&&ns[adEditNote];
+  const nlist=adList(ns,function(x,i){
+    return '<div class="ad-item">'+(x.img1?'<img class="thumb" alt="" src="'+esc(x.img1)+'">':'')
+      +'<span class="t">'+esc(x.title||('letter 0'+(i+1)))+'</span>'
+      +'<button class="edit" data-op="edit-note" data-i="'+i+'">'+A('edit')+'</button>'
+      +'<button class="del" data-op="del-note" data-i="'+i+'">'+A('del')+'</button></div>';
+  },A('el'));
+  const c=CLOUD||{};
+
+  return '<section class="ad-sec"><h3>'+A('s1')+'</h3><p class="hint">'+A('h1')+'</p>'
+   +'<div class="ad-row"><input class="input" id="adVidUrl" placeholder="'+A('ph_vid')+'"><input class="input" id="adVidTitle" placeholder="'+A('ph_title')+'"><button class="btn btn-sm" data-op="add-vid">'+A('btn_vid')+'</button></div>'
+   +vlist
+   +'<div class="ad-row" style="margin-top:14px"><input class="input" id="adPhUrl" placeholder="'+A('ph_img')+'"><input class="input" id="adPhTitle" placeholder="'+A('ph_note')+'"><button class="btn btn-sm" data-op="add-ph">'+A('btn_img')+'</button></div>'
+   +'<div class="ad-row"><span class="hint" style="margin:0">'+A('tip_img')+'</span></div>'
+   +plist+'</section>'
+
+   +'<section class="ad-sec"><h3>'+A('s2')+'</h3><p class="hint">'+A('h2')+'</p>'
+   +'<div class="ad-row"><input class="input" id="adTrUrl" placeholder="'+A('ph_audio')+'"><input class="input" id="adTrTitle" placeholder="'+A('ph_track')+'"><button class="btn btn-sm" data-op="add-tr">'+A('btn_music')+'</button></div>'
+   +tlist+'</section>'
+
+   +'<section class="ad-sec"><h3>'+A('s3')+'</h3><p class="hint">'+A('h3')+'</p>'
+   +'<div class="ad-row"><input class="input" id="adDate" type="date" style="max-width:180px" value="'+(dEdit?esc(dEdit.date):'')+'">'
+     +'<input class="input" id="adNote" placeholder="'+A('ph_date')+'" value="'+(dEdit?esc(dEdit.note||''):'')+'">'
+     +'<button class="btn btn-sm" data-op="save-date">'+(dEdit?A('btn_update'):A('btn_date'))+'</button>'
+     +(dEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-date">'+A('cancel')+'</button>':'')+'</div>'
+   +dlist+'</section>'
+
+   +'<section class="ad-sec"><h3>'+A('s4')+' <span class="ad-badge">'+A('badge')+'</span></h3><p class="hint">'+A('h4')+'</p>'
+   +'<div class="ad-row"><input class="input" id="adNTitle" placeholder="'+A('ph_nTitle')+'" value="'+(nEdit?esc(nEdit.title||''):'')+'"></div>'
+   +'<div class="ad-row"><input class="input" id="adNImg1" placeholder="'+A('ph_nImg1')+'" value="'+(nEdit?esc(nEdit.img1||''):'')+'"></div>'
+   +'<div class="ad-row"><input class="input" id="adNImg2" placeholder="'+A('ph_nImg2')+'" value="'+(nEdit?esc(nEdit.img2||''):'')+'"></div>'
+   +'<div class="ad-row"><input class="input" id="adNCap" placeholder="'+A('ph_nCap')+'" value="'+(nEdit?esc(nEdit.cap||''):'')+'"></div>'
+   +'<textarea class="batch" id="adNText" placeholder="'+A('ph_nText')+'">'+(nEdit?esc(nEdit.text||''):'')+'</textarea>'
+   +'<div class="ad-row"><button class="btn btn-sm" data-op="save-note">'+(nEdit?A('save'):A('add_note'))+'</button>'
+     +(nEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-note">'+A('cancel')+'</button>':'')+'</div>'
+   +nlist+'</section>'
+
+   +'<section class="ad-sec"><h3>'+A('s5b')+'</h3><p class="hint">'+A('h5b')+'</p>'+llist+'</section>'
+
+   +'<section class="ad-sec"><h3>'+A('s5')+'</h3><p class="hint">'+A('h5')+'</p>'
+   +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(P.photo||'fumi/fuko.jpg')+'">'
+     +'<input class="input" id="adProfImg" placeholder="'+A('ph_portrait')+'" value="'+esc(P.photo||'')+'"></div>'
+   +'<div class="ad-grid">'+fields+'</div>'
+   +'<div class="ad-grid" style="grid-template-columns:1fr"><div><label>'+A('f_tags')+'</label><input class="input" id="adP_tags" value="'+esc(tagsVal)+'"></div>'
+   +'<div><label>'+A('f_reason')+'</label><input class="input" id="adP_reason" value="'+esc(P.reason||pt('v_reason'))+'"></div></div>'
+   +'<div class="ad-row"><button class="btn btn-sm" data-op="save-profile">'+A('btn_prof')+'</button></div></section>'
+
+   +'<section class="ad-sec"><h3>'+A('s6')+'</h3><p class="hint">'+A('h6')+'</p>'
+   +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(getHero())+'">'
+     +'<input class="input" id="adHeroUrl" placeholder="'+A('ph_hero')+'" value="'+esc(getHero())+'"></div>'
+   +'<div class="ad-row"><button class="btn btn-sm" data-op="save-hero">'+A('btn_hero')+'</button></div></section>'
+
+   +'<section class="ad-sec"><h3>'+A('s7')+'</h3><p class="hint">'+A('h7')+'</p>'
+   +'<div class="ad-grid"><div><label>URL</label><input class="input" id="clUrl" placeholder="'+A('ph_url')+'" value="'+esc(c.url||'')+'"></div>'
+   +'<div><label>KEY</label><input class="input" id="clKey" placeholder="'+A('ph_key')+'" value="'+esc(c.k||'')+'"></div>'
+   +'<div><label>EMAIL</label><input class="input" id="clMail" placeholder="'+A('ph_mail')+'" value="'+esc(c.mail||'')+'"></div>'
+   +'<div><label>PASSWORD</label><input class="input" id="clPw" type="password" placeholder="'+A('ph_pw2')+'" value="'+esc(c.pw||'')+'"></div></div>'
+   +'<div class="ad-row"><button class="btn btn-sm" data-op="cloud-test">'+A('test')+'</button>'
+     +'<button class="btn btn-sm" data-op="cloud-push">'+A('publish_btn')+'</button>'
+     +'<button class="btn btn-ghost btn-sm" data-op="cloud-off">'+A('clear')+'</button>'
+     +'<span class="cl-state" id="clState2" data-s="'+CL_STATE+'">'+clText()+'</span></div>'
+   +'<p class="hint" style="margin-top:6px">Supabase · table fuko_site / bucket fuko</p></section>';
+}
+function renderAdmin(){
+  const body=$('#adBody');const out=$('#adOut');
+  if(out)out.hidden=!ADM;
+  const ttl=document.getElementById('adTitle'); if(ttl)ttl.textContent=A('title');
+  const bk=document.getElementById('adBack'); if(bk)bk.textContent=A('back');
+  if(out)out.textContent=A('out');
+  $$('#adLang button').forEach(function(x){x.classList.toggle('on',x.dataset.l===LANG)});
+  paintCloud();
+  if(!ADM){
+    body.innerHTML='<form class="ad-card" id="adForm">'
+      +'<span class="kicker" style="font-size:10px;letter-spacing:.28em;color:#C2ACB6">MEMBERS ONLY · STAFF</span>'
+      +'<h3>'+A('login')+'</h3>'
+      +'<div class="field"><label>'+A('acc')+'</label><input class="input" id="adUser" autocomplete="off" placeholder="'+A('ph_acc')+'"></div>'
+      +'<div class="field"><label>'+A('pwd')+'</label><input class="input" id="adPw" type="password" autocomplete="off" placeholder="'+A('ph_pwd')+'"></div>'
+      +'<div class="auth-err" id="adErr"></div>'
+      +'<button class="btn auth-btn" type="submit">'+A('enter')+'</button>'
+      +'<p class="auth-tip">'+A('owner')+'</p>'
+      +'</form>';
+    return;
+  }
+  body.innerHTML=adPanelHTML();
+}
+
+$('#adBody').addEventListener('click',function(e){
+  const el=e.target.closest('[data-op]');
+  if(!el||!ADM)return;
+  const op=el.getAttribute('data-op'), i=Number(el.getAttribute('data-i')||-1);
+  if(op==='add-vid'){
+    const u=$('#adVidUrl').value.trim();if(!u)return toast(A('t_vid'));
+    const v=getVids();v.push({url:u,title:$('#adVidTitle').value.trim()||('stage 0'+(v.length+1))});dataSet('vids',v);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='del-vid'){const v=getVids();v.splice(i,1);dataSet('vids',v);renderAdmin()}
+  if(op==='add-ph'){
+    const u=$('#adPhUrl').value.trim();if(!u)return toast(A('t_img'));
+    const p=getPhotos();p.push({url:u,title:$('#adPhTitle').value.trim()});dataSet('photos',p);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='del-ph'){const p=getPhotos();p.splice(i,1);dataSet('photos',p);renderAdmin()}
+  if(op==='add-tr'){
+    const u=$('#adTrUrl').value.trim();if(!u)return toast(A('t_audio'));
+    const tr=getTracks();tr.push({url:u,title:$('#adTrTitle').value.trim()||('track 0'+(tr.length+1))});dataSet('tracks',tr);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='del-tr'){const tr=getTracks();tr.splice(i,1);dataSet('tracks',tr);renderAdmin()}
+  if(op==='save-date'){
+    const d=$('#adDate').value, n=$('#adNote').value.trim();
+    if(!d)return toast(A('t_date'));
+    const ds=getDates();
+    if(adEditDate!==null&&ds[adEditDate]){ds[adEditDate].date=d;ds[adEditDate].note=n}
+    else{ds.push({id:'d'+Date.now(),date:d,note:n})}
+    ds.sort(function(a,b){return a.date<b.date?-1:1});
+    dataSet('dates',ds);adEditDate=null;toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='edit-date'){adEditDate=i;renderAdmin()}
+  if(op==='cancel-date'){adEditDate=null;renderAdmin()}
+  if(op==='del-date'){const ds=getDates();ds.splice(i,1);dataSet('dates',ds);adEditDate=null;renderAdmin()}
+  if(op==='save-note'){
+    const ns=getNotes().slice();
+    const obj={id:'n'+Date.now(),title:$('#adNTitle').value.trim(),img1:$('#adNImg1').value.trim(),img2:$('#adNImg2').value.trim(),cap:$('#adNCap').value.trim(),text:$('#adNText').value.trim()};
+    if(!obj.img1&&!obj.text)return toast(A('t_note'));
+    if(adEditNote!==null&&ns[adEditNote]){obj.id=ns[adEditNote].id;ns[adEditNote]=obj}
+    else{ns.push(obj)}
+    saveNotes(ns);adEditNote=null;toast(A('t_saved'));renderAdmin();render();
+  }
+  if(op==='edit-note'){adEditNote=i;renderAdmin()}
+  if(op==='cancel-note'){adEditNote=null;renderAdmin()}
+  if(op==='del-note'){const ns=getNotes().slice();ns.splice(i,1);saveNotes(ns);adEditNote=null;renderAdmin();render()}
+  if(op==='del-msg'){
+    const id=el.getAttribute('data-id')||'';
+    (async function(){ await delMsg(id); toast(A('t_delmsg')); renderAdmin(); render(); })();
+  }
+  if(op==='save-profile'){
+    const P=getProfile()||{};
+    ['stage','name','cn','nat','place','birth','mbti','sign','mark','agency','nick'].forEach(function(k){
+      const n=$('#adP_'+k); if(n) P[k]=n.value.trim();
+    });
+    const tg=$('#adP_tags'), rs=$('#adP_reason'), ph=$('#adProfImg');
+    if(tg){const a=tg.value.split('/').map(function(s){return s.trim()}).filter(Boolean);P.t1=a[0]||'';P.t2=a[1]||'';P.t3=a[2]||''}
+    if(rs)P.reason=rs.value.trim();
+    if(ph)P.photo=ph.value.trim();
+    saveProfile(P);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='save-hero'){
+    const u=$('#adHeroUrl').value.trim();
+    if(!u)return toast(A('t_img'));
+    saveHero(u);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='cloud-test'){
+    readCloudForm();
+    if(!clOn())return toast(A('t_cfail'));
+    CL_STATE='saving';paintCloud();
+    (async function(){
+      try{
+        await clLoad(); await clToken(); CL_STATE='ok';
+        toast(A('t_cloud')); renderAdmin(); render();
+      }catch(err){ CL_STATE='err'; paintCloud(); toast(A('t_cfail')); }
+    })();
+  }
+  if(op==='cloud-push'){
+    readCloudForm();
+    if(!clOn())return toast(A('t_cfail'));
+    CL_STATE='saving';paintCloud();
+    (async function(){
+      try{ await clLoad(); await clPushNow(); toast(A('t_cloud')); renderAdmin(); render(); }
+      catch(err){ CL_STATE='err'; paintCloud(); toast(A('t_cfail')); }
+    })();
+  }
+  if(op==='cloud-off'){
+    saveCloud(null); CL_STATE='off'; toast(A('s7')+' · off'); renderAdmin();
+  }
+});
+function readCloudForm(){
+  const u=($('#clUrl')||{}).value, k=($('#clKey')||{}).value, m=($('#clMail')||{}).value, p=($('#clPw')||{}).value;
+  saveCloud({url:(u||'').trim(),k:(k||'').trim(),mail:(m||'').trim(),pw:p||''});
+}
+$('#adBody').addEventListener('change',async function(e){
+  const el=e.target;
+  if(!ADM)return;
+});
+
+
+/* ============ 14. 语言 / 启动 ============ */
+$$('#lang button').forEach(function(b){
+  b.addEventListener('click',function(){
+    LANG=b.dataset.lang;lsSet('fuko_lang',LANG);
+    renderTabs();render();
+  });
+});
+(function boot(){
+  const saved=lsGet('fuko_lang','zh');
+  LANG=T[saved]?saved:'zh';
+  setMode('login');
+  renderTabs();render();
+  window.addEventListener('hashchange',render);
+  if(clOn()){
+    CL_STATE='saving';paintCloud();
+    clLoad().then(function(){
+      CL_STATE='idle';paintCloud();
+      renderTabs();render();
+      if(ADM)renderAdmin();
+    }).catch(function(){CL_STATE='err';paintCloud()});
+  }
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
