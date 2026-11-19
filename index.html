@@ -1014,7 +1014,7 @@ function homeHTML(){
 /* ============ 7. 存储（本地 + 云端） ============ */
 const CLOUD_KEY='fuko_cloud';
 /* 站长填好云端后，把 url 与 anon key 填进下面两行，粉丝打开就能看到内容（mail/pw 只留在站长本机） */
-const CLOUD_FIXED={url:'',k:''};
+const CLOUD_FIXED={url:'https://hztfllkzglxlmwejoubt.supabase.co',k:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6dGZsbGt6Z2x4bG13ZWpvdWJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUxMTc0MDIsImV4cCI6MjExMDY5MzQwMn0.Dpc_4-xBv5PDUfmb9h514j696PnAiEiYyVmJRnAob7U'};
 let REM=null;                                        // 云端载入的整份数据
 let _cl=lsGet(CLOUD_KEY,null);
 let CLOUD={url:(_cl&&_cl.url)||CLOUD_FIXED.url,k:(_cl&&_cl.k)||CLOUD_FIXED.k,mail:(_cl&&_cl.mail)||'',pw:(_cl&&_cl.pw)||''};
