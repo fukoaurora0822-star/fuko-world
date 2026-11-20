@@ -456,6 +456,40 @@ input,textarea,select{font-family:inherit}
 .spark{position:fixed;z-index:99;pointer-events:none;color:#F2BFD2;font-size:13px;animation:sparkOut .9s ease-out forwards}
 @keyframes sparkOut{0%{opacity:1;transform:translate(-50%,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2)}}
 @media(prefers-reduced-motion:reduce){.blob,.floaty,.bokeh i,.words span,.gate-hint,.frame-ghost,#fumi{animation:none!important}}
+/* ---- 共创画布样式 ---- */
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;font-size:12px;letter-spacing:.1em;color:#A98E9B}
+.dstat{font-size:11px;color:#C09FB0;letter-spacing:.06em}
+.dtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.dpal{display:flex;gap:6px;flex-wrap:wrap}
+.dsw{width:22px;height:22px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(214,168,188,.35);cursor:pointer;padding:0}
+.dsw.on{outline:2px solid #E58BA8;outline-offset:2px}
+.dpick{position:relative;width:28px;height:28px;border-radius:50%;border:1px dashed #E7C9D6;cursor:pointer;display:grid;place-items:center;overflow:hidden;background:conic-gradient(#f9a,#9cf,#9e9,#ee7,#f9c,#f9a)}
+.dpick input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.dpick i{position:absolute;inset:9px;border-radius:50%;background:#fff;pointer-events:none}
+.dsize{display:flex;gap:4px}
+.dsize button{width:30px;height:30px;border-radius:50%;border:1px solid #F0DDE6;background:#fff;color:#B98CA2;cursor:pointer;font-size:12px}
+.dsize button.on{background:#FBE6EF;border-color:#E9B9CD}
+.btn-ghost.on{background:#FBE6EF;color:#9C6277}
+.dstage{position:relative;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 12px 30px rgba(214,168,188,.25)}
+.dcv{width:100%;display:block;touch-action:none;background:#fff;cursor:crosshair}
+.dover{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:12px;background:rgba(255,251,252,.72);backdrop-filter:blur(3px);text-align:center;padding:24px}
+.dover.hide{display:none}
+.dover p{margin:0;font-size:12.5px;color:#A98E9B;letter-spacing:.08em;line-height:1.7}
+.dnote{margin:10px 0 0;font-size:11px}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:10px}
+.wcard{margin:0;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px rgba(235,210,222,.35);cursor:pointer;transition:transform .3s}
+.wcard:hover{transform:translateY(-3px)}
+.wph{aspect-ratio:4/3;background:#FDF3F8}
+.wph img{width:100%;height:100%;object-fit:cover;display:block}
+.wcard figcaption{padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.wcard figcaption b{font-size:12px;color:#7A5A67;font-weight:500}
+.wcard figcaption span{font-size:10px;color:#C0A6B2;letter-spacing:.1em}
+.wmodal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(90,74,82,.55);padding:20px}
+.wmodal-in{position:relative;max-width:min(92vw,900px);max-height:88vh;background:#fff;border-radius:18px;padding:12px;overflow:auto}
+.wmodal-in img{width:100%;display:block;border-radius:12px}
+.wmodal-in p{display:flex;justify-content:space-between;gap:10px;margin:10px 4px 2px;font-size:12px;color:#7A5A67}
+.wclose{position:absolute;right:8px;top:8px;border:none;background:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer}
+
 </style>
 </head>
 <body data-lang="zh">
@@ -698,7 +732,7 @@ zh:{
  prev:'上一扇门',next:'下一扇门',back_home:'回到首页',
  foot:'个人粉丝应援站 · 非官方 · 仅用于欣赏与记录',
  b1:'个人简介',d1:'Fuko 的小档案与贴纸',b2:'表演',d2:'舞台、饭拍与花絮',b3:'相册',d3:'拍立得手账图集',
- b4:'音乐',d4:'歌单与翻唱存档',b5:'重要日期',d5:'三组实时倒计时',b6:'写给 Fuko 的话',d6:'公开留言板',
+ b4:'共创画布',d4:'大家一起画一张画',b5:'重要日期',d5:'三组实时倒计时',b6:'写给 Fuko 的话',d6:'公开留言板',
  b7:'Fuko 的话',d7:'站长更新的语录与手信',b8:'Fumimi 小游戏',d8:'摸摸头，攒爱心',b9:'个人中心',d9:'我的数据与等级',
  p_birth:'生日',p_join:'入社',p_bio:'小简介',p_bio_text:'（这里写一段 Fuko 的小简介：性格、喜欢的东西、最近在练习什么。）',
  p_tags:'职业标签',p_t1:'歌手',p_t2:'舞者',p_t3:'忙内',p_fumi:'Fumimi 的邻居',
@@ -743,7 +777,7 @@ en:{
  prev:'previous door',next:'next door',back_home:'back home',
  foot:'personal fan station · unofficial · for appreciation only',
  b1:'Profile',d1:'Fuko\'s file, in stickers',b2:'Stage',d2:'stages, fancams, behind',b3:'Album',d3:'polaroid journal',
- b4:'Music',d4:'playlist & covers',b5:'Dates',d5:'three live countdowns',b6:'Letters to Fuko',d6:'a public board',
+ b4:'Canvas',d4:'draw one picture together',b5:'Dates',d5:'three live countdowns',b6:'Letters to Fuko',d6:'a public board',
  b7:'From Fuko',d7:'quotes & letters',b8:'Fumimi',d8:'pat the head, collect hearts',b9:'My Page',d9:'my numbers & level',
  p_birth:'Birthday',p_join:'Joined',p_bio:'About',p_bio_text:'(a short intro for Fuko: personality, favourites, what she is practising lately.)',
  p_tags:'Tags',p_t1:'singer',p_t2:'dancer',p_t3:'maknae',p_fumi:'Fumimi\'s neighbour',
@@ -788,7 +822,7 @@ ja:{
  prev:'前の扉',next:'次の扉',back_home:'ホームへ',
  foot:'個人ファンサイト · 非公式 · 鑑賞用',
  b1:'プロフィール',d1:'Fukoのファイルとシール',b2:'ステージ',d2:'ステージ・ファンカム・裏側',b3:'アルバム',d3:'ポラロイド手帳',
- b4:'音楽',d4:'歌とカバーの保存',b5:'大切な日',d5:'三つのライブカウント',b6:'Fukoへの手紙',d6:'公開メッセージ',
+ b4:'みんなの絵',d4:'一緒に一枚の絵を描く',b5:'大切な日',d5:'三つのライブカウント',b6:'Fukoへの手紙',d6:'公開メッセージ',
  b7:'Fukoの言葉',d7:'管理人更新の言葉と手紙',b8:'Fumimiゲーム',d8:'なでて、ハートを集める',b9:'マイページ',d9:'記録とレベル',
  p_birth:'誕生日',p_join:'加入',p_bio:'すこし紹介',p_bio_text:'（Fukoの紹介をここに：性格、好きなもの、最近の練習。）',
  p_tags:'タグ',p_t1:'歌',p_t2:'ダンス',p_t3:'末っ子',p_fumi:'Fumimiのおとなり',
@@ -833,7 +867,7 @@ ko:{
  prev:'이전 문',next:'다음 문',back_home:'홈으로',
  foot:'개인 팬사이트 · 비공식 · 감상용',
  b1:'프로필',d1:'Fuko의 파일과 스티커',b2:'무대',d2:'무대·팬캠·비하인드',b3:'앨범',d3:'폴라로이드 다이어리',
- b4:'음악',d4:'플레이리스트와 커버',b5:'중요한 날',d5:'세 개의 실시간 카운트',b6:'Fuko에게',d6:'공개 메시지판',
+ b4:'함께 그리기',d4:'다 같이 한 장을 그려요',b5:'중요한 날',d5:'세 개의 실시간 카운트',b6:'Fuko에게',d6:'공개 메시지판',
  b7:'Fuko의 말',d7:'관리자 업데이트',b8:'Fumimi 게임',d8:'머리 쓰다듬고 하트 모으기',b9:'마이페이지',d9:'나의 기록과 레벨',
  p_birth:'생일',p_join:'입사',p_bio:'소개',p_bio_text:'(Fuko의 소개를 적어 주세요: 성격, 좋아하는 것, 요즘 연습.)',
  p_tags:'태그',p_t1:'보컬',p_t2:'댄서',p_t3:'막내',p_fumi:'Fumimi의 이웃',
@@ -866,7 +900,7 @@ const BOARDS=[
  {id:'profile',en:'PROFILE',icon:'profile'},
  {id:'stage',en:'STAGE',icon:'stage'},
  {id:'album',en:'ALBUM',icon:'album'},
- {id:'music',en:'MUSIC',icon:'music'},
+ {id:'draw',en:'DRAW',icon:'music'},
  {id:'clock',en:'DATES',icon:'clock'},
  {id:'letters',en:'LETTERS',icon:'letters'},
  {id:'notes',en:'FROM FUKO',icon:'notes'},
@@ -1216,21 +1250,6 @@ function albumHTML(){
    +'<div class="album">'+items+blanks+'</div>'
    +(ph.length?'':'<p class="note-empty">'+t('al_empty')+'</p>')+'</div>';
 }
-function musicHTML(){
-  const tr=getTracks();
-  const first=tr[0];
-  const player='<div class="player"><div class="disc"></div><div class="meta"><b>'+(first?esc(first.title):t('mu_blank'))+'</b><span>'+(first?(t('mu_now')+' · 0'+tr.length):t('mu_empty'))+'</span>'
-    +(first&&/\.(mp3|wav|m4a|ogg)(\?|$)/i.test(first.url)?'<audio src="'+esc(first.url)+'" controls preload="none"></audio>':'')
-    +(first&&!/\.(mp3|wav|m4a|ogg)(\?|$)/i.test(first.url)?'<a class="btn btn-sm" style="margin-top:6px" href="'+esc(first.url)+'" target="_blank" rel="noopener">↗</a>':'')
-    +'</div></div>';
-  const list=tr.length?tr.map(function(x,i){
-    return '<a class="track" href="'+esc(x.url)+'" target="_blank" rel="noopener"><span class="n">0'+(i+1)+'</span><span class="t">'+esc(x.title||x.url)+'</span><span class="p">♫</span></a>';
-  }).join(''):[1,2,3,4].map(function(i){
-    return '<div class="track" style="border-style:dashed;color:#C6ADB7"><span class="n">0'+i+'</span><span class="t" style="font-family:var(--serif);font-style:italic">track 0'+i+' · blank</span><span class="p">♫</span></div>';
-  }).join('');
-  return '<div class="canvas">'+player
-   +'<div style="margin-top:14px">'+list+'</div></div>';
-}
 function clockHTML(){
   return '<div class="clock-grid">'
    +'<div class="clock-card" id="c1"><span class="mo">'+MOON+'</span><span class="star">'+STAR4+'</span>'
@@ -1338,7 +1357,7 @@ function boardHTML(b){
   if(b.id==='profile') body=profileHTML();
   else if(b.id==='stage') body=stageHTML();
   else if(b.id==='album') body=albumHTML();
-  else if(b.id==='music') body=musicHTML();
+  else if(b.id==='draw') body=drawHTML();
   else if(b.id==='clock') body=clockHTML();
   else if(b.id==='letters') body=lettersHTML();
   else if(b.id==='notes') body=notesHTML();
@@ -1361,6 +1380,7 @@ function render(){
   const id=routeId();
   applyStatic();
   clearInterval(clockTimer);clockTimer=null;
+  try{drawLeave()}catch(e){}
   if(id==='admin'){openAdmin();return}
   closeAdmin();
   if(id==='home'){view.innerHTML=homeHTML();markTabs('home')}
@@ -1373,6 +1393,7 @@ function render(){
   window.scrollTo({top:0,behavior:'instant'});
 }
 function bindView(id){
+  if(id==='draw'){drawInit()}
   if(id==='game'){
     const pet=$('#petBtn'),feed=$('#feedBtn');
     function add(n,ev){
@@ -1749,9 +1770,7 @@ function adPanelHTML(){
    +'<div class="ad-row"><span class="hint" style="margin:0">'+A('tip_img')+'</span></div>'
    +plist+'</section>'
 
-   +'<section class="ad-sec"><h3>'+A('s2')+'</h3><p class="hint">'+A('h2')+'</p>'
-   +'<div class="ad-row"><input class="input" id="adTrUrl" placeholder="'+A('ph_audio')+'"><input class="input" id="adTrTitle" placeholder="'+A('ph_track')+'"><button class="btn btn-sm" data-op="add-tr">'+A('btn_music')+'</button></div>'
-   +tlist+'</section>'
+   +adDrawHTML()
 
    +'<section class="ad-sec"><h3>'+A('s3')+'</h3><p class="hint">'+A('h3')+'</p>'
    +'<div class="ad-row"><input class="input" id="adDate" type="date" style="max-width:180px" value="'+(dEdit?esc(dEdit.date):'')+'">'
@@ -1833,6 +1852,7 @@ function renderAdmin(){
   }
   body.innerHTML=adPanelHTML();
   loadFansAdmin();
+  try{adDrawLoad()}catch(e){}
 }
 async function loadFansAdmin(){
   const box=$('#adFansBody');if(!box)return;
@@ -1902,6 +1922,10 @@ $('#adBody').addEventListener('click',function(e){
     dataSet('vids',v);toast(A('t_saved'));renderAdmin();return;
   }
   if(op==='del-vid'){const v=getVids();v.splice(i,1);dataSet('vids',v);renderAdmin()}
+  if(op.indexOf('draw-')===0||op.indexOf('work-')===0){
+    adDrawOp(op,el.getAttribute('data-id')).catch(function(err){toast('操作失败：'+err.message)});
+    return;
+  }
   if(op==='add-ph'){
     const u=$('#adPhUrl').value.trim();if(!u)return toast(A('t_img'));
     const p=getPhotos();p.push({url:u,title:$('#adPhTitle').value.trim()});dataSet('photos',p);toast(A('t_saved'));renderAdmin();
@@ -2012,6 +2036,9 @@ function readCloudForm(){
 $('#adBody').addEventListener('change',async function(e){
   const el=e.target;
   if(!ADM)return;
+  if(el.getAttribute('data-act')==='work-title'){
+    try{await adDrawOp('work-title',el.getAttribute('data-id'))}catch(err){toast('改名失败')}
+  }
 });
 
 
@@ -2098,6 +2125,345 @@ async function fanCloudRegister(u){
     }catch(e){console.error("❌云端注册失败",e);return false}
   }
   return false;
+}
+
+
+/* ================= 共创画布 DRAW ================= */
+const DW={W:1280,H:960,MIN:10,T:'fuko_draw',Q:'fuko_draw_queue',WK:'fuko_works',
+  PAL:['#E58BA8','#F3B7C9','#C9A6E0','#9C8AD6','#8FC5E8','#7FB6A8','#A9CF7F','#F0D77E','#E9A96B','#C98B6B','#5C4A52','#FFFFFF']};
+const DL={
+ zh:{take:'开始画',quit:'退出排队',done:'我画完了',undo:'撤销',erase:'橡皮',queue:'前面还有 {n} 人',none:'现在没人画',drawing:'{n} 正在画',left:'剩余 {t}',canvasNo:'第 {n} 张画布',hint:'同一时间只有一个人在画，每棒 10 分钟，画完点「我画完了」交给下一位',login:'登录后才能一起画画',join:'排队等画',pos:'你在第 {n} 位',works:'作品收藏',empty:'还没有作品',loading:'加载中…',local:'画布 {n}',err:'云端没连上，检查设置',held:'轮到你啦，开始画吧',bye:'已交棒，谢谢你的这一棒 ♡',saved:'已保存',goLogin:'去登录',tool:'工具栏'},
+ en:{take:'Start drawing',quit:'Leave queue',done:"I'm done",undo:'Undo',erase:'Eraser',queue:'{n} ahead of you',none:'nobody is drawing',drawing:'{n} is drawing',left:'{t} left',canvasNo:'canvas {n}',hint:'Only one person draws at a time. 10 minutes each — tap "I\'m done" to hand over.',login:'Please sign in to draw together',join:'Join the queue',pos:'You are #{n}',works:'Gallery',empty:'no work yet',loading:'loading…',local:'canvas {n}',err:'cloud not connected',held:"it's your turn",bye:'handed over — thank you ♡',saved:'saved',goLogin:'Sign in',tool:'TOOLS'},
+ ja:{take:'描き始める',quit:'待機をやめる',done:'描き終わった',undo:'元に戻す',erase:'消しゴム',queue:'前に {n} 人います',none:'いま誰も描いていません',drawing:'{n} さんが描いています',left:'残り {t}',canvasNo:'{n} 枚目のキャンバス',hint:'同時に描けるのは一人だけ。1回10分、「描き終わった」で次の人へ',login:'ログインすると一緒に描けます',join:'待機する',pos:'あなたは {n} 番目',works:'作品集',empty:'まだ作品がありません',loading:'読み込み中…',local:'キャンバス {n}',err:'クラウド未接続',held:'順番です、どうぞ',bye:'交代しました、ありがとう ♡',saved:'保存しました',goLogin:'ログイン',tool:'ツール'},
+ ko:{take:'그리기 시작',quit:'대기 취소',done:'다 그렸어요',undo:'되돌리기',erase:'지우개',queue:'앞에 {n}명 있어요',none:'지금 아무도 안 그려요',drawing:'{n} 님이 그리고 있어요',left:'남은 {t}',canvasNo:'{n}번째 캔버스',hint:'한 번에 한 명만 그릴 수 있어요. 10분씩, 다 그리면 다음 사람에게 넘겨요',login:'로그인하면 함께 그릴 수 있어요',join:'대기열 참여',pos:'당신은 {n}번째',works:'작품 모음',empty:'아직 작품이 없어요',loading:'불러오는 중…',local:'캔버스 {n}',err:'클라우드 미연결',held:'차례예요, 그려 주세요',bye:'넘겼어요, 고마워요 ♡',saved:'저장됨',goLogin:'로그인',tool:'도구'}};
+function DLG(k,v){let s=(DL[LANG]&&DL[LANG][k])||DL.zh[k]||k;if(v){Object.keys(v).forEach(function(x){s=s.split('{'+x+'}').join(v[x])})}return s}
+
+let dCv=null,dCtx=null,dHold=false,dQueued=false,dUid='',dColor='#E58BA8',dSize=6,dErase=false;
+let dPollT=null,dTickT=null,dSaveT=null,dTouched=false,dHist=[],dQlist=[],dRow=null,dBusy=false,lastPt=null,dPreview=null;
+
+function dUidGet(){
+  let u=lsGet('fuko_uid',null);
+  if(!u){u='u'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);lsSet('fuko_uid',u)}
+  return u;
+}
+async function dReq(path,opt){
+  opt=opt||{};
+  const h=Object.assign({apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json'},opt.headers||{});
+  const r=await fetch(clBase()+'/rest/v1/'+encodeURI(path),{method:opt.method||'GET',headers:h,body:opt.body});
+  if(!r.ok){const t=await r.text();throw new Error(path+' → '+r.status+' '+t)}
+  if(opt.method==='DELETE'||r.status===204)return null;
+  const txt=await r.text();return txt?JSON.parse(txt):null;
+}
+function dISO(mins){return new Date(Date.now()+mins*60000).toISOString()}
+
+function drawHTML(){
+  return '<div class="canvas dbox">'
+   +'<div class="dhead"><b id="dwNo">'+DLG('canvasNo',{n:'1'})+'</b><span id="dwSt" class="dstat">…</span></div>'
+   +'<div class="dtools">'
+     +'<div class="dpal" id="dwPal"></div>'
+     +'<label class="dpick" title="调色盘"><input type="color" id="dwColor" value="#E58BA8"><i></i></label>'
+     +'<div class="dsize" id="dwSize"><button data-sz="4">·</button><button data-sz="6" class="on">•</button><button data-sz="12">●</button></div>'
+     +'<button class="btn btn-ghost btn-sm" id="dwErase">'+DLG('erase')+'</button>'
+     +'<button class="btn btn-ghost btn-sm" id="dwUndo">'+DLG('undo')+'</button>'
+     +'<button class="btn btn-sm" id="dwDone" hidden>'+DLG('done')+'</button>'
+   +'</div>'
+   +'<div class="dstage"><canvas id="dwCv" class="dcv" width="'+DW.W+'" height="'+DW.H+'"></canvas>'
+     +'<div class="dover" id="dwOver"><p id="dwOverT">…</p><button class="btn btn-sm" id="dwAct">'+DLG('take')+'</button></div></div>'
+   +'<p class="hint dnote">'+DLG('hint')+'</p></div>'
+   +'<div class="canvas" style="margin-top:16px"><p class="mini-label">WORKS · '+DLG('works')+'</p>'
+     +'<div class="wgrid" id="dwWorks"><p class="note-empty">'+DLG('loading')+'</p></div></div>';
+}
+
+function drawInit(){
+  dUid=dUidGet();
+  dCv=$('#dwCv');if(!dCv)return;
+  dCtx=dCv.getContext('2d');
+  dCtx.fillStyle='#FFFFFF';dCtx.fillRect(0,0,DW.W,DW.H);
+  dCtx.lineCap='round';dCtx.lineJoin='round';
+  dHold=false;dQueued=false;dTouched=false;dHist=[];dQlist=[];dRow=null;
+  paintPalette();
+  bindCanvas();
+  $('#dwColor').addEventListener('input',function(){dColor=this.value;dErase=false;$('#dwErase').classList.remove('on')});
+  $$('#dwSize button').forEach(function(b){b.addEventListener('click',function(){dSize=Number(b.dataset.sz);$$('#dwSize button').forEach(function(x){x.classList.remove('on')});b.classList.add('on')})});
+  $('#dwErase').addEventListener('click',function(){dErase=!dErase;this.classList.toggle('on',dErase)});
+  $('#dwUndo').addEventListener('click',undoStroke);
+  $('#dwDone').addEventListener('click',handOver);
+  $('#dwAct').addEventListener('click',actClick);
+  loadWorks();
+  clearInterval(dPollT);dPollT=setInterval(dPoll,5000);
+  clearInterval(dTickT);dTickT=setInterval(paintStatus,1000);
+  clearInterval(dSaveT);dSaveT=setInterval(function(){if(dHold&&dTouched)saveCanvas(true)},30000);
+  dPoll();
+}
+function drawLeave(){
+  clearInterval(dPollT);dPollT=null;clearInterval(dTickT);dTickT=null;clearInterval(dSaveT);dSaveT=null;
+  if(dQueued)leaveQueue(true);
+  dHold=false;
+}
+function paintPalette(){
+  const box=$('#dwPal');if(!box)return;
+  box.innerHTML=DW.PAL.map(function(c){return '<button class="dsw'+(c===dColor?' on':'')+'" data-c="'+c+'" style="background:'+c+'"></button>'}).join('');
+  $$('#dwPal .dsw').forEach(function(b){b.addEventListener('click',function(){
+    dColor=b.dataset.c;dErase=false;$('#dwErase').classList.remove('on');
+    $$('#dwPal .dsw').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+  })});
+}
+
+/* ---------- 画 ---------- */
+function bindCanvas(){
+  const cv=dCv;
+  function pt(e){
+    const r=cv.getBoundingClientRect();
+    const x=(e.clientX-r.left)*(DW.W/r.width), y=(e.clientY-r.top)*(DW.H/r.height);
+    return {x:x,y:y};
+  }
+  cv.addEventListener('pointerdown',function(e){
+    if(!dHold)return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    dHist.push(cv.toDataURL('image/png'));
+    if(dHist.length>5)dHist.shift();
+    lastPt=pt(e);
+    drawSeg(lastPt,lastPt);
+    dTouched=true;
+  });
+  cv.addEventListener('pointermove',function(e){
+    if(!dHold||!lastPt)return;
+    const p=pt(e);drawSeg(lastPt,p);lastPt=p;dTouched=true;
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(function(t){
+    cv.addEventListener(t,function(){lastPt=null});
+  });
+}
+function drawSeg(a,b){
+  dCtx.globalCompositeOperation='source-over';
+  dCtx.strokeStyle=dErase?'#FFFFFF':dColor;
+  dCtx.lineWidth=dErase?dSize*2.2:dSize;
+  dCtx.beginPath();dCtx.moveTo(a.x,a.y);dCtx.lineTo(b.x,b.y);dCtx.stroke();
+}
+function undoStroke(){
+  if(!dHold||!dHist.length)return;
+  const url=dHist.pop();
+  const img=new Image();
+  img.onload=function(){dCtx.clearRect(0,0,DW.W,DW.H);dCtx.fillStyle='#FFFFFF';dCtx.fillRect(0,0,DW.W,DW.H);dCtx.drawImage(img,0,0);dTouched=true};
+  img.src=url;
+}
+function thumbOf(){
+  const t=document.createElement('canvas');t.width=320;t.height=240;
+  const c=t.getContext('2d');c.fillStyle='#FFFFFF';c.fillRect(0,0,320,240);
+  c.drawImage(dCv,0,0,320,240);
+  return t.toDataURL('image/jpeg',0.72);
+}
+async function saveCanvas(silent){
+  if(!dHold)return;
+  try{
+    await dReq(DW.T+'?id=eq.canvas',{method:'PATCH',headers:{Prefer:'return=minimal'},
+      body:JSON.stringify({fullimg:dCv.toDataURL('image/png'),thumb:thumbOf(),updated:new Date().toISOString()})});
+    dTouched=false;
+    if(!silent)toast(DLG('saved'));
+  }catch(e){console.warn('save fail',e)}
+}
+
+/* ---------- 云端状态 ---------- */
+async function dPoll(){
+  const over=$('#dwOver');if(!over)return;
+  try{
+    const rows=await dReq(DW.T+'?id=eq.canvas&select=*');
+    dRow=rows[0]||null;
+    if(!dRow){
+      await dReq(DW.T,{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:'canvas',seq:1})});
+      return;
+    }
+    if(!dHold && dRow.thumb && dPreview!==dRow.updated){dPreview=dRow.updated;dPreviewDraw(dRow.thumb)}
+    const q=await dReq(DW.Q+'?select=id,uid&order=id.asc');
+    dQlist=q||[];
+    dQueued=dQlist.some(function(x){return x.uid===dUid});
+    // 被接管
+    if(dHold && dRow.holder!==dUid){
+      dHold=false;$('#dwDone').hidden=true;
+      toast(DLG('bye'));
+      await loadBase();
+    }
+    const freeNow=!dRow.holder || !dRow.ends || new Date(dRow.ends).getTime()<Date.now();
+    if(!dHold && freeNow && dQlist[0] && dQlist[0].uid===dUid && !dBusy){
+      dHold=await claim();
+      if(dHold){$('#dwDone').hidden=false;toast(DLG('held'));await loadBase()}
+    }
+  }catch(e){console.warn('poll fail',e)}
+  paintStatus();
+}
+async function claim(){
+  try{
+    const now=new Date().toISOString();
+    const f='fuko_draw?id=eq.canvas&or='+'(holder.is.null,ends.lt.'+encodeURIComponent(now)+')';
+    const res=await dReq(f,{method:'PATCH',headers:{Prefer:'return=representation'},
+      body:JSON.stringify({holder:dUid,nick:(me()||{}).nick||'',started:now,ends:dISO(DW.MIN)})});
+    const row=res&&res[0];
+    if(row&&row.holder===dUid){
+      await dReq(DW.Q+'?uid=eq.'+encodeURIComponent(dUid),{method:'DELETE'});
+      dQueued=false;
+      return true;
+    }
+    return false;
+  }catch(e){console.warn('claim fail',e);return false}
+}
+function dPreviewDraw(url){
+  if(!dCtx||dTouched)return;
+  const img=new Image();
+  img.onload=function(){
+    if(dTouched||dHold)return;
+    dCtx.fillStyle='#FFFFFF';dCtx.fillRect(0,0,DW.W,DW.H);
+    dCtx.drawImage(img,0,0,DW.W,DW.H);
+  };
+  img.src=url;
+}
+async function loadBase(){
+  if(!dRow||!dRow.fullimg)return;
+  dTouched=false;
+  const img=new Image();
+  img.onload=function(){
+    dCtx.clearRect(0,0,DW.W,DW.H);dCtx.fillStyle='#FFFFFF';dCtx.fillRect(0,0,DW.W,DW.H);
+    dCtx.drawImage(img,0,0,DW.W,DW.H);
+    dHist=[];dTouched=false;
+  };
+  img.src=dRow.fullimg;
+}
+async function actClick(){
+  if(!me()){location.hash='#/me';return}
+  if(dQueued){await leaveQueue(false);return}
+  if(dHold)return;
+  try{
+    await dReq(DW.Q,{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({uid:dUid,nick:(me()||{}).nick||'fan',ts:new Date().toISOString()})});
+    dQueued=true;dPoll();
+  }catch(e){toast(DLG('err'))}
+}
+async function leaveQueue(silent){
+  try{await dReq(DW.Q+'?uid=eq.'+encodeURIComponent(dUid),{method:'DELETE'})}catch(e){}
+  dQueued=false;
+  if(!silent)toast(DLG('quit'));
+  const b=$('#dwAct');if(b)b.textContent=DLG('join');
+}
+async function handOver(){
+  if(!dHold)return;
+  await saveCanvas(true);
+  try{
+    await dReq(DW.T+'?id=eq.canvas&holder=eq.'+encodeURIComponent(dUid),{method:'PATCH',headers:{Prefer:'return=minimal'},
+      body:JSON.stringify({holder:null,nick:'',ends:null})});
+    dHold=false;$('#dwDone').hidden=true;toast(DLG('bye'));
+  }catch(e){toast(DLG('err'))}
+}
+function paintStatus(){
+  const st=$('#dwSt'),no=$('#dwNo'),over=$('#dwOver'),txt=$('#dwOverT'),act=$('#dwAct'),done=$('#dwDone');
+  if(!st||!dRow)return;
+  no.textContent=DLG('canvasNo',{n:dRow.seq||1});
+  const who=dRow.nick||'',ends=dRow.ends?new Date(dRow.ends).getTime():0;
+  let line='';
+  if(dHold){
+    const left=Math.max(0,Math.ceil((ends-Date.now())/1000));
+    line=DLG('left',{t:Math.floor(left/60)+':'+String(left%60).padStart(2,'0')});
+    if(left<=0&&!dBusy){dBusy=true;handOver().then(function(){dBusy=false})}
+  }else if(dRow.holder&&ends>Date.now()){
+    line=DLG('drawing',{n:who||'…'})+' · '+DLG('left',{t:Math.floor(Math.max(0,ends-Date.now())/60000)+'m'});
+  }else{
+    line=DLG('none');
+  }
+  const myPos=dQueued?dQlist.findIndex(function(x){return x.uid===dUid})+1:0;
+  if(dQueued&&myPos>0)line+=' · '+DLG('pos',{n:myPos});
+  st.textContent=line;
+  if(dHold){over.classList.add('hide');done.hidden=false}
+  else{
+    over.classList.remove('hide');done.hidden=true;
+    if(!me()){txt.textContent=DLG('login');act.textContent=DLG('goLogin');act.onclick=function(){location.hash='#/me'};}
+    else if(dQueued){txt.textContent=DLG('queue',{n:Math.max(0,myPos-1)})+' · '+DLG('pos',{n:myPos});act.textContent=DLG('quit');act.onclick=actClick;}
+    else{txt.textContent=dRow.seq?DLG('canvasNo',{n:dRow.seq}):'';act.textContent=DLG('join');act.onclick=actClick;}
+  }
+}
+
+/* ---------- 作品区 ---------- */
+async function loadWorks(){
+  const box=$('#dwWorks');if(!box)return;
+  try{
+    const rows=await dReq(DW.WK+'?select=id,no,title,thumb&hidden=eq.false&order=no.asc');
+    if(!rows||!rows.length){box.innerHTML='<p class="note-empty">'+DLG('empty')+'</p>';return}
+    box.innerHTML=rows.map(function(w){
+      return '<figure class="wcard" data-w="'+w.id+'"><div class="wph"><img loading="lazy" alt="" src="'+(w.thumb||'')+'"></div>'
+      +'<figcaption><b>'+esc(w.title||('作品 '+pad2(w.no)))+'</b><span>'+DLG('local',{n:w.no})+'</span></figcaption></figure>';
+    }).join('');
+    $$('#dwWorks .wcard').forEach(function(c){c.addEventListener('click',function(){openWork(c.dataset.w)})});
+  }catch(e){box.innerHTML='<p class="note-empty">'+DLG('err')+'</p>'}
+}
+function pad2(n){n=Number(n)||1;return n<10?('0'+n):String(n)}
+async function openWork(id){
+  try{
+    const rows=await dReq(DW.WK+'?id=eq.'+encodeURIComponent(id)+'&select=title,fullimg,no,thumb');
+    const w=rows[0];if(!w)return;
+    const box=document.createElement('div');
+    box.className='wmodal';
+    box.innerHTML='<div class="wmodal-in"><button class="wclose">✕</button>'
+      +'<img alt="" src="'+(w.fullimg||w.thumb||'')+'">'
+      +'<p><b>'+esc(w.title||('作品 '+pad2(w.no)))+'</b><span>'+DLG('local',{n:w.no})+'</span></p></div>';
+    document.body.appendChild(box);
+    box.addEventListener('click',function(e){if(e.target===box||e.target.className==='wclose')box.remove()});
+  }catch(e){}
+}
+
+/* ---------- 后台：收稿与作品管理 ---------- */
+function adDrawHTML(){
+  return '<section class="ad-sec"><h3>🖌 共创画布</h3><p class="hint">同一时间只有一个人在画，每棒 10 分钟。收稿后会自动开一张新画布，作品名只在这里改。</p>'
+   +'<div id="adDrawBox"><p class="hint">…</p></div></section>';
+}
+async function adDrawLoad(){
+  const box=$('#adDrawBox');if(!box)return;
+  try{
+    const rows=await dReq(DW.T+'?id=eq.canvas&select=*');
+    const c=(rows&&rows[0])||{seq:1};
+    const ws=await dReq(DW.WK+'?select=id,no,title,thumb,hidden,done&order=no.desc');
+    let h='<div class="ad-row"><b>第 '+(c.seq||1)+' 张画布</b>'
+      +'<span class="cl-state">'+(c.holder?('正在画：'+esc(c.nick||'?')):'空着')+'</span>'
+      +'<button class="btn btn-sm" data-op="draw-archive">收稿并开新画布</button>'
+      +'<button class="btn btn-ghost btn-sm" data-op="draw-clear">清空当前画布</button></div>';
+    h+='<div class="ad-row" style="margin-top:10px">'
+      +(c.thumb?'<img class="ad-prev" alt="" src="'+c.thumb+'" style="max-width:240px;border-radius:10px">':'<span class="hint">当前画布还是空白</span>')+'</div>';
+    h+='<div style="margin-top:16px"><p class="mini-label">WORKS</p>'
+      +(ws&&ws.length?ws.map(function(w){
+        return '<div class="ad-item"><img class="thumb" alt="" src="'+(w.thumb||'')+'">'
+        +'<span class="t">#'+w.no+'</span>'
+        +'<input class="input" style="max-width:170px" data-act="work-title" data-id="'+w.id+'" value="'+esc(w.title||'')+'">'
+        +'<button class="del" data-op="work-hide" data-id="'+w.id+'">'+(w.hidden?'显示':'隐藏')+'</button>'
+        +'<button class="del" data-op="work-del" data-id="'+w.id+'">删除</button></div>';
+      }).join(''):'<p class="note-empty">还没有作品</p>')+'</div>';
+    box.innerHTML=h;
+  }catch(e){box.innerHTML='<p class="hint">云端没连上，检查第 ⑧ 项设置</p>'}
+}
+async function adDrawOp(op,id){
+  if(op==='draw-archive'){
+    const rows=await dReq(DW.T+'?id=eq.canvas&select=*');
+    const c=rows&&rows[0];
+    if(!c||!c.fullimg)return toast('画布还是空的，先让人画一点');
+    const no=c.seq||1;
+    await dReq(DW.WK,{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify({no:no,title:'作品 '+pad2(no),thumb:c.thumb,fullimg:c.fullimg,done:new Date().toISOString(),hidden:false})});
+    await dReq(DW.T+'?id=eq.canvas',{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({seq:no+1,holder:null,nick:'',ends:null,thumb:null,fullimg:null,updated:new Date().toISOString()})});
+    toast('已收稿：作品 '+pad2(no));renderAdmin();return;
+  }
+  if(op==='draw-clear'){
+    await dReq(DW.T+'?id=eq.canvas',{method:'PATCH',headers:{Prefer:'return:minimal'},body:JSON.stringify({holder:null,nick:'',ends:null,thumb:null,fullimg:null})});
+    toast('画布已清空');renderAdmin();return;
+  }
+  if(op==='work-hide'){
+    const rows=await dReq(DW.WK+'?id=eq.'+encodeURIComponent(id)+'&select=hidden');
+    const w=rows[0];if(!w)return;
+    await dReq(DW.WK+'?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({hidden:!w.hidden})});
+    toast(w.hidden?'已显示':'已隐藏');renderAdmin();return;
+  }
+  if(op==='work-del'){
+    await dReq(DW.WK+'?id=eq.'+encodeURIComponent(id),{method:'DELETE'});
+    toast('作品已删除');renderAdmin();return;
+  }
+  if(op==='work-title'){
+    const v=(($('#adBody [data-id="'+id+'"]')||{}).value||'').trim();
+    await dReq(DW.WK+'?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({title:v})});
+    toast('作品名已保存');return;
+  }
 }
 
 </script>
