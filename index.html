@@ -1093,14 +1093,6 @@ async function delMsg(id){
   const l=lsGet('fuko_msg',[]).filter(function(x){return x.id!==id});
   lsSet('fuko_msg',l); MSGS=null; return true;
 }
-async function fanCloudRegister(u){
-  if(!clOn()||!u||!u.nick) return;
-  try{
-    await fetch(clBase()+'/rest/v1/fuko_fan',{method:'POST',
-      headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},
-      body:JSON.stringify([{nick:u.nick,gender:u.gender||'x',pw_hash:u.pw||'',joined:u.joined||Date.now(),hearts:u.hearts||0}])});
-  }catch(e){}
-}
 async function clPushNow(){  if(!clOn()) return;
   CL_STATE='saving';
   const t=await clToken();
@@ -1505,7 +1497,6 @@ authForm.addEventListener('submit',async function(e){
     const g=($('input[name=gender]:checked')||{}).value||'x';
     const u={nick:nick,pw:hashPw(pw),gender:g,joined:Date.now(),hearts:0};
     list.push(u);saveUsers(list);setSession(nick);await fanCloudRegister(u);
-    fanCloudRegister(u);
     err.textContent='';
     hideAuth();toast(t('ok_reg'));render();
   }else{
@@ -1838,7 +1829,7 @@ async function loadFansAdmin(){
           Authorization:'Bearer '+CLOUD.k
         }
       });
-      if(r.ok) fans=await r.json();
+      if(r.ok){fans=await r.json()}else{console.warn('⚠️读取粉丝列表失败 HTTP '+r.status,await r.text())}
     }
   }catch(e){
     console.error("❌云端读取粉丝列表失败",e);
@@ -1852,6 +1843,8 @@ async function loadFansAdmin(){
       return {nick:u.nick,gender:u.gender,joined:u.joined,hearts:u.hearts||0};
     });
   }
+
+  fans=fans.map(function(x){var j=x.joined;if(typeof j==='string'&&/^\d+$/.test(j))j=Number(j);return {nick:x.nick,gender:x.gender,joined:j,hearts:x.hearts||0}});
 
   const total=fans.length;
   const gf=fans.filter(function(x){return x.gender==='f'}).length;
@@ -2068,27 +2061,20 @@ $$('#lang button').forEach(function(b){
   }
 })();
 async function fanCloudRegister(u){
-  if(!clOn()||!u.nick) return;
-  try{
-    await fetch(clBase()+'/rest/v1/fuko_fans',{
-      method:'POST',
-      headers:{
-        apikey:CLOUD.k,
-        Authorization:'Bearer '+CLOUD.k,
-        'Content-Type':'application/json',
-        Prefer:'resolution=merge-duplicates'
-      },
-      body:JSON.stringify({
-        nick:u.nick,
-        gender:u.gender||'x',
-        joined:u.joined,
-        hearts:u.hearts||0
-      })
-    });
-    console.log("✅粉丝注册云端写入成功",u.nick)
-  }catch(e){
-    console.error("❌云端注册失败",e);
+  if(!clOn()||!u||!u.nick) return false;
+  const row={nick:u.nick,gender:u.gender||'x',joined:u.joined||Date.now(),hearts:u.hearts||0};
+  const hd={apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'};
+  const bodies=[JSON.stringify(row),JSON.stringify(Object.assign({},row,{joined:String(row.joined)}))];
+  for(let i=0;i<bodies.length;i++){
+    try{
+      const r=await fetch(clBase()+'/rest/v1/fuko_fans',{method:'POST',headers:hd,body:bodies[i]});
+      if(r.ok){console.log("✅粉丝注册云端写入成功",u.nick);return true}
+      const txt=await r.text();
+      console.warn("⚠️粉丝写入失败 HTTP "+r.status,txt);
+      if(r.status!==400&&r.status!==406) return false;
+    }catch(e){console.error("❌云端注册失败",e);return false}
   }
+  return false;
 }
 
 </script>
