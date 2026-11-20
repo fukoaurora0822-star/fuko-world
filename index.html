@@ -282,6 +282,9 @@ input,textarea,select{font-family:inherit}
 .fact.wide{grid-column:1/-1}
 
 /* ================= 表演 / 视频 ================= */
+.vid-sec{margin-bottom:26px}
+.vid-sec-t{font-family:var(--serif);font-size:14px;font-weight:500;letter-spacing:.16em;color:#BC8FA5;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.vid-sec-t span{font-size:10.5px;letter-spacing:.06em;color:#D3BAC6;background:rgba(255,255,255,.75);border:1px solid rgba(242,228,235,.9);border-radius:999px;padding:1px 7px}
 .vcard{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.95);box-shadow:0 10px 26px rgba(235,210,222,.4);transition:transform .5s,box-shadow .5s}
 .vcard:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(235,210,222,.6)}
 .vcard .media{position:relative;aspect-ratio:16/9;background:#FDF3F8;display:grid;place-items:center;overflow:hidden}
@@ -1033,7 +1036,10 @@ function dataSet(k,v){ if(!REM)REM={};REM[k]=v;lsSet('fuko_'+k,v);pushCloud() }
 function getMsgs(){return MSGS||lsGet('fuko_msg',[])}
 function getNotes(){return dataGet('notes',NOTES_DEFAULT)}
 function getPhotos(){return dataGet('photos',[])}
-function getVids(){return dataGet('vids',[])}
+const VCAT_N={stage:{zh:'舞台',en:'Stage',ja:'ステージ',ko:'무대'},short:{zh:'短视频',en:'Short video',ja:'ショート',ko:'숏폼'}};
+function VCAT(k){const m=VCAT_N[k]||VCAT_N.stage;return m[LANG]||m.zh}
+const VCAT_ORDER=['stage','short'];
+function getVids(){return (dataGet('vids',[])||[]).map(function(v){var c=(v&&v.cat)||'stage';if(c!=='stage'&&c!=='short')c='stage';return Object.assign({},v,{cat:c})})}
 function getTracks(){return dataGet('tracks',[])}
 function getHearts(){const m=me();return m?(m.hearts||0):0}
 function getDates(){return dataGet('dates',[])}
@@ -1175,13 +1181,22 @@ function profileHTML(){
 function stageHTML(){
   const vids=getVids();
   const groups=[{n:t('st_g1'),e:'♪'},{n:t('st_g2'),e:'♥'},{n:t('st_g3'),e:'✎'}];
-  const cards=vids.length?vids.map(function(v){
-    return '<div class="vcard"><div class="media">'+embedHTML(v.url)+'</div><div class="cap"><span>'+esc(v.title||v.url)+'</span><em>♪</em></div></div>';
-  }).join(''):groups.map(function(g){
-    return '<div class="vcard"><div class="media"><div class="slot" style="width:100%;height:100%;border:none;border-radius:0"><b>blank</b><i>16 : 9</i></div></div><div class="cap"><span>'+g.n+'</span><em>'+g.e+'</em></div></div>';
+  if(!vids.length){
+    const cards=groups.map(function(g){
+      return '<div class="vcard"><div class="media"><div class="slot" style="width:100%;height:100%;border:none;border-radius:0"><b>blank</b><i>16 : 9</i></div></div><div class="cap"><span>'+g.n+'</span><em>'+g.e+'</em></div></div>';
+    }).join('');
+    return '<div class="canvas"><div class="grid g2 g3-md" id="vidGrid">'+cards+'</div><p class="note-empty">'+t('st_empty')+'</p></div>';
+  }
+  const secs=VCAT_ORDER.map(function(k){
+    const list=vids.filter(function(v){return (v.cat||'stage')===k});
+    if(!list.length) return '';
+    const cards=list.map(function(v){
+      return '<div class="vcard"><div class="media">'+embedHTML(v.url)+'</div><div class="cap"><span>'+esc(v.title||v.url)+'</span><em>'+VCAT(k)+'</em></div></div>';
+    }).join('');
+    return '<section class="vid-sec"><h4 class="vid-sec-t">'+VCAT(k)+'<span>'+list.length+'</span></h4>'
+      +'<div class="grid g2 g3-md">'+cards+'</div></section>';
   }).join('');
-  return '<div class="canvas"><div class="grid g2 g3-md" id="vidGrid">'+cards+'</div>'
-   +(vids.length?'':'<p class="note-empty">'+t('st_empty')+'</p>')+'</div>';
+  return '<div class="canvas">'+secs+'</div>';
 }
 function embedHTML(url){
   const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
@@ -1674,6 +1689,7 @@ function adPanelHTML(){
   const vids=getVids(),phs=getPhotos(),trs=getTracks(),ds=getDates(),ls=getLetters(),P=getProfile()||{};
   const vlist=adList(vids,function(x,i){
     return '<div class="ad-item"><span class="t">'+esc(x.title||x.url)+'</span>'
+      +'<button class="edit" data-op="vid-cat" data-i="'+i+'">'+VCAT(x.cat||'stage')+' ↻</button>'
       +'<button class="del" data-op="del-vid" data-i="'+i+'">'+A('del')+'</button></div>';
   },A('ev'));
   const plist=adList(phs,function(x,i){
@@ -1727,7 +1743,7 @@ function adPanelHTML(){
   const c=CLOUD||{};
 
   return '<section class="ad-sec"><h3>'+A('s1')+'</h3><p class="hint">'+A('h1')+'</p>'
-   +'<div class="ad-row"><input class="input" id="adVidUrl" placeholder="'+A('ph_vid')+'"><input class="input" id="adVidTitle" placeholder="'+A('ph_title')+'"><button class="btn btn-sm" data-op="add-vid">'+A('btn_vid')+'</button></div>'
+   +'<div class="ad-row"><select class="input" id="adVidCat" style="max-width:120px"><option value="stage">'+VCAT('stage')+'</option><option value="short">'+VCAT('short')+'</option></select><input class="input" id="adVidUrl" placeholder="'+A('ph_vid')+'"><input class="input" id="adVidTitle" placeholder="'+A('ph_title')+'"><button class="btn btn-sm" data-op="add-vid">'+A('btn_vid')+'</button></div>'
    +vlist
    +'<div class="ad-row" style="margin-top:14px"><input class="input" id="adPhUrl" placeholder="'+A('ph_img')+'"><input class="input" id="adPhTitle" placeholder="'+A('ph_note')+'"><button class="btn btn-sm" data-op="add-ph">'+A('btn_img')+'</button></div>'
    +'<div class="ad-row"><span class="hint" style="margin:0">'+A('tip_img')+'</span></div>'
@@ -1876,7 +1892,14 @@ $('#adBody').addEventListener('click',function(e){
   const op=el.getAttribute('data-op'), i=Number(el.getAttribute('data-i')||-1);
   if(op==='add-vid'){
     const u=$('#adVidUrl').value.trim();if(!u)return toast(A('t_vid'));
-    const v=getVids();v.push({url:u,title:$('#adVidTitle').value.trim()||('stage 0'+(v.length+1))});dataSet('vids',v);toast(A('t_saved'));renderAdmin();
+    const cat=(($('#adVidCat')||{}).value)||'stage';
+    const v=getVids();v.push({url:u,title:$('#adVidTitle').value.trim()||(VCAT(cat)+' 0'+(v.length+1)),cat:cat});dataSet('vids',v);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='vid-cat'){
+    const v=getVids();if(!v[i])return;
+    const cur=v[i].cat||'stage';
+    v[i].cat=VCAT_ORDER[(VCAT_ORDER.indexOf(cur)+1)%VCAT_ORDER.length];
+    dataSet('vids',v);toast(A('t_saved'));renderAdmin();return;
   }
   if(op==='del-vid'){const v=getVids();v.splice(i,1);dataSet('vids',v);renderAdmin()}
   if(op==='add-ph'){
