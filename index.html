@@ -7,20 +7,21 @@
 <script>document.documentElement.classList.add('js');</script>
 <link rel="preconnect" href="https://miaoda.feishu.cn">
 <link rel="preconnect" href="https://sf3-scmcdn-cn.feishucdn.com">
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Great+Vibes&family=Italianno&family=Cormorant+Garamond:ital,wght@0,300%3B0,400%3B1,300&family=Noto+Sans+SC:wght@300%3B400%3B500&family=Noto+Sans+JP:wght@300%3B400&family=Noto+Sans+KR:wght@300%3B400&display=swap">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Are+You+Serious&family=Great+Vibes&family=Italianno&family=Cormorant+Garamond:ital,wght@0,300%3B0,400%3B1,300&family=Noto+Sans+SC:wght@300%3B400%3B500&family=Noto+Sans+JP:wght@300%3B400&family=Noto+Sans+KR:wght@300%3B400&display=swap">
 <script src="https://fastly.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <style>
 /* ================= 令牌 ================= */
 :root{
   --pink:#F7D9E4;--pink-deep:#EEC7D6;--base:#FEFBFC;--lilac:#E8E1F2;--mint:#E2F0EF;
   --ink:#5A4A52;--ink2:#94828C;--line:#F2E4EB;--shadow:rgba(235,210,222,.35);
-  --script:'Great Vibes','Italianno','Segoe Script',cursive;
+  --script:'Are You Serious','Great Vibes','Italianno','Segoe Script',cursive;
   --serif:'Cormorant Garamond','Noto Sans SC','Songti SC',serif;
   --sans:'Noto Sans SC','Noto Sans JP','Noto Sans KR','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background-color:var(--base);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--base);background-image:url('fumi/bg-curtain.webp');background-size:cover;background-position:center top;background-attachment:fixed;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:0;background:rgba(255,251,253,.46);pointer-events:none}
 body[data-lang="ja"]{font-family:'Noto Sans JP','Noto Sans SC',system-ui,sans-serif}
 body[data-lang="ko"]{font-family:'Noto Sans KR','Noto Sans SC',system-ui,sans-serif}
 ::selection{background:rgba(247,217,228,.85)}
@@ -438,13 +439,15 @@ input,textarea,select{font-family:inherit}
 
 /* ================= 页脚 ================= */
 .footer{padding:40px 0 34px;text-align:center;position:relative;z-index:2}
-.footer .f-script{font-family:var(--script);font-size:25px;color:#D2A8B9;line-height:1.4}
 .footer .f-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .footer .f-links a{font-size:11px;letter-spacing:.14em;color:#B9A2AC;text-decoration:none}
 .footer p{font-size:10.5px;letter-spacing:.14em;color:#BFA9B3;margin:10px 0 0}
 .footer .f-line{width:44px;height:1px;background:var(--line);margin:14px auto 0}
 
 /* toast & spark */
+#bgmBtn{position:fixed;right:16px;bottom:22px;z-index:110;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.9);background:linear-gradient(160deg,#FBE2EC,#F7D9E4);color:#B57D97;font-size:17px;cursor:pointer;box-shadow:0 10px 24px rgba(235,210,222,.55);display:grid;place-items:center;transition:transform .4s,background .4s,color .4s}
+#bgmBtn:hover{transform:translateY(-2px) scale(1.05)}
+#bgmBtn.on{background:linear-gradient(160deg,#F7D9E4,#EEC7D6);color:#8B6577}
 .toast{position:fixed;left:50%;bottom:30px;translate:-50% 0;z-index:120;padding:9px 16px;border-radius:999px;background:rgba(254,251,252,.95);border:1px solid var(--line);box-shadow:0 10px 30px rgba(235,210,222,.6);font-size:12px;color:var(--ink);letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .toast.on{opacity:1;transform:translateY(0)}
 .spark{position:fixed;z-index:99;pointer-events:none;color:#F2BFD2;font-size:13px;animation:sparkOut .9s ease-out forwards}
@@ -623,7 +626,6 @@ input,textarea,select{font-family:inherit}
   <main id="view"></main>
 
   <footer class="footer">
-    <div class="f-script">good night, little world</div>
     <div class="f-links">
       <a href="#/home" data-i18n="f_home">首页</a>
       <a href="#/profile" data-i18n="f_profile">个人简介</a>
@@ -633,10 +635,10 @@ input,textarea,select{font-family:inherit}
     <div class="f-line"></div>
     <p data-i18n="foot">个人粉丝应援站 · 非官方 · 仅用于欣赏与记录</p>
     <p style="opacity:.72">© 2026 Fuko's Little World · made with ♡</p>
-    <p style="font-size:10px;letter-spacing:.1em;color:#C6ADB7;opacity:.75;margin-top:6px">此页面由 Selina 和 rina 共同制作</p>
   </footer>
 </div>
 
+<button id="bgmBtn" type="button" aria-label="BGM">♡</button>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1090,46 +1092,15 @@ async function delMsg(id){
   const l=lsGet('fuko_msg',[]).filter(function(x){return x.id!==id});
   lsSet('fuko_msg',l); MSGS=null; return true;
 }
-
-/* --- 粉丝注册表（云端 fuko_fan）：注册即同步，后台可统计 --- */
-let FANS=null;          /* 云端读取到的名单 */
-let FAN_STATE='idle';   /* idle | saving | ok | err */
-function fanRow(u){
-  return {nick:String(u.nick||''),gender:u.gender||'x',joined:Number(u.joined||Date.now()),hearts:Number(u.hearts||0)};
-}
-async function fanSync(u){
-  if(!clOn()) return false;
-  FAN_STATE='saving';
+async function fanCloudRegister(u){
+  if(!clOn()||!u||!u.nick) return;
   try{
-    const r=await fetch(clBase()+'/rest/v1/fuko_fan?on_conflict=nick',{method:'POST',
-      headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify([fanRow(u)])});
-    if(!r.ok){ FAN_STATE='err'; return false; }
-    FAN_STATE='ok'; FANS=null; return true;
-  }catch(e){ FAN_STATE='err'; return false; }
+    await fetch(clBase()+'/rest/v1/fuko_fan',{method:'POST',
+      headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},
+      body:JSON.stringify([{nick:u.nick,gender:u.gender||'x',pw_hash:u.pw||'',joined:u.joined||Date.now(),hearts:u.hearts||0}])});
+  }catch(e){}
 }
-async function fanLoad(){
-  if(!clOn()) return null;
-  try{
-    const r=await fetch(clBase()+'/rest/v1/fuko_fan?select=nick,gender,joined,hearts&order=joined.desc&limit=1000',
-      {headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
-    if(!r.ok) return null;
-    const rows=await r.json();
-    return rows||[];
-  }catch(e){return null}
-}
-/* 把本机已注册过的账号补传到云端（老数据不再漏统计） */
-function fanSyncLocal(){
-  if(!clOn()) return;
-  const list=users();
-  if(!list.length) return;
-  list.forEach(function(u,i){
-    setTimeout(function(){ fanSync(u) }, 900+i*260);
-  });
-}
-
-async function clPushNow(){
-  if(!clOn()) return;
+async function clPushNow(){  if(!clOn()) return;
   CL_STATE='saving';
   const t=await clToken();
   const data={};['vids','photos','tracks','dates','letters','profile','hero'].forEach(function(k){data[k]=dataGet(k,k==='hero'?'fumi/hero-main.jpg':(k==='profile'?{}:[]))});
@@ -1170,6 +1141,7 @@ async function shk(file,max){
 function imgUp(){return Promise.resolve('')}
 
 /* ============ 8. 各板块 ============ */
+function _lgGet(obj){if(!obj)return '';const d=obj[LANG]||obj.zh||obj.en||'';return typeof d==='string'?d:''}
 function profileHTML(){
   const P=getProfile()||{};
   const DEF=['FUKO','후코 · HAYASHI FUKO','林枫子','日本 · Japan','福冈 · Fukuoka','2004.08.22','ISFP','狮子座 · Leo','🍁 枫叶','THE L1VE LABEL','fukosama'];
@@ -1181,10 +1153,13 @@ function profileHTML(){
     ['n_mbti',v('mbti')],['n_sign',v('sign')],['n_mark',v('mark')],
     ['n_agency',v('agency')],['n_nick',v('nick')]
   ].map(function(r){return '<div class="ir"><span>'+pt(r[0])+'</span><i></i><b>'+r[1]+'</b></div>'}).join('');
-  const years=['2021','2024','2025.07.16'], ys=['y1','y2','y3'];
-  const tl=years.map(function(y,idx){return '<div class="tl-item"><b>'+y+'</b><p>'+pt(ys[idx])+'</p></div>'}).join('');
-  const facts=[['f_food','v_food'],['f_sanrio','v_sanrio'],['f_hobby','v_hobby'],['f_skill','v_skill'],['f_special','v_special'],['f_charm','v_charm']]
-    .map(function(f){return '<div class="fact"><span>'+pt(f[0])+'</span><b>'+pt(f[1])+'</b></div>'}).join('');
+  const tlDef=[{y:'2021',k:'y1'},{y:'2024',k:'y2'},{y:'2025.07.16',k:'y3'}].map(function(d){return {y:d.y,map:{zh:PT.zh[d.k],en:PT.en[d.k],ja:PT.ja[d.k],ko:PT.ko[d.k]}}});
+  const favDef=[['f_food','v_food'],['f_sanrio','v_sanrio'],['f_hobby','v_hobby'],['f_skill','v_skill'],['f_special','v_special'],['f_charm','v_charm']].map(function(f){return {label:{zh:PT.zh[f[0]],en:PT.en[f[0]],ja:PT.ja[f[0]],ko:PT.ko[f[0]]},text:{zh:PT.zh[f[1]],en:PT.en[f[1]],ja:PT.ja[f[1]],ko:PT.ko[f[1]]}}});
+  const tlArr=(Array.isArray(P.tl)&&P.tl.length)?P.tl:tlDef;
+  const favArr=(Array.isArray(P.fav)&&P.fav.length)?P.fav:favDef;
+  const tl=tlArr.map(function(it){return '<div class="tl-item"><b>'+esc(it.y||'')+'</b><p>'+esc(_lgGet(it.map||it))+'</p></div>'}).join('');
+  const facts=favArr.map(function(it){return '<div class="fact"><span>'+esc(_lgGet(it.label))+'</span><b>'+esc(_lgGet(it.text))+'</b></div>'}).join('');
+  const bio=_lgGet(P.bio);
   const photo=esc(P.photo||'fumi/fuko.jpg');
   return '<div class="card" style="position:relative">'
    +'<span class="bow-deco b-a">'+BOW+'</span><span class="bow-deco b-b">'+BOW+'</span>'
@@ -1195,6 +1170,7 @@ function profileHTML(){
        +'<div class="p-sub">'+v('stage')+' <span class="p-maple">✦</span> '+v('agency')+' <span class="p-maple">✦</span> '+v('mbti')+'</div>'
        +'<div class="info-rows">'+rows+'</div>'
        +'<div class="tags"><span class="tag pink">'+esc(P.t1||pt('t1'))+'</span><span class="tag">'+esc(P.t2||pt('t2'))+'</span><span class="tag mint">'+esc(P.t3||pt('t3'))+'</span></div>'
+       +(bio?'<div class="bio">'+esc(bio)+'</div>':'')
      +'</div>'
    +'</div></div>'
    +'<div style="height:14px"></div>'
@@ -1528,7 +1504,7 @@ authForm.addEventListener('submit',function(e){
     const g=($('input[name=gender]:checked')||{}).value||'x';
     const u={nick:nick,pw:hashPw(pw),gender:g,joined:Date.now(),hearts:0};
     list.push(u);saveUsers(list);setSession(nick);
-    fanSync(u);            /* 注册成功 → 立刻写入云端粉丝表，后台实时统计 */
+    fanCloudRegister(u);
     err.textContent='';
     hideAuth();toast(t('ok_reg'));render();
   }else{
@@ -1557,6 +1533,7 @@ function shake(){
     setTimeout(function(){
       gate.classList.add('done');
       $('#page').classList.add('show');
+      if(bgmOn)bgmStart();
       if(!me()) showAuth(); else {toast(t('ok_back'))}
     },1500);
   }
@@ -1605,7 +1582,7 @@ document.addEventListener('click',function(e){
 
 /* ============ 13.5 管理员后台 ============ */
 const AD_ACC='fuko', AD_PW='082200';
-let ADM=false, adEditDate=null, adEditNote=null, admVeil=false;
+let ADM=false, adEditDate=null, adEditNote=null, adEditTl=null, adEditFav=null, admVeil=false;
 
 function openAdmin(){
   const g=$('#gate'), a=$('#auth');
@@ -1638,8 +1615,7 @@ const AD={
   s6:'⑦ 首页主视觉',h6:'替换首页那张拍立得主图，建议竖图 4:5',ph_hero:'主视觉图片链接',btn_hero:'保存主视觉',
   s7:'⑧ 云端发布（让粉丝看得见）',h7:'填好 Supabase 项目地址与 anon key，再填站长邮箱/密码，内容就会发布到云端，所有访客都能看到',ph_url:'项目地址 https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长邮箱（Supabase 账号）',ph_pw2:'站长密码',test:'测试连接',push:'立即发布',clear:'断开云端',
   del:'删除',edit:'编辑',cancel:'取消',onlyimg:'（仅图片）',ev:'还没有视频，前台表演页会显示空白位',ep:'相册还是空的',et:'歌单还是空的',ed:'还没有添加日期',el:'还没有发布留言',
-  t_vid:'先填一个视频链接吧',t_img:'先填一个图片链接吧',t_audio:'先填一个音频链接吧',t_date:'先选一个日期吧',t_letter:'文字和图片至少留一样吧',t_ready:'图片已就绪，记得保存',t_upd:'已上传 ',t_up:' 张照片',t_saved:'已保存 ♡',t_cloud:'云端已更新 ♡',t_cfail:'连接失败，检查地址和 key',publish_btn:'发布到云端',
-  s8:'⑨ 粉丝注册名单',h8:'粉丝注册后会自动写入云端 fuko_fan 表，这里显示总人数与每个人的昵称、性别、注册时间',fan_total:'注册粉丝 {n} 位',fan_none:'还没有粉丝注册',fan_refresh:'刷新名单',fan_cloud:'云端实时名单',fan_lcloud:'云端没取到，先显示本机记录',fan_local:'仅本机记录 · 连上云端后自动统计'},
+  t_vid:'先填一个视频链接吧',t_img:'先填一个图片链接吧',t_audio:'先填一个音频链接吧',t_date:'先选一个日期吧',t_letter:'文字和图片至少留一样吧',t_ready:'图片已就绪，记得保存',t_upd:'已上传 ',t_up:' 张照片',t_saved:'已保存 ♡',t_cloud:'云端已更新 ♡',t_cfail:'连接失败，检查地址和 key',publish_btn:'发布到云端'},
  en:{title:'Fuko\'s Little World · Admin',back:'Back to site',out:'Log out',login:'Admin login',acc:'Account',pwd:'Password',ph_acc:'admin account',ph_pwd:'admin password',enter:'Enter',owner:'Station master only · login lasts this session',wrong:'wrong account or password, try again ♡',
   s1:'① Stage videos & photos',h1:'Videos: YouTube / Bilibili / .mp4 link. Photos: a path inside the repo or a direct image link',ph_vid:'video link https://…',ph_title:'title (optional)',btn_vid:'Add video',ph_img:'fumi/name.jpg or image link',ph_note:'caption (optional)',btn_img:'Add photo',tip_img:'Put images in the fumi folder of the repo, then fill fumi/name.jpg here',
   s2:'② Music',h2:'Paste a direct audio link (mp3 / wav / m4a / ogg)',ph_audio:'audio link https://….mp3',ph_track:'song name (optional)',btn_music:'Add track',
@@ -1649,8 +1625,7 @@ const AD={
   s6:'⑦ Home hero',h6:'Replace the polaroid hero image, portrait 4:5 works best',ph_hero:'hero image link',btn_hero:'Save hero',
   s7:'⑧ Publish to cloud (for fans)',h7:'Fill in your Supabase project URL and anon key, plus the owner email/password — then everything goes online for every visitor',ph_url:'project URL https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'owner email (Supabase account)',ph_pw2:'owner password',test:'Test connection',push:'Publish now',clear:'Disconnect',
   del:'Delete',edit:'Edit',cancel:'Cancel',onlyimg:'(image only)',ev:'no video yet — the stage page shows a blank slot',ep:'the album is still empty',et:'no track yet',ed:'no date added yet',el:'nothing published yet',
-  t_vid:'paste a video link first',t_img:'paste an image link first',t_audio:'paste an audio link first',t_date:'pick a date first',t_letter:'text or image, at least one',t_ready:'image ready, remember to save',t_upd:'uploaded ',t_up:' photo(s)',t_saved:'saved ♡',t_cloud:'cloud updated ♡',t_cfail:'connection failed — check URL and key',publish_btn:'Publish to cloud',
-  s8:'⑨ Registered fans',h8:'Every sign-up is written to the cloud table fuko_fan automatically — total count, nicknames, gender and join time show here',fan_total:'{n} registered fan(s)',fan_none:'no fan has signed up yet',fan_refresh:'Refresh',fan_cloud:'live from cloud',fan_lcloud:'cloud unreachable — showing this device only',fan_local:'this device only · syncs once the cloud is connected'},
+  t_vid:'paste a video link first',t_img:'paste an image link first',t_audio:'paste an audio link first',t_date:'pick a date first',t_letter:'text or image, at least one',t_ready:'image ready, remember to save',t_upd:'uploaded ',t_up:' photo(s)',t_saved:'saved ♡',t_cloud:'cloud updated ♡',t_cfail:'connection failed — check URL and key',publish_btn:'Publish to cloud'},
  ja:{title:'Fukoの小さな世界 · 管理',back:'サイトへ戻る',out:'ログアウト',login:'管理者ログイン',acc:'アカウント',pwd:'パスワード',ph_acc:'管理者アカウント',ph_pwd:'管理者パスワード',enter:'入る',owner:'站长のみ · このセッションのみ有効',wrong:'アカウントかパスワードが違います ♡',
   s1:'① ステージ動画 & 写真',h1:'動画は YouTube / Bilibili / .mp4 リンク。写真はリポジトリ内のパスか画像リンク',ph_vid:'動画リンク https://…',ph_title:'タイトル（空でも可）',btn_vid:'動画を追加',ph_img:'fumi/ファイル名.jpg または画像リンク',ph_note:'説明（空でも可）',btn_img:'写真を追加',tip_img:'画像はリポジトリの fumi フォルダに置き、ここに fumi/ファイル名.jpg を入れてください',
   s2:'② 音楽',h2:'音声の直リンク（mp3 / wav / m4a / ogg）',ph_audio:'音声リンク https://….mp3',ph_track:'曲名（空でも可）',btn_music:'曲を追加',
@@ -1660,8 +1635,7 @@ const AD={
   s6:'⑦ トップビジュアル',h6:'トップのポラロイド画像を差し替え（縦 4:5 推奨）',ph_hero:'画像リンク',btn_hero:'保存する',
   s7:'⑧ クラウド公開（ファンに見せる）',h7:'Supabase の URL と anon key、站长のメール/パスワードを入れると、全訪問者に公開されます',ph_url:'プロジェクト URL https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长メール',ph_pw2:'站长パスワード',test:'接続テスト',push:'今すぐ公開',clear:'接続を解除',
   del:'削除',edit:'編集',cancel:'キャンセル',onlyimg:'（画像のみ）',ev:'動画はまだありません',ep:'アルバムは空です',et:'曲はまだありません',ed:'日付はまだありません',el:'まだ公開されていません',
-  t_vid:'動画リンクを入れてください',t_img:'画像リンクを入れてください',t_audio:'音声リンクを入れてください',t_date:'日付を選んでください',t_letter:'文章か画像、どちらか必要です',t_ready:'画像OK、保存を押してね',t_upd:'アップロード済み ',t_up:' 枚',t_saved:'保存しました ♡',t_cloud:'クラウド更新済み ♡',t_cfail:'接続失敗、URL と key を確認',publish_btn:'クラウドへ公開',
-  s8:'⑨ ファン登録リスト',h8:'登録すると自動でクラウドの fuko_fan テーブルに書き込まれ、ここに人数とニックネーム・性別・登録日時が出ます',fan_total:'登録ファン {n} 人',fan_none:'まだファンが登録していません',fan_refresh:'リスト更新',fan_cloud:'クラウドのリアルタイム名簿',fan_lcloud:'クラウド取得できず · この端末の記録を表示',fan_local:'この端末のみ · クラウド接続後に自動集計'},
+  t_vid:'動画リンクを入れてください',t_img:'画像リンクを入れてください',t_audio:'音声リンクを入れてください',t_date:'日付を選んでください',t_letter:'文章か画像、どちらか必要です',t_ready:'画像OK、保存を押してね',t_upd:'アップロード済み ',t_up:' 枚',t_saved:'保存しました ♡',t_cloud:'クラウド更新済み ♡',t_cfail:'接続失敗、URL と key を確認',publish_btn:'クラウドへ公開'},
  ko:{title:'Fuko의 작은 세계 · 관리',back:'사이트로',out:'로그아웃',login:'관리자 로그인',acc:'계정',pwd:'비밀번호',ph_acc:'관리자 계정',ph_pwd:'관리자 비밀번호',enter:'들어가기',owner:'站长 전용 · 이번 세션에서만 유지',wrong:'계정이나 비밀번호가 달라요 ♡',
   s1:'① 무대 영상 & 사진',h1:'영상은 YouTube / Bilibili / .mp4 링크. 사진은 저장소 안 경로나 이미지 링크',ph_vid:'영상 링크 https://…',ph_title:'제목 (비워도 됨)',btn_vid:'영상 추가',ph_img:'fumi/파일명.jpg 또는 이미지 링크',ph_note:'설명 (비워도 됨)',btn_img:'사진 추가',tip_img:'이미지는 저장소 fumi 폴더에 올리고, 여기에 fumi/파일명.jpg 를 입력하세요',
   s2:'② 음악',h2:'오디오 직링크 (mp3 / wav / m4a / ogg)',ph_audio:'오디오 링크 https://….mp3',ph_track:'곡명 (비워도 됨)',btn_music:'곡 추가',
@@ -1671,10 +1645,20 @@ const AD={
   s6:'⑦ 홈 메인 비주얼',h6:'홈 폴라로이드 이미지를 교체 (세로 4:5 권장)',ph_hero:'이미지 링크',btn_hero:'저장',
   s7:'⑧ 클라우드 게시 (팬에게 보이기)',h7:'Supabase 주소와 anon key, 站长 이메일/비번을 넣으면 모든 방문자에게 공개됩니다',ph_url:'프로젝트 주소 https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长 이메일',ph_pw2:'站长 비밀번호',test:'연결 테스트',push:'바로 게시',clear:'연결 해제',
   del:'삭제',edit:'수정',cancel:'취소',onlyimg:'(이미지만)',ev:'영상이 아직 없어요',ep:'앨범이 비어 있어요',et:'곡이 아직 없어요',ed:'날짜가 아직 없어요',el:'아직 게시된 글이 없어요',
-  t_vid:'영상 링크를 넣어 주세요',t_img:'이미지 링크를 넣어 주세요',t_audio:'오디오 링크를 넣어 주세요',t_date:'날짜를 먼저 선택해요',t_letter:'글 또는 이미지가 필요해요',t_ready:'이미지 준비 완료, 저장을 눌러요',t_upd:'업로드 ',t_up:' 장',t_saved:'저장했어요 ♡',t_cloud:'클라우드 업데이트 ♡',t_cfail:'연결 실패, 주소와 key를 확인',publish_btn:'클라우드에 게시',
-  s8:'⑨ 팬 등록 명단',h8:'등록하면 자동으로 클라우드 fuko_fan 테이블에 기록되어, 여기에 인원수와 닉네임·성별·가입 시각이 표시됩니다',fan_total:'등록 팬 {n}명',fan_none:'아직 등록한 팬이 없어요',fan_refresh:'명단 새로고침',fan_cloud:'클라우드 실시간 명단',fan_lcloud:'클라우드 조회 실패 · 이 기기 기록 표시',fan_local:'이 기기 기록만 · 클라우드 연결 후 자동 집계'}
+  t_vid:'영상 링크를 넣어 주세요',t_img:'이미지 링크를 넣어 주세요',t_audio:'오디오 링크를 넣어 주세요',t_date:'날짜를 먼저 선택해요',t_letter:'글 또는 이미지가 필요해요',t_ready:'이미지 준비 완료, 저장을 눌러요',t_upd:'업로드 ',t_up:' 장',t_saved:'저장했어요 ♡',t_cloud:'클라우드 업데이트 ♡',t_cfail:'연결 실패, 주소와 key를 확인',publish_btn:'클라우드에 게시'}
 };
 function A(k){const d=AD[LANG]||AD.zh;return d[k]!==undefined?d[k]:AD.zh[k]}
+const ADX={
+ zh:{f_bio:'自我介绍（简介）',tl_sec:'走过的时间 · 时间线',tl_year:'年份 / 时间',tl_text:'这一阶段发生的事',fav_sec:'喜欢的小事',fav_label:'小标题',fav_text:'内容',btn_add_tl:'＋ 加一条时间',btn_add_fav:'＋ 加一件小事',tl_empty:'还没有自定义时间线（前台显示默认内容）',fav_empty:'还没有自定义小事（前台显示默认内容）',
+  s8:'⑨ 注册粉丝',h8:'已注册到本站的粉丝（云端真实计数，跨设备同步）',fan_total:'粉丝总数',fan_none:'还没有粉丝注册',fan_who:'昵称',fan_when:'注册于',fan_heart:'爱心',fan_local:'（本地记录 · 未连云端）'},
+ en:{f_bio:'Intro bio',tl_sec:'Timeline',tl_year:'Year / date',tl_text:'what happened back then',fav_sec:'Little things she loves',fav_label:'Label',fav_text:'Content',btn_add_tl:'＋ Add timeline entry',btn_add_fav:'＋ Add a little thing',tl_empty:'no custom timeline yet (defaults shown)',fav_empty:'no custom little things yet (defaults shown)',
+  s8:'⑨ Registered fans',h8:'Fans registered on this site (real cloud count, synced across devices)',fan_total:'Total fans',fan_none:'no fan has registered yet',fan_who:'Nickname',fan_when:'Joined',fan_heart:'hearts',fan_local:'(local record · cloud off)'},
+ ja:{f_bio:'自己紹介',tl_sec:'歩み・タイムライン',tl_year:'年 / 時期',tl_text:'その頃のこと',fav_sec:'好きなこと',fav_label:'ラベル',fav_text:'内容',btn_add_tl:'＋ 項目を追加',btn_add_fav:'＋ 好きなことを追加',tl_empty:'カスタム項目はまだありません（既定値を表示）',fav_empty:'カスタム項目はまだありません（既定値を表示）',
+  s8:'⑨ 登録ファン',h8:'このサイトに登録したファン（クラウド実数・端末間同期）',fan_total:'ファン総数',fan_none:'まだ登録がありません',fan_who:'ニックネーム',fan_when:'登録日',fan_heart:'ハート',fan_local:'(ローカル記録・クラウド未接続)'},
+ ko:{f_bio:'자기소개',tl_sec:'발자취 · 타임라인',tl_year:'연도 / 시기',tl_text:'그때 있었던 일',fav_sec:'좋아하는 것들',fav_label:'제목',fav_text:'내용',btn_add_tl:'＋ 항목 추가',btn_add_fav:'＋ 좋아하는 것 추가',tl_empty:'저장된 항목이 없어요 (기본값 표시)',fav_empty:'저장된 항목이 없어요 (기본값 표시)',
+  s8:'⑨ 가입 팬',h8:'이 사이트에 가입한 팬 (클라우드 실제 집계 · 기기 간 동기화)',fan_total:'팬 총원',fan_none:'아직 가입한 팬이 없어요',fan_who:'닉네임',fan_when:'가입일',fan_heart:'하트',fan_local:'(로컬 기록 · 클라우드 미연결)'}
+};
+function AX(k){const d=ADX[LANG]||ADX.zh;return d[k]!==undefined?d[k]:ADX.zh[k]}
 document.addEventListener('submit',function(e){
   if(e.target.id!=='adForm')return;
   e.preventDefault();
@@ -1682,7 +1666,7 @@ document.addEventListener('submit',function(e){
   if(u===AD_ACC&&p===AD_PW){ADM=true;renderAdmin()}
   else{ $('#adErr').textContent=A('wrong'); }
 });
-$('#adOut').addEventListener('click',function(){ADM=false;adEditDate=null;adEditNote=null;$('#adBody').innerHTML='';location.hash='#/home'});
+$('#adOut').addEventListener('click',function(){ADM=false;adEditDate=null;adEditNote=null;adEditTl=null;adEditFav=null;$('#adBody').innerHTML='';location.hash='#/home'});
 addEventListener('hashchange',function(){if(routeId()!=='admin')closeAdmin()});
 $$('#adLang button').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1693,36 +1677,6 @@ $$('#adLang button').forEach(function(b){
 });
 function adList(items,build,empty){
   return items.length?items.map(build).join(''):'<p class="hint">'+empty+'</p>';
-}
-/* --- 后台：粉丝注册名单 / 统计 --- */
-function gLabel(g){return t(g==='f'?'g_f':g==='m'?'g_m':'g_x')}
-function fanSourceRows(){
-  if(FANS&&FANS.length) return FANS.map(function(x){return {nick:x.nick,gender:x.gender,joined:x.joined,hearts:x.hearts}});
-  return users().map(function(u){return {nick:u.nick,gender:u.gender||'x',joined:u.joined||0,hearts:u.hearts||0}});
-}
-function fanHTML(){
-  const rows=fanSourceRows();
-  const src=(FANS&&FANS.length)?A('fan_cloud'):(clOn()?A('fan_lcloud'):A('fan_local'));
-  const hdr='<div class="ad-row" style="margin-bottom:10px">'
-    +'<span class="cl-state" data-s="'+(FANS&&FANS.length?'ok':(clOn()?'idle':'off'))+'">'+A('fan_total').replace('{n}',rows.length)+'</span>'
-    +'<span class="hint" style="margin:0">'+src+'</span>'
-    +'<button class="btn btn-ghost btn-sm" data-op="fan-refresh">'+A('fan_refresh')+'</button></div>';
-  const list=rows.length?rows.map(function(x,i){
-    return '<div class="ad-item"><span class="t">'+(i+1)+'. '+esc(x.nick)+' · '+gLabel(x.gender)+' · '+fmtDate(Number(x.joined)||0,LANG)+' · ♥'+esc(x.hearts||0)+'</span></div>';
-  }).join(''):'<p class="hint">'+A('fan_none')+'</p>';
-  return hdr+list;
-}
-function paintFans(){
-  const box=document.getElementById('adFans');
-  if(box) box.innerHTML=fanHTML();
-}
-function refreshFans(){
-  paintFans();
-  if(!clOn()){FANS=null;paintFans();return}
-  fanLoad().then(function(rows){
-    FANS=(rows&&rows.length)?rows:null;
-    paintFans();
-  });
 }
 function adPanelHTML(){
   const vids=getVids(),phs=getPhotos(),trs=getTracks(),ds=getDates(),ls=getLetters(),P=getProfile()||{};
@@ -1755,6 +1709,20 @@ function adPanelHTML(){
     return '<div><label>'+A('f_'+k)+'</label><input class="input" id="adP_'+k+'" value="'+esc(P[k]||DEF[k])+'"></div>';
   }).join('');
   const tagsVal=[P.t1||pt('t1'),P.t2||pt('t2'),P.t3||pt('t3')].join(' / ');
+  const tlArr=(Array.isArray(P.tl)&&P.tl.length)?P.tl:[];
+  const tlEdit=adEditTl!==null&&tlArr[adEditTl];
+  const tlList=adList(tlArr,function(x,i){
+    return '<div class="ad-item"><span class="t"><b>'+esc(x.y||'')+'</b> · '+esc(_lgGet(x.map||x))+'</span>'
+      +'<button class="edit" data-op="edit-tl" data-i="'+i+'">'+A('edit')+'</button>'
+      +'<button class="del" data-op="del-tl" data-i="'+i+'">'+A('del')+'</button></div>';
+  },AX('tl_empty'));
+  const favArr=(Array.isArray(P.fav)&&P.fav.length)?P.fav:[];
+  const favEdit=adEditFav!==null&&favArr[adEditFav];
+  const favList=adList(favArr,function(x,i){
+    return '<div class="ad-item"><span class="t">'+esc(_lgGet(x.label))+' · '+esc(_lgGet(x.text))+'</span>'
+      +'<button class="edit" data-op="edit-fav" data-i="'+i+'">'+A('edit')+'</button>'
+      +'<button class="del" data-op="del-fav" data-i="'+i+'">'+A('del')+'</button></div>';
+  },AX('fav_empty'));
   const dEdit=adEditDate!==null&&ds[adEditDate];
   const ns=getNotes();
   const nEdit=adEditNote!==null&&ns[adEditNote];
@@ -1801,8 +1769,21 @@ function adPanelHTML(){
      +'<input class="input" id="adProfImg" placeholder="'+A('ph_portrait')+'" value="'+esc(P.photo||'')+'"></div>'
    +'<div class="ad-grid">'+fields+'</div>'
    +'<div class="ad-grid" style="grid-template-columns:1fr"><div><label>'+A('f_tags')+'</label><input class="input" id="adP_tags" value="'+esc(tagsVal)+'"></div>'
-   +'<div><label>'+A('f_reason')+'</label><input class="input" id="adP_reason" value="'+esc(P.reason||pt('v_reason'))+'"></div></div>'
-   +'<div class="ad-row"><button class="btn btn-sm" data-op="save-profile">'+A('btn_prof')+'</button></div></section>'
+   +'<div><label>'+A('f_reason')+'</label><input class="input" id="adP_reason" value="'+esc(P.reason||pt('v_reason'))+'"></div>'
+   +'<div><label>'+AX('f_bio')+'</label><textarea class="batch" id="adP_bio">'+esc(_lgGet(P.bio))+'</textarea></div></div>'
+   +'<div style="margin-top:10px"><p class="mini-label">'+AX('tl_sec')+'</p>'
+     +'<div class="ad-row"><input class="input" id="adTlYr" style="max-width:150px" placeholder="'+AX('tl_year')+'" value="'+(tlEdit?esc(tlEdit.y||''):'')+'">'
+     +'<input class="input" id="adTlText" placeholder="'+AX('tl_text')+'" value="'+(tlEdit?esc(_lgGet(tlEdit.map||tlEdit)):'')+'">'
+     +'<button class="btn btn-sm" data-op="save-tl">'+(tlEdit?A('save'):AX('btn_add_tl'))+'</button>'
+     +(tlEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-tl">'+A('cancel')+'</button>':'')+'</div>'
+     +tlList+'</div>'
+   +'<div style="margin-top:12px"><p class="mini-label">'+AX('fav_sec')+'</p>'
+     +'<div class="ad-row"><input class="input" id="adFavLabel" placeholder="'+AX('fav_label')+'" value="'+(favEdit?esc(_lgGet(favEdit.label)):'')+'">'
+     +'<input class="input" id="adFavText" placeholder="'+AX('fav_text')+'" value="'+(favEdit?esc(_lgGet(favEdit.text)):'')+'">'
+     +'<button class="btn btn-sm" data-op="save-fav">'+(favEdit?A('save'):AX('btn_add_fav'))+'</button>'
+     +(favEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-fav">'+A('cancel')+'</button>':'')+'</div>'
+     +favList+'</div>'
+   +'<div class="ad-row" style="margin-top:10px"><button class="btn btn-sm" data-op="save-profile">'+A('btn_prof')+'</button></div></section>'
 
    +'<section class="ad-sec"><h3>'+A('s6')+'</h3><p class="hint">'+A('h6')+'</p>'
    +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(getHero())+'">'
@@ -1820,7 +1801,7 @@ function adPanelHTML(){
      +'<span class="cl-state" id="clState2" data-s="'+CL_STATE+'">'+clText()+'</span></div>'
    +'<p class="hint" style="margin-top:6px">Supabase · table fuko_site / bucket fuko</p></section>'
 
-   +'<section class="ad-sec"><h3>'+A('s8')+'</h3><p class="hint">'+A('h8')+'</p><div id="adFans"></div></section>';
+   +'<section class="ad-sec"><h3>'+AX('s8')+'</h3><p class="hint">'+AX('h8')+'</p><div id="adFansBody"><p class="hint">…</p></div></section>';
 }
 function renderAdmin(){
   const body=$('#adBody');const out=$('#adOut');
@@ -1843,14 +1824,39 @@ function renderAdmin(){
     return;
   }
   body.innerHTML=adPanelHTML();
-  refreshFans();
+  loadFansAdmin();
+}
+async function loadFansAdmin(){
+  const box=$('#adFansBody');if(!box)return;
+  let fans=[];
+  try{
+    if(clOn()){
+      const r=await fetch(clBase()+'/rest/v1/fuko_fan?select=nick,gender,joined,hearts&order=joined.desc',{headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+      if(r.ok) fans=await r.json();
+    }
+  }catch(e){fans=[]}
+  const local=!clOn()||!fans.length;
+  if(!fans.length){fans=users().map(function(u){return {nick:u.nick,gender:u.gender,joined:u.joined,hearts:u.hearts||0}})}
+  const total=fans.length;
+  const gf=fans.filter(function(x){return x.gender==='f'}).length;
+  const gm=fans.filter(function(x){return x.gender==='m'}).length;
+  const gx=total-gf-gm;
+  const head='<div class="stats" style="margin-bottom:12px">'
+    +'<div class="stat"><b>'+total+'</b><span>'+AX('fan_total')+'</span></div>'
+    +'<div class="stat"><b>'+gf+'</b><span>'+t('g_f')+'</span></div>'
+    +'<div class="stat"><b>'+gm+'</b><span>'+t('g_m')+'</span></div>'
+    +'<div class="stat"><b>'+gx+'</b><span>'+t('g_x')+'</span></div></div>';
+  if(!total){box.innerHTML=head+'<p class="note-empty">'+AX('fan_none')+'</p>';return}
+  const list=fans.map(function(x){
+    return '<div class="ad-item"><span class="t">'+esc(x.nick)+' · '+fmtDate(x.joined,LANG)+'</span><span class="cl-state">♥ '+(x.hearts||0)+'</span></div>';
+  }).join('');
+  box.innerHTML=head+list+(local?'<p class="hint" style="margin-top:8px">'+AX('fan_local')+'</p>':'');
 }
 
 $('#adBody').addEventListener('click',function(e){
   const el=e.target.closest('[data-op]');
   if(!el||!ADM)return;
   const op=el.getAttribute('data-op'), i=Number(el.getAttribute('data-i')||-1);
-  if(op==='fan-refresh'){refreshFans();return}
   if(op==='add-vid'){
     const u=$('#adVidUrl').value.trim();if(!u)return toast(A('t_vid'));
     const v=getVids();v.push({url:u,title:$('#adVidTitle').value.trim()||('stage 0'+(v.length+1))});dataSet('vids',v);toast(A('t_saved'));renderAdmin();
@@ -1902,8 +1908,34 @@ $('#adBody').addEventListener('click',function(e){
     if(tg){const a=tg.value.split('/').map(function(s){return s.trim()}).filter(Boolean);P.t1=a[0]||'';P.t2=a[1]||'';P.t3=a[2]||''}
     if(rs)P.reason=rs.value.trim();
     if(ph)P.photo=ph.value.trim();
-    saveProfile(P);toast(A('t_saved'));renderAdmin();
+    const bioEl=$('#adP_bio');if(bioEl){P.bio=Object.assign({},P.bio||{});P.bio[LANG]=bioEl.value.trim()}
+    saveProfile(P);toast(A('t_saved'));renderAdmin();render();
   }
+  if(op==='save-tl'){
+    const yr=($('#adTlYr')||{}).value.trim(), tx=($('#adTlText')||{}).value.trim();
+    if(!yr&&!tx)return toast(A('t_note'));
+    const P=getProfile()||{}; const arr=Array.isArray(P.tl)?P.tl.slice():[];
+    const obj=adEditTl!==null&&arr[adEditTl]?Object.assign({},arr[adEditTl]):{map:{}};
+    obj.y=yr; obj.map=Object.assign({},obj.map||{}); obj.map[LANG]=tx;
+    if(adEditTl!==null&&arr[adEditTl])arr[adEditTl]=obj; else arr.push(obj);
+    P.tl=arr;saveProfile(P);adEditTl=null;toast(A('t_saved'));renderAdmin();render();
+  }
+  if(op==='edit-tl'){adEditTl=i;renderAdmin()}
+  if(op==='cancel-tl'){adEditTl=null;renderAdmin()}
+  if(op==='del-tl'){const P=getProfile()||{};const arr=Array.isArray(P.tl)?P.tl.slice():[];arr.splice(i,1);P.tl=arr;saveProfile(P);adEditTl=null;renderAdmin();render()}
+  if(op==='save-fav'){
+    const lb=($('#adFavLabel')||{}).value.trim(), tx=($('#adFavText')||{}).value.trim();
+    if(!lb&&!tx)return toast(A('t_note'));
+    const P=getProfile()||{}; const arr=Array.isArray(P.fav)?P.fav.slice():[];
+    const obj=adEditFav!==null&&arr[adEditFav]?Object.assign({},arr[adEditFav]):{label:{},text:{}};
+    obj.label=Object.assign({},obj.label||{});obj.label[LANG]=lb;
+    obj.text=Object.assign({},obj.text||{});obj.text[LANG]=tx;
+    if(adEditFav!==null&&arr[adEditFav])arr[adEditFav]=obj; else arr.push(obj);
+    P.fav=arr;saveProfile(P);adEditFav=null;toast(A('t_saved'));renderAdmin();render();
+  }
+  if(op==='edit-fav'){adEditFav=i;renderAdmin()}
+  if(op==='cancel-fav'){adEditFav=null;renderAdmin()}
+  if(op==='del-fav'){const P=getProfile()||{};const arr=Array.isArray(P.fav)?P.fav.slice():[];arr.splice(i,1);P.fav=arr;saveProfile(P);adEditFav=null;renderAdmin();render()}
   if(op==='save-hero'){
     const u=$('#adHeroUrl').value.trim();
     if(!u)return toast(A('t_img'));
@@ -1943,6 +1975,51 @@ $('#adBody').addEventListener('change',async function(e){
 });
 
 
+/* ============ 背景音乐（八音盒轻音乐） ============ */
+const BGM_KEY='fuko_bgm';
+let bgmOn=lsGet(BGM_KEY,false),bgmCtx=null,bgmGain=null,bgmTimer=null,bgmStep=0;
+const BGM_MELODY=[72,76,79,76,74,77,81,77,72,76,79,84,79,76,74,72];
+const BGM_BASS=[48,45,41,43];
+function _midi(n){return 440*Math.pow(2,(n-69)/12)}
+function bgmInit(){
+  if(bgmCtx)return;
+  try{
+    bgmCtx=new (window.AudioContext||window.webkitAudioContext)();
+    bgmGain=bgmCtx.createGain();bgmGain.gain.value=0;bgmGain.connect(bgmCtx.destination);
+  }catch(e){}
+}
+function bgmNote(n,vol,dur){
+  if(!bgmCtx)return;const t=bgmCtx.currentTime;
+  const o=bgmCtx.createOscillator(),g=bgmCtx.createGain();
+  o.type='sine';o.frequency.value=_midi(n);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  const o2=bgmCtx.createOscillator(),g2=bgmCtx.createGain();
+  o2.type='triangle';o2.frequency.value=_midi(n)*2;
+  g2.gain.setValueAtTime(0,t);g2.gain.linearRampToValueAtTime(vol*0.22,t+0.02);g2.gain.exponentialRampToValueAtTime(0.0001,t+dur*0.6);
+  o.connect(g);g.connect(bgmGain);o2.connect(g2);g2.connect(bgmGain);
+  o.start(t);o2.start(t);o.stop(t+dur);o2.stop(t+dur*0.6);
+}
+function bgmTick(){
+  const i=bgmStep%BGM_MELODY.length;
+  bgmNote(BGM_MELODY[i],0.07,1.1);
+  if(i%4===0)bgmNote(BGM_BASS[((bgmStep/4)|0)%BGM_BASS.length],0.05,1.4);
+  bgmStep++;
+}
+function bgmStart(){
+  bgmInit();if(!bgmCtx)return;
+  if(bgmCtx.state==='suspended')bgmCtx.resume();
+  bgmGain.gain.cancelScheduledValues(bgmCtx.currentTime);
+  bgmGain.gain.linearRampToValueAtTime(0.09,bgmCtx.currentTime+1.2);
+  if(!bgmTimer)bgmTimer=setInterval(bgmTick,380);
+}
+function bgmStop(){
+  if(bgmGain&&bgmCtx){bgmGain.gain.cancelScheduledValues(bgmCtx.currentTime);bgmGain.gain.linearRampToValueAtTime(0,bgmCtx.currentTime+0.6)}
+  if(bgmTimer){clearInterval(bgmTimer);bgmTimer=null}
+}
+function bgmPaint(){const b=$('#bgmBtn');if(b){b.classList.toggle('on',bgmOn);b.textContent=bgmOn?'♪':'♡'}}
+function bgmToggle(){bgmOn=!bgmOn;lsSet(BGM_KEY,bgmOn);if(bgmOn)bgmStart();else bgmStop();bgmPaint()}
+$('#bgmBtn').addEventListener('click',bgmToggle);
+
 /* ============ 14. 语言 / 启动 ============ */
 $$('#lang button').forEach(function(b){
   b.addEventListener('click',function(){
@@ -1955,13 +2032,13 @@ $$('#lang button').forEach(function(b){
   LANG=T[saved]?saved:'zh';
   setMode('login');
   renderTabs();render();
+  bgmPaint();
   window.addEventListener('hashchange',render);
   if(clOn()){
     CL_STATE='saving';paintCloud();
     clLoad().then(function(){
       CL_STATE='idle';paintCloud();
       renderTabs();render();
-      fanSyncLocal();
       if(ADM)renderAdmin();
     }).catch(function(){CL_STATE='err';paintCloud()});
   }
