@@ -635,7 +635,8 @@ input,textarea,select{font-family:inherit}
     <div class="f-line"></div>
     <p data-i18n="foot">个人粉丝应援站 · 非官方 · 仅用于欣赏与记录</p>
     <p style="opacity:.72">© 2026 Fuko's Little World · made with ♡</p>
-  </footer>
+ <p style="font-size:10px;opacity:0.65;margin-top:6px;">此页面由Selina和rina共同制作</p>
+ </footer>
 </div>
 
 <button id="bgmBtn" type="button" aria-label="BGM">♡</button>
@@ -1489,7 +1490,7 @@ function setMode(mode){
 $$('#authTabs button').forEach(function(b){
   b.addEventListener('click',function(){setMode(b.dataset.mode)});
 });
-authForm.addEventListener('submit',function(e){
+authForm.addEventListener('submit',async function(e){
   e.preventDefault();
   const nick=$('#aNick').value.trim(), pw=$('#aPw').value;
   const err=$('#authErr');
@@ -1503,7 +1504,7 @@ authForm.addEventListener('submit',function(e){
     }
     const g=($('input[name=gender]:checked')||{}).value||'x';
     const u={nick:nick,pw:hashPw(pw),gender:g,joined:Date.now(),hearts:0};
-    list.push(u);saveUsers(list);setSession(nick);
+    list.push(u);saveUsers(list);setSession(nick);await fanCloudRegister(u);
     fanCloudRegister(u);
     err.textContent='';
     hideAuth();toast(t('ok_reg'));render();
@@ -1831,26 +1832,49 @@ async function loadFansAdmin(){
   let fans=[];
   try{
     if(clOn()){
-      const r=await fetch(clBase()+'/rest/v1/fuko_fan?select=nick,gender,joined,hearts&order=joined.desc',{headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+      const r=await fetch(clBase()+'/rest/v1/fuko_fans?select=nick,gender,joined,hearts&order=joined.asc',{
+        headers:{
+          apikey:CLOUD.k,
+          Authorization:'Bearer '+CLOUD.k
+        }
+      });
       if(r.ok) fans=await r.json();
     }
-  }catch(e){fans=[]}
+  }catch(e){
+    console.error("❌云端读取粉丝列表失败",e);
+    fans=[];
+  }
+
   const local=!clOn()||!fans.length;
-  if(!fans.length){fans=users().map(function(u){return {nick:u.nick,gender:u.gender,joined:u.joined,hearts:u.hearts||0}})}
+
+  if(!fans.length){
+    fans=users().map(function(u){
+      return {nick:u.nick,gender:u.gender,joined:u.joined,hearts:u.hearts||0};
+    });
+  }
+
   const total=fans.length;
   const gf=fans.filter(function(x){return x.gender==='f'}).length;
   const gm=fans.filter(function(x){return x.gender==='m'}).length;
   const gx=total-gf-gm;
-  const head='<div class="stats" style="margin-bottom:12px">'
-    +'<div class="stat"><b>'+total+'</b><span>'+AX('fan_total')+'</span></div>'
-    +'<div class="stat"><b>'+gf+'</b><span>'+t('g_f')+'</span></div>'
-    +'<div class="stat"><b>'+gm+'</b><span>'+t('g_m')+'</span></div>'
-    +'<div class="stat"><b>'+gx+'</b><span>'+t('g_x')+'</span></div></div>';
-  if(!total){box.innerHTML=head+'<p class="note-empty">'+AX('fan_none')+'</p>';return}
+
+  const head='<div class="stats" style="margin-bottom:12px">'+
+  '<div class="stat"><b>'+total+'</b> <span>'+AX('fan_total')+'</span></div>'+
+  '<div class="stat"><b>'+gf+'</b> <span>'+t('g_f')+'</span></div>'+
+  '<div class="stat"><b>'+gm+'</b> <span>'+t('g_m')+'</span></div>'+
+  '<div class="stat"><b>'+gx+'</b> <span>'+t('g_x')+'</span></div></div>';
+
+  if(!total){
+    box.innerHTML=head+'<p class="note-empty">'+AX('fan_none')+'</p>';
+    return;
+  }
+
   const list=fans.map(function(x){
-    return '<div class="ad-item"><span class="t">'+esc(x.nick)+' · '+fmtDate(x.joined,LANG)+'</span><span class="cl-state">♥ '+(x.hearts||0)+'</span></div>';
+    return '<div class="ad-item"><span class="t">'+esc(x.nick)+' · '+fmtDate(x.joined)+'</span></div>';
   }).join('');
+
   box.innerHTML=head+list+(local?'<p class="hint" style="margin-top:8px">'+AX('fan_local')+'</p>':'');
+
 }
 
 $('#adBody').addEventListener('click',function(e){
@@ -2043,6 +2067,30 @@ $$('#lang button').forEach(function(b){
     }).catch(function(){CL_STATE='err';paintCloud()});
   }
 })();
+async function fanCloudRegister(u){
+  if(!clOn()||!u.nick) return;
+  try{
+    await fetch(clBase()+'/rest/v1/fuko_fans',{
+      method:'POST',
+      headers:{
+        apikey:CLOUD.k,
+        Authorization:'Bearer '+CLOUD.k,
+        'Content-Type':'application/json',
+        Prefer:'resolution=merge-duplicates'
+      },
+      body:JSON.stringify({
+        nick:u.nick,
+        gender:u.gender||'x',
+        joined:u.joined,
+        hearts:u.hearts||0
+      })
+    });
+    console.log("✅粉丝注册云端写入成功",u.nick)
+  }catch(e){
+    console.error("❌云端注册失败",e);
+  }
+}
+
 </script>
 </body>
 </html>
