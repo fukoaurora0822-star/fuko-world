@@ -1827,6 +1827,7 @@ function adPanelHTML(){
    +'<div class="ad-row"><input class="input" id="adNTitle" placeholder="'+A('ph_nTitle')+'" value="'+(nEdit?esc(nEdit.title||''):'')+'"></div>'
    +'<div class="ad-row"><input class="input" id="adNImg1" placeholder="'+A('ph_nImg1')+'" value="'+(nEdit?esc(nEdit.img1||''):'')+'"></div>'
    +'<div class="ad-row"><input class="input" id="adNImg2" placeholder="'+A('ph_nImg2')+'" value="'+(nEdit?esc(nEdit.img2||''):'')+'"></div>'
+   +'<div class="ad-row"><input type="file" class="input" id="adNFile1" accept="image/*" style="max-width:220px"><button class="btn btn-sm" data-op="upload-note1">📁 图1</button><input type="file" class="input" id="adNFile2" accept="image/*" style="max-width:220px"><button class="btn btn-sm" data-op="upload-note2">📁 图2</button></div>'
    +'<div class="ad-row"><input class="input" id="adNCap" placeholder="'+A('ph_nCap')+'" value="'+(nEdit?esc(nEdit.cap||''):'')+'"></div>'
    +'<textarea class="batch" id="adNText" placeholder="'+A('ph_nText')+'">'+(nEdit?esc(nEdit.text||''):'')+'</textarea>'
    +'<div class="ad-row"><button class="btn btn-sm" data-op="save-note">'+(nEdit?A('save'):A('add_note'))+'</button>'
@@ -1838,6 +1839,7 @@ function adPanelHTML(){
    +'<section class="ad-sec"><h3>'+A('s5')+'</h3><p class="hint">'+A('h5')+'</p>'
    +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(P.photo||'fumi/fuko.jpg')+'">'
      +'<input class="input" id="adProfImg" placeholder="'+A('ph_portrait')+'" value="'+esc(P.photo||'')+'"></div>'
+   +'<div class="ad-row"><input type="file" class="input" id="adProfFile" accept="image/*" style="max-width:300px"><button class="btn btn-sm" data-op="upload-prof">📁 从相簿选图</button></div>'
    +'<div class="ad-grid">'+fields+'</div>'
    +'<div class="ad-grid" style="grid-template-columns:1fr"><div><label>'+A('f_tags')+'</label><input class="input" id="adP_tags" value="'+esc(tagsVal)+'"></div>'
    +'<div><label>'+A('f_reason')+'</label><input class="input" id="adP_reason" value="'+esc(P.reason||pt('v_reason'))+'"></div>'
@@ -1859,6 +1861,7 @@ function adPanelHTML(){
    +'<section class="ad-sec"><h3>'+A('s6')+'</h3><p class="hint">'+A('h6')+'</p>'
    +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(getHero())+'">'
      +'<input class="input" id="adHeroUrl" placeholder="'+A('ph_hero')+'" value="'+esc(getHero())+'"></div>'
+   +'<div class="ad-row"><input type="file" class="input" id="adHeroFile" accept="image/*" style="max-width:300px"><button class="btn btn-sm" data-op="upload-hero">📁 从相簿选图</button></div>'
    +'<div class="ad-row"><button class="btn btn-sm" data-op="save-hero">'+A('btn_hero')+'</button></div></section>'
 
    +'<section class="ad-sec"><h3>'+A('s7')+'</h3><p class="hint">'+A('h7')+'</p>'
@@ -1973,6 +1976,32 @@ $('#adBody').addEventListener('click',function(e){
   if(op==='add-ph'){
     const u=$('#adPhUrl').value.trim();if(!u)return toast(A('t_img'));
     const p=getPhotos();p.push({url:u,title:$('#adPhTitle').value.trim()});dataSet('photos',p);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='upload-note1'||op==='upload-note2'){
+    const which=(op==='upload-note2')?2:1;
+    const box=$(which===2?'#adNFile2':'#adNFile1');
+    const f=(box&&box.files&&box.files[0]);
+    if(!f){toast('先选一张图片');return}
+    toast('上传中…请稍等');
+    compressImg(f,1200).then(function(b){return ghUpload(b)}).then(function(url){
+      const tgt=$(which===2?'#adNImg2':'#adNImg1');
+      if(tgt) tgt.value=url;
+      toast('✅ 已上传并填入图'+which+'，点保存生效');
+    }).catch(function(err){toast('❌ 上传失败：'+err.message)});
+    return;
+  }
+  if(op==='upload-prof'||op==='upload-hero'){
+    const isHero=(op==='upload-hero');
+    const box=$(isHero?'#adHeroFile':'#adProfFile');
+    const f=(box&&box.files&&box.files[0]);
+    if(!f){toast('先选一张图片');return}
+    toast('上传中…请稍等');
+    compressImg(f,isHero?2000:1200).then(function(b){return ghUpload(b)}).then(function(url){
+      const tgt=$(isHero?'#adHeroUrl':'#adProfImg');
+      if(tgt) tgt.value=url;
+      toast('✅ 已上传并自动填入，点下面保存按钮生效');
+    }).catch(function(err){toast('❌ 上传失败：'+err.message)});
+    return;
   }
   if(op==='save-gh-token'){
     const v=(($('#adGhToken')||{}).value||'').trim();
