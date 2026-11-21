@@ -1810,6 +1810,8 @@ function adPanelHTML(){
    +vlist
    +'<div class="ad-row" style="margin-top:14px"><input class="input" id="adPhUrl" placeholder="'+A('ph_img')+'"><input class="input" id="adPhTitle" placeholder="'+A('ph_note')+'"><button class="btn btn-sm" data-op="add-ph">'+A('btn_img')+'</button></div>'
    +'<div class="ad-row"><span class="hint" style="margin:0">'+A('tip_img')+'</span></div>'
+   +'<div class="ad-row" style="margin-top:6px"><input type="file" class="input" id="adPhFile" accept="image/*" style="max-width:300px"><button class="btn btn-sm" data-op="upload-ph">📁 从相簿选图上传</button></div>'
+   +'<div class="ad-row"><input class="input" id="adGhToken" placeholder="GitHub 上传令牌 github_pat_…（只存在本机浏览器）" value="'+esc(ghToken())+'"><button class="btn btn-ghost btn-sm" data-op="save-gh-token">保存令牌</button></div>'
    +plist+'</section>'
 
    +adDrawHTML()
@@ -1971,6 +1973,25 @@ $('#adBody').addEventListener('click',function(e){
   if(op==='add-ph'){
     const u=$('#adPhUrl').value.trim();if(!u)return toast(A('t_img'));
     const p=getPhotos();p.push({url:u,title:$('#adPhTitle').value.trim()});dataSet('photos',p);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='save-gh-token'){
+    const v=(($('#adGhToken')||{}).value||'').trim();
+    if(!v){toast('令牌是空的');return}
+    setGhToken(v);toast('令牌已存在本机');return;
+  }
+  if(op==='upload-ph'){
+    const box=$('#adPhFile');
+    const f=(box&&box.files&&box.files[0]);
+    if(!f){toast('先选一张图片');return}
+    toast('上传中…请稍等');
+    compressImg(f,1600).then(function(b){return ghUpload(b)}).then(function(url){
+      const p=getPhotos();
+      p.push({url:url,title:(($('#adPhTitle')||{}).value||'').trim()});
+      dataSet('photos',p);
+      toast('✅ 已上传，1 分钟后生效');
+      renderAdmin();
+    }).catch(function(err){toast('❌ 上传失败：'+err.message)});
+    return;
   }
   if(op==='del-ph'){const p=getPhotos();p.splice(i,1);dataSet('photos',p);renderAdmin()}
   if(op==='add-tr'){
@@ -2169,6 +2190,47 @@ async function fanCloudRegister(u){
   return false;
 }
 
+
+/* ============ GitHub 图床上传（仅站长本机使用） ============ */
+const GH={owner:'fukoaurora0822-star',repo:'fuko-world',dir:'fumi'};
+function ghToken(){try{return localStorage.getItem('fuko_gh_token')||''}catch(e){return ''}}
+function setGhToken(v){try{localStorage.setItem('fuko_gh_token',String(v||''))}catch(e){}}
+function ghB64(buf){
+  const bytes=new Uint8Array(buf);let bin='';
+  for(let i=0;i<bytes.length;i+=1024){bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+1024))}
+  return btoa(bin);
+}
+function compressImg(file,maxW){
+  return new Promise(function(res){
+    try{
+      const img=new Image(),url=URL.createObjectURL(file);
+      img.onload=function(){
+        let w=img.naturalWidth,h=img.naturalHeight;const m=maxW||1600;
+        if(w>m){h=Math.round(h*m/w);w=m}
+        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);
+        cv.toBlob(function(b){res(b||file)},'image/jpeg',.85);
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);res(file)};
+      img.src=url;
+    }catch(e){res(file)}
+  });
+}
+async function ghUpload(blob){
+  const tk=ghToken();
+  if(!tk) throw new Error('先在下面填 GitHub 上传令牌');
+  if(blob.size>4*1024*1024) throw new Error('图片超过 4MB，换个小的或先压缩');
+  const name='ph_'+Date.now()+'.jpg';
+  const buf=await blob.arrayBuffer();
+  const r=await fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+'/contents/'+GH.dir+'/'+name,{
+    method:'PUT',
+    headers:{Authorization:'Bearer '+tk,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'upload '+name,content:ghB64(buf)})
+  });
+  if(!r.ok){const t=await r.text();console.error('❌图床上传失败 HTTP',r.status,t);throw new Error('HTTP '+r.status)}
+  console.log('✅已上传到仓库',name);
+  return GH.dir+'/'+name;
+}
 
 /* ================= 共创画布 DRAW ================= */
 const DW={W:1280,H:960,MIN:10,T:'fuko_draw',Q:'fuko_draw_queue',WK:'fuko_works',
