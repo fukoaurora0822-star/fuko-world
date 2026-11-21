@@ -709,6 +709,36 @@ function updateMe(patch){
 function setSession(nick){try{localStorage.setItem(SESSION_KEY,JSON.stringify(nick))}catch(e){}}
 function clearSession(){try{localStorage.removeItem(SESSION_KEY)}catch(e){}}
 
+/* --- 云端账号（跨域名 / 跨设备） --- */
+async function cloudGetUser(nick){
+  if(!clOn()) return null;
+  try{
+    const r=await fetch(clBase()+'/rest/v1/fuko_users?select=nick,pw,gender,joined,hearts&nick=eq.'+encodeURIComponent(nick),
+      {headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+    if(!r.ok){console.warn('⚠️云端账号读取失败 HTTP '+r.status);return null}
+    const rows=await r.json();
+    return (rows&&rows[0])?rows[0]:null;
+  }catch(e){console.warn('⚠️云端账号读取异常',e);return null}
+}
+async function cloudSaveUser(u){
+  if(!clOn()||!u||!u.nick) return false;
+  try{
+    const body=JSON.stringify([{nick:u.nick,pw:String(u.pw),gender:u.gender||'x',
+      joined:Number(u.joined)||Date.now(),hearts:Number(u.hearts)||0}]);
+    const r=await fetch(clBase()+'/rest/v1/fuko_users',{method:'POST',
+      headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:body});
+    if(r.ok){console.log('✅账号已同步云端',u.nick);return true}
+    console.warn('⚠️账号同步云端失败 HTTP '+r.status,await r.text());return false;
+  }catch(e){console.warn('⚠️账号同步云端异常',e);return false}
+}
+function cacheUser(u){
+  const list=users();
+  const i=list.findIndex(function(x){return x.nick.toLowerCase()===u.nick.toLowerCase()});
+  if(i>=0) list[i]=Object.assign({},list[i],u); else list.push(u);
+  saveUsers(list);
+}
+
 /* ============ 2. 文案（四语言） ============ */
 const T={
 zh:{
@@ -1526,29 +1556,36 @@ $$('#authTabs button').forEach(function(b){
 authForm.addEventListener('submit',async function(e){
   e.preventDefault();
   const nick=$('#aNick').value.trim(), pw=$('#aPw').value;
-  const err=$('#authErr');
+  const err=$('#authErr'), btn=$('#authBtn');
   if(!nick||!pw){err.textContent=t('e_empty');return}
   if(pw.length<4){err.textContent=t('e_short');return}
-  const list=users();
+  if(nick.toLowerCase()==='fuko'){
+    if(pw==='082200'){ADM=true;err.textContent='';hideAuth();$('#gate').classList.add('done');
+      $('#page').classList.add('show');location.hash='#/admin';return}
+    err.textContent=t('e_pw');shake();return;
+  }
+  function busy(b){if(btn){btn.disabled=b;if(!b)btn.textContent=t(authMode==='reg'?'btn_reg':'btn_login')}}
+  busy(true);
   if(authMode==='reg'){
-    if(nick.toLowerCase()==='fuko'){err.textContent=t('e_dup');shake();return}
-    if(list.some(function(u){return u.nick.toLowerCase()===nick.toLowerCase()})){
-      err.textContent=t('e_dup');shake();return;
+    let exists=null;
+    try{exists=await cloudGetUser(nick)}catch(e){}
+    if(exists||users().some(function(u){return u.nick.toLowerCase()===nick.toLowerCase()})){
+      busy(false);err.textContent=t('e_dup');shake();return;
     }
     const g=($('input[name=gender]:checked')||{}).value||'x';
     const u={nick:nick,pw:hashPw(pw),gender:g,joined:Date.now(),hearts:0};
-    list.push(u);saveUsers(list);setSession(nick);await fanCloudRegister(u);
-    err.textContent='';
-    hideAuth();toast(t('ok_reg'));render();
+    cacheUser(u);setSession(nick);await cloudSaveUser(u);try{await fanCloudRegister(u)}catch(e){}
+    busy(false);err.textContent='';hideAuth();toast(t('ok_reg'));render();
   }else{
-    if(nick.toLowerCase()==='fuko'&&pw==='082200'){
-      ADM=true;err.textContent='';hideAuth();$('#gate').classList.add('done');
-      $('#page').classList.add('show');location.hash='#/admin';return;
-    }
-    const u=list.find(function(x){return x.nick.toLowerCase()===nick.toLowerCase()});
+    let u=null;
+    try{u=await cloudGetUser(nick)}catch(e){}
+    if(u&&u.nick) cacheUser(u);
+    if(!u) u=users().find(function(x){return x.nick.toLowerCase()===nick.toLowerCase()});
+    busy(false);
     if(!u){err.textContent=t('e_no');shake();return}
-    if(u.pw!==hashPw(pw)){err.textContent=t('e_pw');shake();return}
-    setSession(u.nick);err.textContent='';
+    if(String(u.pw)!==hashPw(pw)){err.textContent=t('e_pw');shake();return}
+    cacheUser(u);setSession(u.nick);err.textContent='';
+    if(!(await cloudGetUser(nick))) cloudSaveUser(u);   // 老账号自动迁移到云端
     hideAuth();toast(t('ok_back'));render();
   }
 });
