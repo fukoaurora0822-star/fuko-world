@@ -363,6 +363,9 @@ input,textarea,select{font-family:inherit}
 .ad-sec{background:rgba(255,255,255,.88);border:1px solid #fff;border-radius:18px;padding:16px 16px 12px;box-shadow:0 12px 30px rgba(235,210,222,.32);margin-bottom:14px}
 .ad-sec h3{margin:0 0 3px;font-size:14.5px;font-weight:500;letter-spacing:.06em}
 .ad-sec .hint{font-size:11px;color:#B79AA7;margin:0 0 12px;letter-spacing:.03em;line-height:1.7}
+.ad-nmsg{min-height:18px;font-size:11.5px;letter-spacing:.06em;color:#B57D97;margin:4px 0 8px}
+.ad-nmsg.err{color:#C4697F}
+.ad-nmsg.ok{color:#8E9B7A}
 .ad-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
 .ad-row .input{flex:1;min-width:150px}
 .ad-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:12px;background:rgba(255,250,252,.95);border:1px solid #F2E4EB;margin-bottom:6px;font-size:12px}
@@ -451,7 +454,7 @@ input,textarea,select{font-family:inherit}
 #bgmBtn{position:fixed;right:16px;bottom:22px;z-index:110;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.9);background:linear-gradient(160deg,#FBE2EC,#F7D9E4);color:#B57D97;font-size:17px;cursor:pointer;box-shadow:0 10px 24px rgba(235,210,222,.55);display:grid;place-items:center;transition:transform .4s,background .4s,color .4s}
 #bgmBtn:hover{transform:translateY(-2px) scale(1.05)}
 #bgmBtn.on{background:linear-gradient(160deg,#F7D9E4,#EEC7D6);color:#8B6577}
-.toast{position:fixed;left:50%;bottom:30px;translate:-50% 0;z-index:120;padding:9px 16px;border-radius:999px;background:rgba(254,251,252,.95);border:1px solid var(--line);box-shadow:0 10px 30px rgba(235,210,222,.6);font-size:12px;color:var(--ink);letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.toast{position:fixed;left:50%;bottom:30px;translate:-50% 0;z-index:220;padding:9px 16px;border-radius:999px;background:rgba(254,251,252,.95);border:1px solid var(--line);box-shadow:0 10px 30px rgba(235,210,222,.6);font-size:12px;color:var(--ink);letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .45s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .toast.on{opacity:1;transform:translateY(0)}
 .spark{position:fixed;z-index:99;pointer-events:none;color:#F2BFD2;font-size:13px;animation:sparkOut .9s ease-out forwards}
 @keyframes sparkOut{0%{opacity:1;transform:translate(-50%,0) scale(.5)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2)}}
@@ -1835,6 +1838,7 @@ function adPanelHTML(){
      +(nEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-note">'+A('cancel')+'</button>':'')
      +'<button class="btn btn-ghost btn-sm" data-op="new-note">＋ 新写一封</button></div>'
    +'<div class="ad-row"><span class="hint" style="margin:0">填好标题 + 图片（或文字）后点「发布到前台」，才会出现在页面的 ④ Fuko 的话 板块。</span></div>'
+   +'<div class="ad-nmsg" id="adNMsg"></div>'
    +nlist+'</section>'
 
    +'<section class="ad-sec"><h3>'+A('s5b')+'</h3><p class="hint">'+A('h5b')+'</p>'+llist+'</section>'
@@ -2046,10 +2050,15 @@ $('#adBody').addEventListener('click',function(e){
   if(op==='save-note'){
     const ns=getNotes().slice();
     const obj={id:'n'+Date.now(),title:$('#adNTitle').value.trim(),img1:$('#adNImg1').value.trim(),img2:$('#adNImg2').value.trim(),cap:$('#adNCap').value.trim(),text:$('#adNText').value.trim(),hidden:false};
-    if(!obj.img1&&!obj.text)return toast(A('t_note'));
+    if(!obj.img1&&!obj.text){
+      const m=$('#adNMsg');if(m){m.className='ad-nmsg err';m.textContent='还需要一张图片链接或一点文字，才能发布 ♡'}
+      toast(A('t_note'));return;
+    }
     if(adEditNote!==null&&ns[adEditNote]){obj.id=ns[adEditNote].id;obj.hidden=!!ns[adEditNote].hidden;ns[adEditNote]=obj}
     else{ns.push(obj)}
-    saveNotes(ns);adEditNote=null;toast(A('t_saved'));renderAdmin();render();
+    saveNotes(ns);adEditNote=null;renderAdmin();render();
+    const m2=$('#adNMsg');if(m2){m2.className='ad-nmsg ok';m2.textContent='已发布 ♡ 首页 ④ Fuko 的话 已更新'}
+    toast(A('t_saved'));
   }
   if(op==='edit-note'){adEditNote=i;renderAdmin()}
   if(op==='cancel-note'){adEditNote=null;renderAdmin()}
