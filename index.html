@@ -1103,9 +1103,9 @@ function dataSet(k,v){ if(!REM)REM={};REM[k]=v;lsSet('fuko_'+k,v);pushCloud() }
 function getMsgs(){return MSGS||lsGet('fuko_msg',[])}
 function getNotes(){return dataGet('notes',NOTES_DEFAULT)}
 function getPhotos(){return dataGet('photos',[])}
-const VCAT_N={stage:{zh:'舞台',en:'Stage',ja:'ステージ',ko:'무대'},short:{zh:'短视频',en:'Short video',ja:'ショート',ko:'숏폼'}};
+const VCAT_N={stage:{zh:'舞台',en:'Stage',ja:'ステージ',ko:'무대'},short:{zh:'短视频',en:'Short video',ja:'ショート',ko:'숏폼'},long:{zh:'长视频',en:'Long video',ja:'長編動画',ko:'롱폼 영상'},fan:{zh:'粉丝剪辑',en:'Fan edit',ja:'ファン編集',ko:'팬 편집'}};
 function VCAT(k){const m=VCAT_N[k]||VCAT_N.stage;return m[LANG]||m.zh}
-const VCAT_ORDER=['stage','short'];
+const VCAT_ORDER=['stage','short','long','fan'];
 function getVids(){return (dataGet('vids',[])||[]).map(function(v){var c=(v&&v.cat)||'stage';if(c!=='stage'&&c!=='short')c='stage';return Object.assign({},v,{cat:c})})}
 function getTracks(){return dataGet('tracks',[])}
 function getHearts(){const m=me();return m?(m.hearts||0):0}
@@ -1810,7 +1810,9 @@ function adPanelHTML(){
   const c=CLOUD||{};
 
   return '<section class="ad-sec"><h3>'+A('s1')+'</h3><p class="hint">'+A('h1')+'</p>'
-   +'<div class="ad-row"><select class="input" id="adVidCat" style="max-width:120px"><option value="stage">'+VCAT('stage')+'</option><option value="short">'+VCAT('short')+'</option></select><input class="input" id="adVidUrl" placeholder="'+A('ph_vid')+'"><input class="input" id="adVidTitle" placeholder="'+A('ph_title')+'"><button class="btn btn-sm" data-op="add-vid">'+A('btn_vid')+'</button></div>'
+   +'<div class="ad-row"><select class="input" id="adVidCat" style="max-width:150px">'+VCAT_ORDER.map(function(k){return '<option value="'+k+'">'+VCAT(k)+'</option>'}).join('')+'</select><input class="input" id="adVidUrl" placeholder="'+A('ph_vid')+'"><input class="input" id="adVidTitle" placeholder="'+A('ph_title')+'"><button class="btn btn-sm" data-op="add-vid">'+A('btn_vid')+'</button></div>'
+   +'<div class="ad-row"><input type="file" class="input" id="adVidFile" accept="video/mp4,video/webm,video/ogg" style="max-width:260px"><button class="btn btn-ghost btn-sm" data-op="upload-vid">📁 本地视频上传</button><span class="hint" style="margin:0">≤20MB，只要 mp4 / webm</span></div>'
+   +'<div class="ad-nmsg" id="adVidMsg"></div>'
    +vlist
    +'<div class="ad-row" style="margin-top:14px"><input class="input" id="adPhUrl" placeholder="'+A('ph_img')+'"><input class="input" id="adPhTitle" placeholder="'+A('ph_note')+'"><button class="btn btn-sm" data-op="add-ph">'+A('btn_img')+'</button></div>'
    +'<div class="ad-row"><span class="hint" style="margin:0">'+A('tip_img')+'</span></div>'
@@ -1968,6 +1970,28 @@ $('#adBody').addEventListener('click',function(e){
     const u=$('#adVidUrl').value.trim();if(!u)return toast(A('t_vid'));
     const cat=(($('#adVidCat')||{}).value)||'stage';
     const v=getVids();v.push({url:u,title:$('#adVidTitle').value.trim()||(VCAT(cat)+' 0'+(v.length+1)),cat:cat});dataSet('vids',v);toast(A('t_saved'));renderAdmin();
+  }
+  if(op==='upload-vid'){
+    const box=$('#adVidFile');
+    const f=(box&&box.files&&box.files[0]);
+    if(!f){toast('先选一个视频文件');return}
+    if(!/\.(mp4|webm|ogg)$/i.test(f.name||'')){
+      const mm=$('#adVidMsg');
+      if(mm){mm.className='ad-nmsg err';mm.textContent='只支持 mp4 / webm，手机拍的 .mov 请先转成 mp4'}
+      toast('只支持 mp4 / webm');return;
+    }
+    const msg=$('#adVidMsg');
+    if(msg){msg.className='ad-nmsg';msg.textContent='上传中… 大文件要等一会儿，别关页面'}
+    toast('上传中…请稍等');
+    ghUploadFile(f,'vid',20).then(function(url){
+      const t=$('#adVidUrl');if(t)t.value=url;
+      if(msg){msg.className='ad-nmsg ok';msg.textContent='✅ 已上传并填入链接，选好分类点「添加视频」即可'}
+      toast('✅ 视频上传成功');
+    }).catch(function(err){
+      if(msg){msg.className='ad-nmsg err';msg.textContent='❌ '+err.message}
+      toast('❌ 上传失败：'+err.message);
+    });
+    return;
   }
   if(op==='vid-cat'){
     const v=getVids();if(!v[i])return;
@@ -2243,6 +2267,22 @@ async function fanCloudRegister(u){
 
 /* ============ GitHub 图床上传（仅站长本机使用） ============ */
 const GH={owner:'fukoaurora0822-star',repo:'fuko-world',dir:'fumi'};
+async function ghUploadFile(file,prefix,maxMB){
+  const tk=ghToken();
+  if(!tk) throw new Error('先在下面填 GitHub 上传令牌');
+  const lim=(maxMB||20)*1024*1024;
+  if(file.size>lim) throw new Error('文件 '+ (file.size/1048576).toFixed(1) +'MB，超过 '+(maxMB||20)+'MB 上限，先压缩或用视频链接');
+  const ext=((file.name||'').match(/\.([a-z0-9]{2,5})$/i)||[,'mp4'])[1].toLowerCase();
+  const name=prefix+'_'+Date.now()+'.'+ext;
+  const buf=await file.arrayBuffer();
+  const r=await fetch('https://api.github.com/repos/'+GH.owner+'/'+GH.repo+'/contents/'+GH.dir+'/'+name,{
+    method:'PUT',
+    headers:{Authorization:'Bearer '+tk,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'upload '+name,content:ghB64(buf)})
+  });
+  if(!r.ok){const t=await r.text();console.error('❌上传失败 HTTP',r.status,t);throw new Error('HTTP '+r.status+'（令牌没权限或文件太大）')}
+  return GH.dir+'/'+name;
+}
 function ghToken(){try{return localStorage.getItem('fuko_gh_token')||''}catch(e){return ''}}
 function setGhToken(v){try{localStorage.setItem('fuko_gh_token',String(v||''))}catch(e){}}
 function ghB64(buf){
