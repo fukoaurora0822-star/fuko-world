@@ -1106,7 +1106,7 @@ function getPhotos(){return dataGet('photos',[])}
 const VCAT_N={stage:{zh:'舞台',en:'Stage',ja:'ステージ',ko:'무대'},short:{zh:'短视频',en:'Short video',ja:'ショート',ko:'숏폼'},long:{zh:'长视频',en:'Long video',ja:'長編動画',ko:'롱폼 영상'},fan:{zh:'粉丝剪辑',en:'Fan edit',ja:'ファン編集',ko:'팬 편집'}};
 function VCAT(k){const m=VCAT_N[k]||VCAT_N.stage;return m[LANG]||m.zh}
 const VCAT_ORDER=['stage','short','long','fan'];
-function getVids(){return (dataGet('vids',[])||[]).map(function(v){var c=(v&&v.cat)||'stage';if(c!=='stage'&&c!=='short')c='stage';return Object.assign({},v,{cat:c})})}
+function getVids(){return (dataGet('vids',[])||[]).map(function(v){var c=(v&&v.cat)||'stage';if(VCAT_ORDER.indexOf(c)<0)c='stage';return Object.assign({},v,{cat:c})})}
 function getTracks(){return dataGet('tracks',[])}
 function getHearts(){const m=me();return m?(m.hearts||0):0}
 function getDates(){return dataGet('dates',[])}
@@ -1172,7 +1172,11 @@ async function delMsg(id){
 async function clPushNow(){  if(!clOn()) return;
   CL_STATE='saving';
   const t=await clToken();
-  const data={};['vids','photos','tracks','dates','letters','profile','hero'].forEach(function(k){data[k]=dataGet(k,k==='hero'?'fumi/hero-main.jpg':(k==='profile'?{}:[]))});
+  const data={};
+  const DEF_PUSH={hero:'fumi/hero-main.jpg',profile:{},notes:[],vids:[],photos:[],tracks:[],dates:[],letters:[]};
+  ['vids','photos','tracks','dates','notes','letters','profile','hero'].forEach(function(k){data[k]=dataGet(k,DEF_PUSH[k])});
+  /* 手写信为空时（例如刚删光）也要明确推一个空数组，覆盖掉云端旧内容 */
+  if(!Array.isArray(data.notes)) data.notes=[];
   const r=await fetch(clBase()+'/rest/v1/fuko_site',{method:'POST',headers:{apikey:CLOUD.k,Authorization:'Bearer '+t,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([{id:'site',data:data}])});
   if(!r.ok){const _t=await r.text();console.error('❌发布失败 HTTP '+r.status,_t);throw new Error('WRITE '+r.status)}
   CL_STATE='ok';
