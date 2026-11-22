@@ -1329,7 +1329,7 @@ function lettersHTML(){
    +'<div id="msgList">'+list+'</div></div>';
 }
 function notesHTML(){
-  const ns=getNotes();
+  const ns=getNotes().filter(function(n){return !n.hidden});
   const body=ns.length?ns.map(function(n,idx){
     const head='<div class="head"><b>Fuko</b><em>'+esc(n.title||('letter 0'+(idx+1)))+'</em></div>';
     const inner=n.img2
@@ -1799,8 +1799,9 @@ function adPanelHTML(){
   const nEdit=adEditNote!==null&&ns[adEditNote];
   const nlist=adList(ns,function(x,i){
     return '<div class="ad-item">'+(x.img1?'<img class="thumb" alt="" src="'+esc(x.img1)+'">':'')
-      +'<span class="t">'+esc(x.title||('letter 0'+(i+1)))+'</span>'
+      +'<span class="t">'+esc(x.title||('letter 0'+(i+1)))+(x.hidden?' · 未发布':'')+'</span>'
       +'<button class="edit" data-op="edit-note" data-i="'+i+'">'+A('edit')+'</button>'
+      +'<button class="edit" data-op="toggle-note" data-i="'+i+'">'+(x.hidden?'显示':'隐藏')+'</button>'
       +'<button class="del" data-op="del-note" data-i="'+i+'">'+A('del')+'</button></div>';
   },A('el'));
   const c=CLOUD||{};
@@ -1830,8 +1831,10 @@ function adPanelHTML(){
    +'<div class="ad-row"><input type="file" class="input" id="adNFile1" accept="image/*" style="max-width:220px"><button class="btn btn-sm" data-op="upload-note1">📁 图1</button><input type="file" class="input" id="adNFile2" accept="image/*" style="max-width:220px"><button class="btn btn-sm" data-op="upload-note2">📁 图2</button></div>'
    +'<div class="ad-row"><input class="input" id="adNCap" placeholder="'+A('ph_nCap')+'" value="'+(nEdit?esc(nEdit.cap||''):'')+'"></div>'
    +'<textarea class="batch" id="adNText" placeholder="'+A('ph_nText')+'">'+(nEdit?esc(nEdit.text||''):'')+'</textarea>'
-   +'<div class="ad-row"><button class="btn btn-sm" data-op="save-note">'+(nEdit?A('save'):A('add_note'))+'</button>'
-     +(nEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-note">'+A('cancel')+'</button>':'')+'</div>'
+   +'<div class="ad-row" style="margin-top:6px"><button class="btn" data-op="save-note">'+(nEdit?'发布修改 ♡':'发布到前台 ♡')+'</button>'
+     +(nEdit?'<button class="btn btn-ghost btn-sm" data-op="cancel-note">'+A('cancel')+'</button>':'')
+     +'<button class="btn btn-ghost btn-sm" data-op="new-note">＋ 新写一封</button></div>'
+   +'<div class="ad-row"><span class="hint" style="margin:0">填好标题 + 图片（或文字）后点「发布到前台」，才会出现在页面的 ④ Fuko 的话 板块。</span></div>'
    +nlist+'</section>'
 
    +'<section class="ad-sec"><h3>'+A('s5b')+'</h3><p class="hint">'+A('h5b')+'</p>'+llist+'</section>'
@@ -2042,15 +2045,24 @@ $('#adBody').addEventListener('click',function(e){
   if(op==='del-date'){const ds=getDates();ds.splice(i,1);dataSet('dates',ds);adEditDate=null;renderAdmin()}
   if(op==='save-note'){
     const ns=getNotes().slice();
-    const obj={id:'n'+Date.now(),title:$('#adNTitle').value.trim(),img1:$('#adNImg1').value.trim(),img2:$('#adNImg2').value.trim(),cap:$('#adNCap').value.trim(),text:$('#adNText').value.trim()};
+    const obj={id:'n'+Date.now(),title:$('#adNTitle').value.trim(),img1:$('#adNImg1').value.trim(),img2:$('#adNImg2').value.trim(),cap:$('#adNCap').value.trim(),text:$('#adNText').value.trim(),hidden:false};
     if(!obj.img1&&!obj.text)return toast(A('t_note'));
-    if(adEditNote!==null&&ns[adEditNote]){obj.id=ns[adEditNote].id;ns[adEditNote]=obj}
+    if(adEditNote!==null&&ns[adEditNote]){obj.id=ns[adEditNote].id;obj.hidden=!!ns[adEditNote].hidden;ns[adEditNote]=obj}
     else{ns.push(obj)}
     saveNotes(ns);adEditNote=null;toast(A('t_saved'));renderAdmin();render();
   }
   if(op==='edit-note'){adEditNote=i;renderAdmin()}
   if(op==='cancel-note'){adEditNote=null;renderAdmin()}
   if(op==='del-note'){const ns=getNotes().slice();ns.splice(i,1);saveNotes(ns);adEditNote=null;renderAdmin();render()}
+  if(op==='new-note'){
+    adEditNote=null;
+    ['adNTitle','adNImg1','adNImg2','adNCap','adNText'].forEach(function(id){const n=$('#'+id);if(n)n.value=''});
+    renderAdmin();
+  }
+  if(op==='toggle-note'){
+    const ns=getNotes().slice();
+    if(ns[i]){ns[i].hidden=!ns[i].hidden;saveNotes(ns);toast(ns[i].hidden?'已从前台隐藏':'已在前台显示');renderAdmin();render()}
+  }
   if(op==='del-msg'){
     const id=el.getAttribute('data-id')||'';
     (async function(){ await delMsg(id); toast(A('t_delmsg')); renderAdmin(); render(); })();
