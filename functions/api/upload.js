@@ -1,6 +1,7 @@
 // Cloudflare Pages Function —— 社区媒体的 GitHub 上传代理
 // 路径：POST /api/upload?name=chat_1699999999999.mp4
 // 需要在 Cloudflare Pages 项目里配置环境变量 GH_TOKEN（仓库写入权限的令牌）
+// 部署标记：2026-11-23 触发重新部署（让 GH_TOKEN 生效）
 // 可选：GH_OWNER / GH_REPO / GH_DIR（默认 fukoaurora0822-star / fuko-world / fumi）
 
 const DEFAULTS = { owner: 'fukoaurora0822-star', repo: 'fuko-world', dir: 'fumi' };
