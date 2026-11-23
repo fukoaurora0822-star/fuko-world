@@ -434,7 +434,6 @@ input,textarea,select{font-family:inherit}
 
 /* ================= 个人中心 ================= */
 .me-card{display:flex;gap:14px;align-items:center;padding:18px 16px}
-.me-ava{flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 48% 38%,#fff,#FBEAF0 52%,#F2DCE6);box-shadow:inset 0 0 0 4px rgba(255,255,255,.92),0 8px 18px rgba(235,210,222,.5);font-family:var(--script);font-size:30px;color:#C98CA6}
 .me-info b{display:block;font-size:16px;font-weight:500;letter-spacing:.06em}
 .me-info span{font-size:11px;letter-spacing:.12em;color:#B79AA7}
 .me-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
@@ -675,7 +674,6 @@ body::before{display:none!important}
 
 /* 我的页面 */
 .me-card,.me-stat{background:#fff!important;border:1px solid var(--line)!important;box-shadow:none!important}
-.me-ava{background:#FBE3EA!important;color:#8E586E!important;box-shadow:none!important;font-family:var(--sans)!important;font-weight:700}
 .me-info b{color:#493A40!important}
 .me-info span,.me-stat span{color:#A98B93!important}
 .me-stat b{color:#493A40!important}
@@ -766,7 +764,6 @@ img, svg{ -webkit-user-drag:none; }
 .ch-empty{ color:#BFA3B0; font-size:12px; text-align:center; padding:40px 12px; }
 .ch-msg{ display:flex; gap:8px; margin-bottom:12px; align-items:flex-start; }
 .ch-msg.own{ flex-direction:row-reverse; }
-.ch-ava{ width:30px; height:30px; border-radius:50%; flex:0 0 30px; background:#F7CBD8; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
 .ch-bub{ max-width:76%; background:#fff; border:1px solid #F3DCE4; border-radius:14px; padding:8px 11px; box-shadow:0 2px 8px rgba(238,162,182,.07); }
 .ch-msg.own .ch-bub{ background:#FDE9EF; border-color:#F6CFDC; }
 .ch-meta{ display:flex; gap:6px; align-items:baseline; margin-bottom:3px; }
@@ -789,17 +786,10 @@ img, svg{ -webkit-user-drag:none; }
 .cm-login{ padding:22px 16px; }
 @media (max-width:520px){ .ch-wrap{ height:min(70vh,560px); } .ch-bub{ max-width:80%; } }
 /* 头像 */
-.av{ display:inline-flex; align-items:center; justify-content:center; border-radius:50%; overflow:hidden; flex:none; vertical-align:middle; }
-.av svg{ width:100%; height:100%; display:block; }
-.ch-ava{ background:transparent !important; overflow:hidden; padding:0 }
-.ch-ava svg{ width:100%; height:100%; display:block }
-.me-ava svg{ width:100%; height:100%; display:block; border-radius:50% }
 .gb-meta{ display:flex; align-items:center; gap:6px }
-.gb-meta .av{ box-shadow:0 1px 4px rgba(199,126,146,.2) }
 /* 留言回复 */
 .gb-reps{ margin:8px 0 0; display:flex; flex-direction:column; gap:6px }
 .gb-rep{ display:flex; gap:6px; align-items:flex-start; background:#FFF6F8; border:1px dashed #F3DCE4; border-radius:10px; padding:6px 8px }
-.gb-rep .av{ box-shadow:none }
 .gb-rep-body{ display:block; font-size:11.5px; line-height:1.55; color:#6B5158 }
 .gb-rep-body b{ color:#C77E92; font-weight:600; margin-right:4px }
 .gb-rep-body span{ word-break:break-word }
@@ -822,9 +812,6 @@ img, svg{ -webkit-user-drag:none; }
 /* 注册页语言 + 头像预览 */
 .auth-lang{ position:static; display:flex; justify-content:center; gap:6px; margin:0 0 14px }
 .auth-lang button{ width:34px; height:24px; font-size:11px; border-radius:999px; letter-spacing:0 }
-.auth-av{ display:flex; align-items:center; gap:8px; margin:2px 0 10px; justify-content:center }
-.auth-av .av{ width:52px; height:52px; box-shadow:0 4px 12px rgba(238,162,182,.25) }
-.auth-av em{ font-style:normal; font-size:11px; color:#A98B93 }
 body[data-page="community"] .ch-bar{ padding-right:70px; }
 body[data-page="community"] #bgmBtn{ bottom:auto; top:calc(env(safe-area-inset-top, 0px) + 66px); right:12px; opacity:.85; transform:scale(.9); }
 </style>
@@ -935,8 +922,6 @@ body[data-page="community"] #bgmBtn{ bottom:auto; top:calc(env(safe-area-inset-t
       <button data-lang="ja" type="button">日</button>
       <button data-lang="ko" type="button">한</button>
     </div>
-    <div class="auth-av" id="authAv" style="display:none"><span class="av" id="authAvBox"></span>
-      <em data-i18n="auth_av_tip">这是你的专属 Fumimi</em></div>
     <div class="auth-tabs" id="authTabs">
       <button type="button" data-mode="login" class="on" data-i18n="tab_login">登录</button>
       <button type="button" data-mode="reg" data-i18n="tab_reg">注册</button>
@@ -1034,112 +1019,6 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function fmtDate(ts,lang){const d=new Date(ts);const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');
   return lang==='en'?(m+'/'+dd+'/'+y):(y+'.'+m+'.'+dd)}
-
-/* ============ Fumimi 头像（按昵称确定性生成，每人不重复） ============ */
-const AV_PAL=[
- {bg:'#FFF1F6',fur:'#FFE7EF',inner:'#FFD2E1',acc:'#F5A6BF'},
- {bg:'#FFF7EC',fur:'#FFEFD9',inner:'#FFDDBB',acc:'#F0B78C'},
- {bg:'#F0FAF2',fur:'#E8F5E8',inner:'#D2EBD0',acc:'#8FCB9B'},
- {bg:'#F4F1FD',fur:'#EBE5FA',inner:'#D9CEF3',acc:'#A896DF'},
- {bg:'#FFF2EF',fur:'#FFE5DF',inner:'#FFD0C6',acc:'#F59E8C'},
- {bg:'#EEF7FC',fur:'#E4F2F9',inner:'#CAE5F3',acc:'#87BFDD'},
- {bg:'#FDF3E4',fur:'#FBEBCC',inner:'#F5DCAD',acc:'#D5924E'},
- {bg:'#F1F7EC',fur:'#E7F1DE',inner:'#D6E8C4',acc:'#7FA668'},
- {bg:'#FBF0F7',fur:'#F5E4EF',inner:'#E9CFE0',acc:'#B980A6'},
- {bg:'#FFF8EE',fur:'#FDF0DA',inner:'#F6E0B8',acc:'#D9A05B'},
- {bg:'#EFF6F6',fur:'#E4EFEE',inner:'#CCE3E0',acc:'#6FA9A2'},
- {bg:'#F4F4FC',fur:'#E9E9F7',inner:'#D5D5EE',acc:'#8C8CC6'}
-];
-function _avHash(str){
-  var h=2166136261,u=String(str||'fumimi').toLowerCase().replace(/\s+/g,'');
-  for(var i=0;i<u.length;i++){h^=u.charCodeAt(i);h=(h*16777619)>>>0}
-  return h>>>0;
-}
-function fumiAv(nick){
-  var h=_avHash(nick);
-  var PAL=[
-    {bg:'#FCEEF3',hair:'#FFDCE7',hair2:'#F7C4D6',acc:'#F07C8C',face:'#FFFBF8'},
-    {bg:'#FEF5E9',hair:'#FFEFDA',hair2:'#F6DEB6',acc:'#DFA05B',face:'#FFFCF7'},
-    {bg:'#EEF8F1',hair:'#E5F5E9',hair2:'#C9E7D4',acc:'#77B394',face:'#FBFFFC'},
-    {bg:'#F2EFFB',hair:'#EDE6FB',hair2:'#D8CCF2',acc:'#A88FDB',face:'#FDFBFF'},
-    {bg:'#FFF0EC',hair:'#FFE4DF',hair2:'#F8CAC2',acc:'#ED8B79',face:'#FFFBF9'},
-    {bg:'#ECF5FB',hair:'#E4F1FA',hair2:'#C4E0F3',acc:'#79B2D6',face:'#FAFDFF'}
-  ];
-  var P=PAL[h%PAL.length];
-  var ink='#4B4147';
-  var BOWC=['#4B4147','#EE8FA6','#B49BDD','#DF5F5E','#8C7A85'][(h>>3)%5];
-  var eyes=(h>>6)%3, clip=(h>>9)%6, mouth=(h>>12)%3, blush=(h>>15)%2;
-  var eyeSvg, mouthSvg, clipSvg, blushSvg, bowSvg, sideBows;
-  if(eyes===0){
-    eyeSvg='<ellipse cx="40.5" cy="63" rx="6.2" ry="7" fill="'+ink+'"/>'
-      +'<ellipse cx="59.5" cy="63" rx="6.2" ry="7" fill="'+ink+'"/>'
-      +'<circle cx="42.6" cy="60" r="2.4" fill="#fff"/><circle cx="61.6" cy="60" r="2.4" fill="#fff"/>'
-      +'<circle cx="38.4" cy="66.6" r="1.1" fill="#fff" opacity=".7"/><circle cx="57.4" cy="66.6" r="1.1" fill="#fff" opacity=".7"/>';
-  }else if(eyes===1){
-    eyeSvg='<ellipse cx="40.5" cy="63" rx="6.8" ry="7.6" fill="'+ink+'"/>'
-      +'<ellipse cx="59.5" cy="63" rx="6.8" ry="7.6" fill="'+ink+'"/>'
-      +'<circle cx="42.9" cy="59.3" r="2.8" fill="#fff"/><circle cx="61.9" cy="59.3" r="2.8" fill="#fff"/>'
-      +'<path d="M35.4 54.6l-2.6-2.2M45.2 52.8l1.7-2.9M64.6 54.6l2.6-2.2M54.8 52.8l-1.7-2.9" stroke="'+ink+'" stroke-width="1.5" stroke-linecap="round" fill="none"/>';
-  }else{
-    eyeSvg='<ellipse cx="40.5" cy="63" rx="6.2" ry="7" fill="'+ink+'"/>'
-      +'<ellipse cx="59.5" cy="63" rx="6.2" ry="7" fill="'+ink+'"/>'
-      +'<circle cx="42.8" cy="60.2" r="2.4" fill="#fff"/><circle cx="61.8" cy="60.2" r="2.4" fill="#fff"/>'
-      +'<circle cx="39" cy="62.4" r="1.1" fill="#fff" opacity=".8"/><circle cx="58" cy="62.4" r="1.1" fill="#fff" opacity=".8"/>'
-      +'<circle cx="44.2" cy="67.6" r=".95" fill="#fff" opacity=".5"/><circle cx="63.2" cy="67.6" r=".95" fill="#fff" opacity=".5"/>';
-  }
-  if(mouth===0){
-    mouthSvg='<path d="M46.4 73.6q3.6 3.2 7.2 0" stroke="'+ink+'" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
-  }else if(mouth===1){
-    mouthSvg='<ellipse cx="50" cy="73.8" rx="2.6" ry="2" fill="#F2748D"/><ellipse cx="50" cy="74.6" rx="1.3" ry=".95" fill="#FF9FB2" opacity=".75"/>';
-  }else{
-    mouthSvg='<path d="M47 73.4q3 3 6 0" stroke="'+ink+'" stroke-width="1.4" fill="none" stroke-linecap="round"/>'
-      +'<path d="M50 71.6v1.4" stroke="'+ink+'" stroke-width="1.2" stroke-linecap="round"/>';
-  }
-  clipSvg=[
-    '<g><path d="M67 44.6c2.6-5.6 4-8 5.2-9.4M71 41.6c1-3.6 1.6-5 2.4-6" stroke="'+ink+'" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
-      +'<circle cx="67.4" cy="45.4" r="3.4" fill="#E84A48" stroke="'+ink+'" stroke-width="1.2"/>'
-      +'<circle cx="72.2" cy="42.6" r="3" fill="#E84A48" stroke="'+ink+'" stroke-width="1.2"/>'
-      +'<circle cx="66.2" cy="44" r="1" fill="#fff" opacity=".85"/><circle cx="71.2" cy="41.4" r=".9" fill="#fff" opacity=".85"/></g>',
-    '<g><path d="M72 35.4c3-2.4 6.4.6 5.2 3.6-1.6 2.6-5.2 2.6-5.2-2.6z" fill="#E84A48" stroke="'+ink+'" stroke-width="1.2"/>'
-      +'<path d="M71.6 35.6q-2.4-3.4-3.2-5.6" stroke="#7FAF62" stroke-width="1.4" fill="none" stroke-linecap="round"/></g>',
-    '<g><path d="M71.5 41.8c2.6-2.4 5.8-.8 5.2 2-.9 2.4-5.2 2.4-5.2-2z" fill="#F1839A" stroke="'+ink+'" stroke-width="1.1"/>'
-      +'<path d="M71.5 41.8c-2.6-2.4-5.8-.8-5.2 2 .9 2.4 5.2 2.4 5.2-2z" fill="#F1839A" stroke="'+ink+'" stroke-width="1.1"/>'
-      +'<circle cx="71.5" cy="41.8" r="1.4" fill="#FFD3DE"/></g>',
-    '<g><path d="M72 35.4l1.6 3.6 3.8.4-2.8 2.5.9 3.8-3.5-2-3.4 2 .9-3.8-2.9-2.5 3.8-.4z" fill="#F7D25E" stroke="'+ink+'" stroke-width="1"/></g>',
-    '<g><circle cx="71" cy="39.6" r="2.5" fill="#F5A9C4"/><circle cx="75.2" cy="37.8" r="2.1" fill="#F5A9C4"/><circle cx="73.2" cy="43" r="2.1" fill="#F5A9C4"/><circle cx="72.6" cy="39.8" r="1.3" fill="#FFF0B6"/></g>',
-    ''
-  ][clip];
-  blushSvg='<ellipse cx="35.4" cy="69.8" rx="4.4" ry="2.4" fill="'+P.acc+'" opacity=".3"/>'
-    +'<ellipse cx="64.6" cy="69.8" rx="4.4" ry="2.4" fill="'+P.acc+'" opacity=".3"/>';
-  if(blush){
-    blushSvg+='<ellipse cx="35.6" cy="71.4" rx="5.4" ry="2.9" fill="'+P.acc+'" opacity=".2"/>'
-      +'<ellipse cx="64.4" cy="71.4" rx="5.4" ry="2.9" fill="'+P.acc+'" opacity=".2"/>';
-  }
-  bowSvg='<path d="M50 26.6c-8.8-7-18.6-5.6-16.4 2.4 1.6 7.4 12.6 5.6 16.4-2.4z" fill="'+BOWC+'" stroke="'+ink+'" stroke-width="1.4"/>'
-    +'<path d="M50 26.6c8.8-7 18.6-5.6 16.4 2.4-1.6 7.4-12.6 5.6-16.4-2.4z" fill="'+BOWC+'" stroke="'+ink+'" stroke-width="1.4"/>'
-    +'<circle cx="50" cy="27.4" r="3.4" fill="'+BOWC+'" stroke="'+ink+'" stroke-width="1.2"/>';
-  var oneBow='<path d="M25.6 56.6c-3.4-2.6-6.4-1.6-5.6 1.4.6 2.6 4 1.6 5.6-1.4z" fill="'+P.acc+'" stroke="'+ink+'" stroke-width="1"/>'
-    +'<path d="M25.6 56.6c3.4-2.6 6.4-1.6 5.6 1.4-.6 2.6-4 1.6-5.6-1.4z" fill="'+P.acc+'" stroke="'+ink+'" stroke-width="1"/>'
-    +'<circle cx="25.6" cy="56.6" r="1.4" fill="#fff" opacity=".95" stroke="'+ink+'" stroke-width=".8"/>';
-  sideBows='<g>'+oneBow+'</g><g transform="translate(100,0) scale(-1,1)">'+oneBow+'</g>';
-  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="fumimi avatar">'
-   +'<circle cx="50" cy="50" r="50" fill="'+P.bg+'"/>'
-   +'<ellipse cx="50" cy="88.6" rx="17.5" ry="12.4" fill="#FFFFFF" stroke="'+ink+'" stroke-width="2.2"/>'
-   +'<circle cx="31.6" cy="82.6" r="5.8" fill="#FFFFFF" stroke="'+ink+'" stroke-width="2.2"/>'
-   +'<circle cx="68.4" cy="82.6" r="5.8" fill="#FFFFFF" stroke="'+ink+'" stroke-width="2.2"/>'
-   +'<ellipse cx="50" cy="90" rx="7.4" ry="5.8" fill="'+P.hair2+'"/>'
-   +'<path d="M50 17C36 17 24 25 22 38C21 47 17 57 17 65C17 73 21 79 26 79C30 79 33 76 35 72C38 78 44 80 50 80C56 80 62 78 65 72C67 76 70 79 74 79C79 79 83 73 83 65C83 57 79 47 78 38C76 25 64 17 50 17Z" fill="'+P.hair+'" stroke="'+ink+'" stroke-width="2.2"/>'
-   +'<ellipse cx="50" cy="63.6" rx="21.4" ry="14.6" fill="'+P.face+'"/>'
-   +'<path d="M31.4 54.6q18.6-12.4 37.2 0" stroke="'+P.hair2+'" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>'
-   +eyeSvg
-   +'<path d="M36.8 57.6l-1.6-1.7M39.4 56.6l-.7-1.8M63.2 57.6l1.6-1.7M60.6 56.6l.7-1.8" stroke="'+ink+'" stroke-width="1.4" stroke-linecap="round" fill="none"/>'
-   +blushSvg+mouthSvg+bowSvg+clipSvg+sideBows
-   +'</svg>';
-}
-
-function avHTML(nick,size){
-  return '<span class="av" style="width:'+(size||24)+'px;height:'+(size||24)+'px">'+fumiAv(nick)+'</span>';
-}
 
 /* ============ 1. 账号 ============ */
 const USERS_KEY='fuko_users', SESSION_KEY='fuko_session';
@@ -1806,7 +1685,7 @@ function lettersHTML(){
     const key=noteKey(x), rs=by[key]||[];
     rs.sort(function(a,b){return (a.ts||0)-(b.ts||0)});
     const repHTML=rs.length?('<div class="gb-reps">'+rs.map(function(r){
-      return '<div class="gb-rep">'+avHTML(r.nick,18)
+      return '<div class="gb-rep">'
         +'<div class="gb-rep-body"><b>'+esc(r.nick||'')+'</b>'
         +'<span>'+esc(r.text)+'</span><i>'+fmtDate(r.ts,LANG)+'</i></div></div>';
     }).join('')+'</div>'):'';
@@ -1814,7 +1693,7 @@ function lettersHTML(){
       +'<span class="gb-pin"></span>'
       +(x.img?'<div class="nc-img"><img alt="" src="'+esc(x.img)+'" loading="lazy" onerror="this.parentNode.style.display=\'none\'"></div>':'')
       +(x.text?'<div class="gb-txt">'+esc(x.text)+'</div>':'')
-      +'<div class="gb-meta">'+avHTML(x.nick,20)+'<span>'+(x.nick?esc(x.nick):'')+(x.nick?' · ':'')+fmtDate(x.ts,LANG)+'</span></div>'
+      +'<div class="gb-meta"><span>'+(x.nick?esc(x.nick):'')+(x.nick?' · ':'')+fmtDate(x.ts,LANG)+'</span></div>'
       +repHTML
       +'<button type="button" class="gb-rep-btn" data-nick="'+esc(x.nick||'')+'">'+mt('re')+'</button>'
       +'<div class="gb-rep-form" hidden><input maxlength="120" placeholder="'+mt('re_ph').replace('{n}',(x.nick||'Fuko'))+'">'
@@ -1879,7 +1758,7 @@ function meHTML(){
     return c;
   })();
   const g={f:t('g_f'),m:t('g_m'),x:t('g_x')}[m.gender]||t('g_x');
-  return '<div class="card me-card"><div class="me-ava">'+fumiAv(m.nick)+'</div>'
+  return '<div class="card me-card">'
    +'<div class="me-info"><b>'+esc(m.nick)+'</b><span>'+t('me_since')+' '+fmtDate(m.joined,LANG)+' · '+g+'</span></div></div>'
    +'<div class="me-grid">'
    +'<div class="me-stat"><b>'+days+'</b><span>'+t('me_joined')+' · '+t('me_days')+'</span></div>'
@@ -2029,7 +1908,7 @@ async function chatUpload(file){
 }
 function chatBubbleHTML(x,ownNick){
   const own=String(x.nick||'').toLowerCase()===String(ownNick||'').toLowerCase();
-  return '<div class="ch-msg'+(own?' own':'')+'"><span class="ch-ava">'+fumiAv(x.nick)+'</span>'
+  return '<div class="ch-msg'+(own?' own':'')+'">'
    +'<div class="ch-bub"><div class="ch-meta"><b>'+esc(x.nick||'')+'</b><i>'+chTime(x.ts)+'</i></div>'
    +(x.text?'<div class="ch-text">'+esc(x.text)+'</div>':'')
    +(x.img?chMediaHTML(x.img):'')
@@ -2309,20 +2188,11 @@ function hideAuth(){
 }
 function setMode(mode){
   authMode=mode;
-  function authAvPaint(){
-  const box=$('#authAvBox'), wrap=$('#authAv'), n=$('#aNick').value.trim();
-  if(!box||!wrap) return;
-  const show=(authMode==='reg'&&n.length>0);
-  wrap.style.display=show?'flex':'none';
-  if(show) box.innerHTML=fumiAv(n);
-}
-$('#aNick').addEventListener('input',authAvPaint);
-$$('#authTabs button').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
+  $$('#authTabs button').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
   $('#genderField').style.display=mode==='reg'?'block':'none';
   $('#authBtn').setAttribute('data-i18n',mode==='reg'?'btn_reg':'btn_login');
   $('#authBtn').textContent=t(mode==='reg'?'btn_reg':'btn_login');
   $('#authErr').textContent='';
-  try{authAvPaint()}catch(e){}
 }
 $$('#authTabs button').forEach(function(b){
   b.addEventListener('click',function(){setMode(b.dataset.mode)});
