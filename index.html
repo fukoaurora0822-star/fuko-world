@@ -747,6 +747,87 @@ body::before{display:none!important}
 .gb .note-empty{width:100%}
 @media(max-width:520px){.gb-nick{width:92px;padding:8px 11px}.gb-msg{padding:10px 13px}.gb-post{padding:10px 16px}}
 </style>
+<style id="no-double-tap-zoom">
+/* 移动端：禁止双击放大（touch-action:manipulation = 允许滚动/捏合，只关掉双击缩放） */
+html,body{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+*, *::before, *::after{ touch-action: manipulation; }
+a, button, input, textarea, select, label, summary,
+.btn, .tab, .nine, .dir-item, .card, .me-stat, .gb-post, .gb-bar,
+.pet, .pet-img, .pet-btn{ -ms-touch-action: manipulation; }
+img, svg{ -webkit-user-drag:none; }
+@media (pointer: coarse){ button, a, input, textarea, .btn{ -webkit-tap-highlight-color: transparent; } }
+</style>
+<style id="community-css">
+.ch-wrap{ background:#fff; border-radius:18px; box-shadow:0 10px 28px rgba(238,162,182,.14); overflow:hidden; display:flex; flex-direction:column; height:min(70vh,600px); }
+.ch-head{ padding:12px 14px; border-bottom:1px solid #F3DCE4; background:#FFF6F8; display:flex; flex-direction:column; gap:2px; }
+.ch-head b{ font-size:14px; color:#493A40; letter-spacing:.02em; }
+.ch-head span{ font-size:11px; color:#A98B93; }
+.ch-list{ flex:1; overflow-y:auto; padding:14px 12px; background:#FFFAFB; -webkit-overflow-scrolling:touch; }
+.ch-empty{ color:#BFA3B0; font-size:12px; text-align:center; padding:40px 12px; }
+.ch-msg{ display:flex; gap:8px; margin-bottom:12px; align-items:flex-start; }
+.ch-msg.own{ flex-direction:row-reverse; }
+.ch-ava{ width:30px; height:30px; border-radius:50%; flex:0 0 30px; background:#F7CBD8; color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.ch-bub{ max-width:76%; background:#fff; border:1px solid #F3DCE4; border-radius:14px; padding:8px 11px; box-shadow:0 2px 8px rgba(238,162,182,.07); }
+.ch-msg.own .ch-bub{ background:#FDE9EF; border-color:#F6CFDC; }
+.ch-meta{ display:flex; gap:6px; align-items:baseline; margin-bottom:3px; }
+.ch-meta b{ font-size:11px; color:#C77E92; font-weight:600; }
+.ch-meta i{ font-size:10px; color:#C4A9B0; font-style:normal; }
+.ch-text{ font-size:13px; line-height:1.6; color:#493A40; white-space:pre-wrap; word-break:break-word; }
+.ch-img{ display:block; margin-top:6px; max-width:100%; max-height:220px; border-radius:10px; object-fit:cover; }
+.ch-vid{ display:block; margin-top:6px; max-width:100%; max-height:240px; border-radius:10px; background:#000; }
+.ch-vbox{ position:relative; margin-top:6px; border-radius:10px; overflow:hidden; background:#F7E7EC; cursor:pointer; max-height:200px; }
+.ch-vthumb{ display:block; width:100%; max-height:200px; object-fit:cover; pointer-events:none; }
+.ch-play{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.9); color:#C77E92; font-size:15px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(199,126,146,.35); }
+.ch-bar{ display:flex; gap:8px; padding:10px 12px; border-top:1px solid #F3DCE4; background:#fff; align-items:center; }
+.ch-file{ width:38px; height:38px; flex:0 0 38px; border-radius:12px; background:#F8D3DD; color:#C77E92; font-size:20px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none; }
+.ch-file:hover{ background:#F3A7BA; color:#fff; }
+.ch-input{ flex:1; min-width:0; height:38px; border:1px solid #F3DCE4; border-radius:12px; padding:0 12px; font-size:13px; background:#fff; color:#493A40; outline:none; }
+.ch-input:focus{ border-color:#EEA2B6; }
+.ch-send{ height:38px; padding:0 18px; border:0; border-radius:12px; background:#F3A7BA; color:#fff; font-size:13px; font-weight:600; cursor:pointer; }
+.ch-send:disabled{ opacity:.55; }
+.ch-status{ font-size:11px; color:#A98B93; padding:0 12px; min-height:14px; line-height:14px; }
+.cm-login{ padding:22px 16px; }
+@media (max-width:520px){ .ch-wrap{ height:min(70vh,560px); } .ch-bub{ max-width:80%; } }
+/* 头像 */
+.av{ display:inline-flex; align-items:center; justify-content:center; border-radius:50%; overflow:hidden; flex:none; vertical-align:middle; }
+.av svg{ width:100%; height:100%; display:block; }
+.ch-ava{ background:transparent !important; overflow:hidden; padding:0 }
+.ch-ava svg{ width:100%; height:100%; display:block }
+.me-ava svg{ width:100%; height:100%; display:block; border-radius:50% }
+.gb-meta{ display:flex; align-items:center; gap:6px }
+.gb-meta .av{ box-shadow:0 1px 4px rgba(199,126,146,.2) }
+/* 留言回复 */
+.gb-reps{ margin:8px 0 0; display:flex; flex-direction:column; gap:6px }
+.gb-rep{ display:flex; gap:6px; align-items:flex-start; background:#FFF6F8; border:1px dashed #F3DCE4; border-radius:10px; padding:6px 8px }
+.gb-rep .av{ box-shadow:none }
+.gb-rep-body{ display:block; font-size:11.5px; line-height:1.55; color:#6B5158 }
+.gb-rep-body b{ color:#C77E92; font-weight:600; margin-right:4px }
+.gb-rep-body span{ word-break:break-word }
+.gb-rep-body i{ display:block; margin-top:3px; color:#C4A9B0; font-style:normal; font-size:10px; text-align:right }
+.gb-rep-btn{ margin-top:8px; height:26px; padding:0 12px; border:1px solid #F3DCE4; border-radius:999px; background:#fff; color:#C77E92; font-size:11px; cursor:pointer }
+.gb-rep-btn:hover{ background:#FDE9EF }
+.gb-rep-form{ margin-top:8px; display:flex; gap:6px; align-items:center }
+.gb-rep-form input{ flex:1; min-width:0; height:32px; border:1px solid #F3DCE4; border-radius:10px; padding:0 10px; font-size:12px; background:#fff; color:#493A40; outline:none }
+.gb-rep-form input:focus{ border-color:#EEA2B6 }
+.gb-rep-form .gb-rep-send{ height:32px; padding:0 12px; border:0; border-radius:10px; background:#F3A7BA; color:#fff; font-size:12px; cursor:pointer }
+.gb-rep-form .gb-rep-send:disabled{ opacity:.6 }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+@media (max-width:520px){ .gb-note{ flex:1 1 100%; min-width:0 } .gb-rep-body{ font-size:12px } }
+/* 注册页语言 + 头像预览 */
+.auth-lang{ position:static; display:flex; justify-content:center; gap:6px; margin:0 0 14px }
+.auth-lang button{ width:34px; height:24px; font-size:11px; border-radius:999px; letter-spacing:0 }
+.auth-av{ display:flex; align-items:center; gap:8px; margin:2px 0 10px; justify-content:center }
+.auth-av .av{ width:52px; height:52px; box-shadow:0 4px 12px rgba(238,162,182,.25) }
+.auth-av em{ font-style:normal; font-size:11px; color:#A98B93 }
+body[data-page="community"] .ch-bar{ padding-right:70px; }
+body[data-page="community"] #bgmBtn{ bottom:auto; top:calc(env(safe-area-inset-top, 0px) + 66px); right:12px; opacity:.85; transform:scale(.9); }
+</style>
 </head>
 <body data-lang="zh">
 
@@ -848,6 +929,14 @@ body::before{display:none!important}
     <h2 class="auth-title" id="authTitle" data-i18n="auth_title">请先签到，再进小世界</h2>
     <p class="auth-sub" data-i18n="auth_sub">门只为一句话打开：告诉我是你。</p>
 
+    <div class="lang auth-lang" id="authLang">
+      <button data-lang="zh" class="on" type="button">中</button>
+      <button data-lang="en" type="button">EN</button>
+      <button data-lang="ja" type="button">日</button>
+      <button data-lang="ko" type="button">한</button>
+    </div>
+    <div class="auth-av" id="authAv" style="display:none"><span class="av" id="authAvBox"></span>
+      <em data-i18n="auth_av_tip">这是你的专属 Fumimi</em></div>
     <div class="auth-tabs" id="authTabs">
       <button type="button" data-mode="login" class="on" data-i18n="tab_login">登录</button>
       <button type="button" data-mode="reg" data-i18n="tab_reg">注册</button>
@@ -946,6 +1035,82 @@ function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&am
 function fmtDate(ts,lang){const d=new Date(ts);const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');
   return lang==='en'?(m+'/'+dd+'/'+y):(y+'.'+m+'.'+dd)}
 
+/* ============ Fumimi 头像（按昵称确定性生成，每人不重复） ============ */
+const AV_PAL=[
+ {bg:'#FFF1F6',fur:'#FFE7EF',inner:'#FFD2E1',acc:'#F5A6BF'},
+ {bg:'#FFF7EC',fur:'#FFEFD9',inner:'#FFDDBB',acc:'#F0B78C'},
+ {bg:'#F0FAF2',fur:'#E8F5E8',inner:'#D2EBD0',acc:'#8FCB9B'},
+ {bg:'#F4F1FD',fur:'#EBE5FA',inner:'#D9CEF3',acc:'#A896DF'},
+ {bg:'#FFF2EF',fur:'#FFE5DF',inner:'#FFD0C6',acc:'#F59E8C'},
+ {bg:'#EEF7FC',fur:'#E4F2F9',inner:'#CAE5F3',acc:'#87BFDD'},
+ {bg:'#FDF3E4',fur:'#FBEBCC',inner:'#F5DCAD',acc:'#D5924E'},
+ {bg:'#F1F7EC',fur:'#E7F1DE',inner:'#D6E8C4',acc:'#7FA668'},
+ {bg:'#FBF0F7',fur:'#F5E4EF',inner:'#E9CFE0',acc:'#B980A6'},
+ {bg:'#FFF8EE',fur:'#FDF0DA',inner:'#F6E0B8',acc:'#D9A05B'},
+ {bg:'#EFF6F6',fur:'#E4EFEE',inner:'#CCE3E0',acc:'#6FA9A2'},
+ {bg:'#F4F4FC',fur:'#E9E9F7',inner:'#D5D5EE',acc:'#8C8CC6'}
+];
+function _avHash(str){
+  var h=2166136261,u=String(str||'fumimi').toLowerCase().replace(/\s+/g,'');
+  for(var i=0;i<u.length;i++){h^=u.charCodeAt(i);h=(h*16777619)>>>0}
+  return h>>>0;
+}
+function fumiAv(nick){
+  var h=_avHash(nick), P=AV_PAL[h%AV_PAL.length];
+  var eyes=(h>>4)%3, acc=(h>>7)%6, bow=(h>>10)%2, mark=(h>>13)%4;
+  var eyesSvg;
+  if(eyes===0){
+    eyesSvg='<circle cx="40" cy="57" r="3.4" fill="#5B4148"/><circle cx="60" cy="57" r="3.4" fill="#5B4148"/>'
+      +'<circle cx="41.4" cy="55.7" r="1.2" fill="#fff"/><circle cx="61.4" cy="55.7" r="1.2" fill="#fff"/>';
+  }else if(eyes===1){
+    eyesSvg='<path d="M36.4 58.4q3.6-5 7.2 0" stroke="#5B4148" stroke-width="2" fill="none" stroke-linecap="round"/>'
+      +'<path d="M56.4 58.4q3.6-5 7.2 0" stroke="#5B4148" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  }else{
+    eyesSvg='<circle cx="40" cy="57" r="3.2" fill="#5B4148"/><circle cx="41.2" cy="55.8" r="1.1" fill="#fff"/>'
+      +'<path d="M56.4 58.4q3.6-5 7.2 0" stroke="#5B4148" stroke-width="2" fill="none" stroke-linecap="round"/>';
+  }
+  var accSvg=[
+    '<circle cx="76.5" cy="31" r="3.2" fill="#F0707F"/><circle cx="80.6" cy="34" r="2.5" fill="#F58C97"/>'
+      +'<path d="M76.5 31q3-6 7.5-8" stroke="#8FBF6E" stroke-width="1.6" fill="none"/>',
+    '<path d="M76 27.6c3.2-3 7 .4 5.8 4.4-1.8 3-5.8 3-5.8-3z" fill="#F0707F"/>',
+    '<path d="M78 27.6c2.8-2.6 6.8.4 5.6 3.8-1.6 2.8-5.6 2.8-5.6-2.8z" fill="#F9A8BC"/>',
+    '<path d="M78 23l1.7 3.9 4.2.4-3.2 2.7 1 4.1-3.7-2.1-3.7 2.1 1-4.1-3.2-2.7 4.2-.4z" fill="#F6D06B"/>',
+    '<circle cx="78" cy="30" r="2.6" fill="#F7C9DD"/><circle cx="82.4" cy="28.8" r="2.2" fill="#F5B7D2"/>'
+      +'<circle cx="80.4" cy="33.4" r="2.2" fill="#F5B7D2"/>',
+    ''
+  ][acc];
+  var markSvg=[
+    '',
+    '<path d="M50 37.6l1.5 3.4 3.7.4-2.8 2.4.9 3.6-3.3-1.9-3.3 1.9.9-3.6-2.8-2.4 3.7-.4z" fill="'+P.acc+'" opacity=".9"/>',
+    '<path d="M50 38c2.6-2.4 6.2.4 5.1 3.5-1.5 2.6-5.1 2.6-5.1-2.6z" fill="'+P.acc+'" opacity=".85"/>',
+    '<circle cx="50" cy="41" r="2.4" fill="'+P.acc+'" opacity=".85"/><circle cx="43" cy="43.4" r="1.4" fill="'+P.acc+'" opacity=".6"/><circle cx="57" cy="43.4" r="1.4" fill="'+P.acc+'" opacity=".6"/>'
+  ][mark];
+  var bowSvg = bow===0
+    ? '<path d="M50 24.6c-6.4-4.2-11.4-3.2-10.2 1.2.8 3.8 7 3.1 10.2-1.2z" fill="'+P.acc+'"/>'
+      +'<path d="M50 24.6c6.4-4.2 11.4-3.2 10.2 1.2-.8 3.8-7 3.1-10.2-1.2z" fill="'+P.acc+'"/>'
+      +'<circle cx="50" cy="25" r="2.6" fill="#FFFFFF"/>'
+    : '<path d="M28.6 21.8c-4.2-3.2-8.4-2.2-7.4 1.2.6 2.9 4.8 2.4 7.4-.6z" fill="'+P.acc+'"/>'
+      +'<path d="M71.4 21.8c4.2-3.2 8.4-2.2 7.4 1.2-.6 2.9-4.8 2.4-7.4-.6z" fill="'+P.acc+'"/>';
+  return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="fumimi avatar">'
+   +'<circle cx="50" cy="50" r="50" fill="'+P.bg+'"/>'
+   +'<circle cx="50" cy="50" r="46" fill="none" stroke="'+P.acc+'" stroke-width="1.6" opacity=".45"/>'
+   +'<ellipse cx="27" cy="34" rx="13" ry="24" transform="rotate(-20 27 34)" fill="'+P.fur+'"/>'
+   +'<ellipse cx="73" cy="34" rx="13" ry="24" transform="rotate(20 73 34)" fill="'+P.fur+'"/>'
+   +'<ellipse cx="27.8" cy="35" rx="7" ry="16" transform="rotate(-20 27.8 35)" fill="'+P.inner+'"/>'
+   +'<ellipse cx="72.2" cy="35" rx="7" ry="16" transform="rotate(20 72.2 35)" fill="'+P.inner+'"/>'
+   +'<ellipse cx="50" cy="58" rx="29" ry="25" fill="'+P.fur+'"/>'
+   +'<ellipse cx="50" cy="80" rx="18" ry="13" fill="#FFFFFF" opacity=".45"/>'
+   +markSvg+eyesSvg
+   +'<ellipse cx="32.6" cy="65" rx="5.6" ry="3.4" fill="'+P.acc+'" opacity=".35"/>'
+   +'<ellipse cx="67.4" cy="65" rx="5.6" ry="3.4" fill="'+P.acc+'" opacity=".35"/>'
+   +'<path d="M47.6 64.4q2.4 2.4 4.8 0" stroke="#C98CA6" stroke-width="1.6" fill="none" stroke-linecap="round"/>'
+   +'<path d="M53.2 71.6q-3.2 2.6-6.4 0" stroke="#C98CA6" stroke-width="1.3" fill="none" stroke-linecap="round"/>'
+   +bowSvg+accSvg+'</svg>';
+}
+function avHTML(nick,size){
+  return '<span class="av" style="width:'+(size||24)+'px;height:'+(size||24)+'px">'+fumiAv(nick)+'</span>';
+}
+
 /* ============ 1. 账号 ============ */
 const USERS_KEY='fuko_users', SESSION_KEY='fuko_session';
 function users(){return lsGet(USERS_KEY,[])}
@@ -1012,7 +1177,7 @@ zh:{
  e_pw:'密码好像不太对，再想一想？',
  ok_reg:'注册好啦，欢迎来到小世界 ♡',ok_back:'欢迎回来 ♡',
  hero_sub:'一个装满了粉色的小世界',hero_quote:'“天空是草莓汽水味的。”',
- nine:'九个板块',nine_sub:'九扇小门，随便进',numbers:'一点点数字',
+ nine:'十个板块',nine_sub:'十扇小门，随便进',numbers:'一点点数字',
  s_boards:'个板块',s_msgs:'条留言',s_hearts:'颗爱心',s_photos:'张照片',
  dir_title:'板块导览',dir_sub:'栏目内目录 · 随时切换',
  prev:'上一扇门',next:'下一扇门',back_home:'回到首页',
@@ -1057,7 +1222,7 @@ en:{
  e_pw:'the password seems off, think again?',
  ok_reg:'you\'re in — welcome to the little world ♡',ok_back:'welcome back ♡',
  hero_sub:'a little world filled with pink',hero_quote:'“the sky tastes like strawberry soda.”',
- nine:'Nine Rooms',nine_sub:'nine doors, step in as you like',numbers:'Little numbers',
+ nine:'Ten Rooms',nine_sub:'ten doors, step in as you like',numbers:'Little numbers',
  s_boards:'rooms',s_msgs:'notes',s_hearts:'hearts',s_photos:'photos',
  dir_title:'Directory',dir_sub:'in-page index · switch anytime',
  prev:'previous door',next:'next door',back_home:'back home',
@@ -1102,7 +1267,7 @@ ja:{
  e_pw:'パスワードが少し違うみたい、もう一度？',
  ok_reg:'登録できました、ようこそ ♡',ok_back:'おかえりなさい ♡',
  hero_sub:'ピンクでいっぱいの小さな世界',hero_quote:'「空は いちごソーダの味がする。」',
- nine:'九つの部屋',nine_sub:'九つの扉、好きに入って',numbers:'すこしの数字',
+ nine:'十の部屋',nine_sub:'十の扉、好きに入って',numbers:'すこしの数字',
  s_boards:'部屋',s_msgs:'メッセージ',s_hearts:'ハート',s_photos:'写真',
  dir_title:'部屋ガイド',dir_sub:'ページ内目次 · いつでも切替',
  prev:'前の扉',next:'次の扉',back_home:'ホームへ',
@@ -1147,7 +1312,7 @@ ko:{
  e_pw:'비밀번호가 조금 달라요, 다시 볼까요?',
  ok_reg:'가입 완료, 작은 세계에 오신 것을 환영해요 ♡',ok_back:'다시 오셨네요 ♡',
  hero_sub:'분홍빛으로 가득한 작은 세계',hero_quote:'“하늘은 딸기 소다 맛이에요.”',
- nine:'아홉 개의 방',nine_sub:'아홉 개의 문, 마음대로',numbers:'작은 숫자들',
+ nine:'열 개의 방',nine_sub:'열 개의 문, 마음대로',numbers:'작은 숫자들',
  s_boards:'개의 방',s_msgs:'개의 메시지',s_hearts:'개의 하트',s_photos:'장의 사진',
  dir_title:'방 안내',dir_sub:'페이지 내 목차 · 언제든 이동',
  prev:'이전 문',next:'다음 문',back_home:'홈으로',
@@ -1191,7 +1356,8 @@ const BOARDS=[
  {id:'letters',en:'LETTERS',icon:'letters'},
  {id:'notes',en:'FROM FUKO',icon:'notes'},
  {id:'game',en:'FUMIMI',icon:'game'},
- {id:'me',en:'MY PAGE',icon:'me'}
+ {id:'me',en:'MY PAGE',icon:'me'},
+ {id:'community',en:'COMMUNITY',icon:'letters'}
 ];
 const FUMI_IMG={
  profile:'fumi/profile.png', stage:'fumi/stage.png', album:'fumi/album.png',
@@ -1255,8 +1421,8 @@ const LT={
 };
 function lt(k){const d=LT[LANG]||LT.zh;return d[k]!==undefined?d[k]:(LT.zh[k]||'')}
 function ltPara(k){return lt(k).split('\n\n').map(function(p){return '<p>'+esc(p)+'</p>'}).join('')}
-function bid(i){return t('b'+(i+1))}
-function bdesc(i){return t('d'+(i+1))}
+function bid(i){var b=BOARDS[i];if(b&&b.id==='community')return cmt('name');return t('b'+(i+1))}
+function bdesc(i){var b=BOARDS[i];if(b&&b.id==='community')return cmt('desc');return t('d'+(i+1))}
 
 /* ============ 4. Fumimi / 装饰 SVG ============ */
 const FUMI='<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">'+
@@ -1303,7 +1469,7 @@ function applyStatic(){
   $$('[data-i18n-ph]').forEach(function(el){const k=el.getAttribute('data-i18n-ph');if(T[LANG][k]!=null)el.placeholder=T[LANG][k]});
   document.documentElement.lang=LANG==='zh'?'zh-CN':LANG;
   document.body.setAttribute('data-lang',LANG);
-  $$('#lang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===LANG)});
+  $$('#lang button, #authLang button').forEach(function(b){b.classList.toggle('on',b.dataset.lang===LANG)});
 }
 
 /* ============ 6. 首页 ============ */
@@ -1312,7 +1478,7 @@ function homeHTML(){
   const tiles=BOARDS.map(function(b,i){
     const tint=i%3===0?'rgba(247,217,228,.6)':(i%3===1?'rgba(232,225,242,.6)':'rgba(226,240,239,.55)');
     return '<a class="tile" href="#/'+b.id+'" style="--tint:'+tint+'">'
-      +'<span class="num">0'+(i+1)+'</span><img class="tile-fumi" alt="" src="'+FUMI_IMG[b.icon]+'">'
+      +'<span class="num">'+(i+1<10?'0':'')+(i+1)+'</span><img class="tile-fumi" alt="" src="'+FUMI_IMG[b.icon]+'">'
       +'<h4>'+bid(i)+'</h4><span class="en">'+b.en+'</span><p>'+bdesc(i)+'</p></a>';
   }).join('');
   return '<div class="wrap">'
@@ -1331,7 +1497,7 @@ function homeHTML(){
      +'<div class="divider"><span class="l"></span>✦<span>♡</span>✦<span class="r"></span></div>'
    +'</section>'
    +'<section style="padding-top:18px">'
-     +'<div class="sec-head"><span class="kicker">NINE ROOMS</span><h2 class="h2">'+t('nine')+'</h2>'
+     +'<div class="sec-head"><span class="kicker">TEN ROOMS</span><h2 class="h2">'+t('nine')+'</h2>'
      +'<span style="font-size:11px;color:#BFA3B0;letter-spacing:.1em">'+t('nine_sub')+'</span></div>'
      +'<div class="nine">'+tiles+'</div>'
    +'</section>'
@@ -1353,7 +1519,18 @@ const NOTES_DEFAULT=[
 
 function dataGet(k,d){ if(REM && REM[k]!==undefined && REM[k]!==null) return REM[k]; return lsGet('fuko_'+k,d) }
 function dataSet(k,v){ if(!REM)REM={};REM[k]=v;lsSet('fuko_'+k,v);pushCloud() }
-function getMsgs(){return MSGS||lsGet('fuko_msg',[])}
+const REPLY_MARK='\u2060', REPLY_SEP='\u2063';
+function allRows(){return MSGS||lsGet('fuko_msg',[])}
+function isReplyRow(x){return String((x&&x.nick)||'').indexOf(CHAT_MARK+REPLY_MARK)===0}
+function isChatRow(x){var n=String((x&&x.nick)||'');return n.charAt(0)===CHAT_MARK&&!isReplyRow(x)}
+function getMsgs(){return allRows().filter(function(x){return !isChatRow(x)&&!isReplyRow(x)})}
+function noteKey(x){return String((x&&x.id)||('k'+(x&&x.ts)))}
+function getReplies(){
+  return allRows().filter(isReplyRow).map(function(x){
+    var t=String(x.text||''), a=t.indexOf(REPLY_SEP), b=a>=0?t.indexOf(REPLY_SEP,a+1):-1;
+    return {id:x.id, parent:a>=0?t.slice(a+1,b):'', text:b>=0?t.slice(b+1):t, nick:String(x.nick||'').slice(2), img:x.img||'', ts:chTs(x.ts)};
+  });
+}
 function getNotes(){return dataGet('notes',NOTES_DEFAULT)}
 function getPhotos(){return dataGet('photos',[])}
 const VCAT_N={stage:{zh:'舞台',en:'Stage',ja:'ステージ',ko:'무대'},short:{zh:'短视频',en:'Short video',ja:'ショート',ko:'숏폼'},long:{zh:'长视频',en:'Long video',ja:'長編動画',ko:'롱폼 영상'},fan:{zh:'粉丝剪辑',en:'Fan edit',ja:'ファン編集',ko:'팬 편집'}};
@@ -1409,6 +1586,23 @@ async function postMsg(nick,text,img){
     }catch(e){}
   }
   const l=lsGet('fuko_msg',[]); l.unshift(Object.assign({id:'m'+Date.now()+Math.random().toString(36).slice(2,6)},obj)); lsSet('fuko_msg',l); MSGS=null;
+  return true;
+}
+async function postReply(nick,parent,text){
+  var obj={nick:CHAT_MARK+REPLY_MARK+(nick||'fumimi'), text:REPLY_SEP+(parent||'')+REPLY_SEP+(text||''), img:'', ts:Date.now()};
+  if(clOn()){
+    try{
+      var r=await fetch(clBase()+'/rest/v1/fuko_msg',{method:'POST',headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify([{nick:obj.nick,text:obj.text,img:obj.img}])});
+      if(r.ok){
+        var back=await r.json(), row=(back&&back[0])||obj;
+        MSGS=MSGS?[row].concat(MSGS):[row];
+        return true;
+      }
+    }catch(e){}
+  }
+  var l=lsGet('fuko_msg',[]);
+  l.unshift(Object.assign({id:'r'+Date.now()+Math.random().toString(36).slice(2,5)},obj));
+  lsSet('fuko_msg',l); MSGS=null;
   return true;
 }
 async function delMsg(id){
@@ -1574,16 +1768,31 @@ function customDatesHTML(){
 }
 function lettersHTML(){
   const ls=getMsgs();
+  const reps=getReplies();
+  const by={};
+  reps.forEach(function(r){ if(!by[r.parent]) by[r.parent]=[]; by[r.parent].push(r); });
   const m=me();
   const list=ls.length?ls.map(function(x,i){
-    return '<div class="gb-note" style="--rot:'+(((i%4)-1.5)*1.7).toFixed(1)+'deg">'
+    const key=noteKey(x), rs=by[key]||[];
+    rs.sort(function(a,b){return (a.ts||0)-(b.ts||0)});
+    const repHTML=rs.length?('<div class="gb-reps">'+rs.map(function(r){
+      return '<div class="gb-rep">'+avHTML(r.nick,18)
+        +'<div class="gb-rep-body"><b>'+esc(r.nick||'')+'</b>'
+        +'<span>'+esc(r.text)+'</span><i>'+fmtDate(r.ts,LANG)+'</i></div></div>';
+    }).join('')+'</div>'):'';
+    return '<div class="gb-note" data-note="'+esc(key)+'" style="--rot:'+(((i%4)-1.5)*1.7).toFixed(1)+'deg">'
       +'<span class="gb-pin"></span>'
       +(x.img?'<div class="nc-img"><img alt="" src="'+esc(x.img)+'" loading="lazy" onerror="this.parentNode.style.display=\'none\'"></div>':'')
       +(x.text?'<div class="gb-txt">'+esc(x.text)+'</div>':'')
-      +'<div class="gb-meta">'+(x.nick?esc(x.nick):'')+(x.nick?' · ':'')+fmtDate(x.ts,LANG)+'</div></div>';
+      +'<div class="gb-meta">'+avHTML(x.nick,20)+'<span>'+(x.nick?esc(x.nick):'')+(x.nick?' · ':'')+fmtDate(x.ts,LANG)+'</span></div>'
+      +repHTML
+      +'<button type="button" class="gb-rep-btn" data-nick="'+esc(x.nick||'')+'">'+mt('re')+'</button>'
+      +'<div class="gb-rep-form" hidden><input maxlength="120" placeholder="'+mt('re_ph').replace('{n}',(x.nick||'Fuko'))+'">'
+        +'<button type="button" class="gb-rep-send">'+mt('re_send')+'</button></div>'
+      +'</div>';
   }).join(''):'<p class="note-empty">'+t('le_empty')+'</p>';
   return '<div class="canvas gb">'
-   +'<div class="gb-head"><span class="gb-title">Guest Book</span><em>'+ls.length+' '+t('le_count')+'</em></div>'
+   +'<div class="gb-head"><span class="gb-title">Guest Book</span><em>'+ls.length+' '+t('le_count')+(reps.length?' · '+reps.length+' '+mt('re_count'):'')+'</em></div>'
    +'<div class="gb-bar">'
      +'<div class="gb-line"><span class="gb-lab"><i></i>'+mt('nick')+'</span>'
        +'<input class="gb-nick" id="msgNick" maxlength="16" placeholder="Your Name" value="'+(m?esc(m.nick):'')+'"></div>'
@@ -1607,10 +1816,14 @@ function notesHTML(){
   return '<div class="canvas">'+body+'</div>';
 }
 const MT={
- zh:{ph:'写一句想对 Fuko 说的话…（最多 200 字）',nick:'你的名字',send:'送出 ♡',ok:'话已经送到 Fuko 那里啦 ♡',empty:'先写一点点吧 ♡'},
- en:{ph:'leave a few words for Fuko… (max 200)',nick:'your name',send:'Send ♡',ok:'your words reached Fuko ♡',empty:'write a little first ♡'},
- ja:{ph:'Fukoへひとこと…（200字まで）',nick:'あなたの名前',send:'送る ♡',ok:'Fukoに届きました ♡',empty:'少し書いてね ♡'},
- ko:{ph:'Fuko에게 한마디… (200자까지)',nick:'당신의 이름',send:'보내기 ♡',ok:'Fuko에게 전해졌어요 ♡',empty:'조금만 적어 주세요 ♡'}
+ zh:{ph:'写一句想对 Fuko 说的话…（最多 200 字）',nick:'你的名字',send:'送出 ♡',ok:'话已经送到 Fuko 那里啦 ♡',empty:'先写一点点吧 ♡',
+     re:'回复',re_ph:'回复 @{n} …',re_send:'送出',re_ok:'回复送到啦 ♡',re_count:'条回复'},
+ en:{ph:'leave a few words for Fuko… (max 200)',nick:'your name',send:'Send ♡',ok:'your words reached Fuko ♡',empty:'write a little first ♡',
+     re:'Reply',re_ph:'reply to @{n} …',re_send:'Send',re_ok:'reply sent ♡',re_count:'replies'},
+ ja:{ph:'Fukoへひとこと…（200字まで）',nick:'あなたの名前',send:'送る ♡',ok:'Fukoに届きました ♡',empty:'少し書いてね ♡',
+     re:'返信',re_ph:'@{n} に返信…',re_send:'送信',re_ok:'返信を送りました ♡',re_count:'件の返信'},
+ ko:{ph:'Fuko에게 한마디… (200자까지)',nick:'당신의 이름',send:'보내기 ♡',ok:'Fuko에게 전해졌어요 ♡',empty:'조금만 적어 주세요 ♡',
+     re:'답글',re_ph:'@{n} 에게 답글…',re_send:'보내기',re_ok:'답글을 보냈어요 ♡',re_count:'개의 답글'}
 };
 function mt(k){const d=MT[LANG]||MT.zh;return d[k]||MT.zh[k]}
 function gameHTML(){
@@ -1629,9 +1842,14 @@ function meHTML(){
   const m=me(); if(!m) return '<p class="note-empty">…</p>';
   const h=m.hearts||0, lv=Math.floor(h/10)+1;
   const days=Math.max(1,Math.ceil((Date.now()-(m.joined||Date.now()))/86400000));
-  const mine=getLetters().length;
+  const mine=(function(){
+    var k=String(m.nick||'').trim().toLowerCase(), c=0;
+    getMsgs().forEach(function(x){if(String(x.nick||'').trim().toLowerCase()===k)c++});
+    getReplies().forEach(function(x){if(String(x.nick||'').trim().toLowerCase()===k)c++});
+    return c;
+  })();
   const g={f:t('g_f'),m:t('g_m'),x:t('g_x')}[m.gender]||t('g_x');
-  return '<div class="card me-card"><div class="me-ava">'+esc(m.nick.slice(0,1).toUpperCase())+'</div>'
+  return '<div class="card me-card"><div class="me-ava">'+fumiAv(m.nick)+'</div>'
    +'<div class="me-info"><b>'+esc(m.nick)+'</b><span>'+t('me_since')+' '+fmtDate(m.joined,LANG)+' · '+g+'</span></div></div>'
    +'<div class="me-grid">'
    +'<div class="me-stat"><b>'+days+'</b><span>'+t('me_joined')+' · '+t('me_days')+'</span></div>'
@@ -1640,6 +1858,218 @@ function meHTML(){
    +'<div class="me-stat"><b>'+mine+'</b><span>'+t('me_notes')+'</span></div>'
    +'</div>'
    +'<div style="text-align:center;margin-top:16px"><button class="btn btn-ghost btn-sm" id="logoutBtn">'+t('me_out')+'</button></div>';
+}
+
+
+/* ============ 社区 · 群聊 ============ */
+const CHAT_MARK='\u200B';
+const CM={
+ zh:{name:'社区',desc:'像群聊一样，随便聊聊天',head:'小世界的群聊',tip:'图片 / 动图 / 短视频都可以发',ph:'说点什么吧…',send:'发送',attach:'从相册选图片或视频',login:'登录之后才能一起聊天哦 ♡',loading:'正在加载聊天…',empty:'还没有人说话，来开个场吧 ♡',up:'正在上传…',fail:'发送失败了，再试一次？',ok:'发出去啦 ♡',bigv:'视频超过 24MB，先剪短或压缩一下',bigi:'图片超过 8MB，换一张小一点的'},
+ en:{name:'Community',desc:'a little group chat, talk freely',head:'the little group chat',tip:'photos, GIFs and short clips are welcome',ph:'say something…',send:'Send',attach:'pick a photo or video',login:'log in to chat with everyone ♡',loading:'loading chat…',empty:'nobody here yet, start the first line ♡',up:'uploading…',fail:'send failed, try again?',ok:'sent ♡',bigv:'video is over 24MB, trim or compress it first',bigi:'photo is over 8MB, pick a smaller one'},
+ ja:{name:'コミュニティ',desc:'グループチャットのように自由に',head:'小さなグループチャット',tip:'写真・GIF・短い動画も送れます',ph:'なにか話して…',send:'送信',attach:'アルバムから写真や動画を選ぶ',login:'ログインするとみんなと話せます ♡',loading:'チャットを読み込み中…',empty:'まだ誰も話していません、最初の一言を ♡',up:'アップロード中…',fail:'送信に失敗しました、もう一度？',ok:'送りました ♡',bigv:'動画が24MBを超えています、短くするか圧縮してください',bigi:'写真が8MBを超えています、小さいものを選んでください'},
+ ko:{name:'커뮤니티',desc:'단체 채팅처럼 자유롭게',head:'작은 단체 채팅',tip:'사진 · GIF · 짧은 영상 모두 가능',ph:'무슨 말이든 해보세요…',send:'보내기',attach:'앨범에서 사진이나 영상 선택',login:'로그인하면 함께 이야기할 수 있어요 ♡',loading:'채팅을 불러오는 중…',empty:'아직 아무도 말하지 않았어요, 먼저 인사해요 ♡',up:'업로드 중…',fail:'전송에 실패했어요, 다시 해볼까요?',ok:'보냈어요 ♡',bigv:'영상이 24MB를 넘어요, 먼저 줄이거나 압축해 주세요',bigi:'사진이 8MB를 넘어요, 더 작은 사진을 골라 주세요'}
+};
+function cmt(k){var m=CM[LANG]||CM.zh;return (m[k]!=null?m[k]:CM.zh[k])}
+let CHAT=[], chatTimer=null, chatBusy=false;
+function chatRows(list){return (list||[]).filter(isChatRow)}
+function chSplit(u){const i=String(u||'').indexOf('|');return i<0?[u,'']:[u.slice(0,i),u.slice(i+1)];}
+function chVid(u){return /\.(mp4|mov|webm|m4v|ogv|avi)(\?|#|$)/i.test(u||'')}
+function chMediaHTML(u){
+  const uu=esc(u);
+  const parts=chSplit(u);
+  if(chVid(parts[0])){
+    const vsrc=esc(parts[0]), poster=parts[1]?esc(parts[1]):'';
+    const thumb=poster
+      ? '<img class="ch-vthumb" alt="" loading="lazy" src="'+poster+'">'
+      : '<video class="ch-vthumb" preload="metadata" playsinline muted src="'+vsrc+'#t=0.12"></video>';
+    return '<div class="ch-vbox" data-src="'+vsrc+'">'+thumb+'<span class="ch-play">▶</span></div>';
+  }
+  return '<img class="ch-img" loading="lazy" alt="" src="'+uu+'">';
+}
+function chTs(v){
+  if(typeof v==='number') return v;
+  const n=Date.parse(v);
+  return isNaN(n)?(Number(v)||0):n;
+}
+function chTime(ts){
+  const d=new Date(ts||Date.now());
+  return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+async function chatFetch(){
+  let rows=[];
+  if(clOn()){
+    try{
+      const r=await fetch(clBase()+'/rest/v1/fuko_msg?select=id,nick,text,img,ts&order=ts.desc&limit=200',{headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k}});
+      if(r.ok) rows=await r.json();
+    }catch(e){}
+  }
+  if(!chatRows(rows).length) rows=chatRows(lsGet('fuko_msg',[]));
+  return chatRows(rows).map(function(x){
+    return {id:x.id, ts:chTs(x.ts), text:x.text||'', img:x.img||'', nick:String(x.nick||'').slice(1)||'fumimi'};
+  }).sort(function(a,b){return a.ts-b.ts});
+}
+async function chatPost(nick,text,img){
+  const nickMarked=CHAT_MARK+(nick||'fumimi');
+  const obj={nick:nickMarked,text:text||'',img:img||'',ts:Date.now()};
+  if(clOn()){
+    try{
+      const r=await fetch(clBase()+'/rest/v1/fuko_msg',{method:'POST',headers:{apikey:CLOUD.k,Authorization:'Bearer '+CLOUD.k,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify([{nick:obj.nick,text:obj.text,img:obj.img}])});
+      if(r.ok) return true;
+    }catch(e){}
+  }
+  const l=lsGet('fuko_msg',[]); l.unshift(Object.assign({id:'c'+Date.now()},obj)); lsSet('fuko_msg',l);
+  return true;
+}
+function chPoster(file){
+  return new Promise(function(res){
+    let out=null, timer=null;
+    const finish=function(b){
+      if(out!==null) return;
+      out=b||null; clearTimeout(timer);
+      try{URL.revokeObjectURL(url)}catch(e){}
+      res(out);
+    };
+    let url='';
+    try{
+      url=URL.createObjectURL(file);
+      const v=document.createElement('video');
+      v.muted=true; v.playsInline=true; v.preload='auto'; v.src=url;
+      v.onloadeddata=function(){ try{v.currentTime=Math.min(0.35,(v.duration||1)/4)}catch(e){} };
+      v.onseeked=function(){
+        try{
+          const vw=v.videoWidth||720, vh=v.videoHeight||720;
+          const w=Math.min(720,vw), h=Math.round(w*vh/vw);
+          const c=document.createElement('canvas'); c.width=w; c.height=h;
+          c.getContext('2d').drawImage(v,0,0,w,h);
+          c.toBlob(function(b){ finish(b) },'image/jpeg',.8);
+        }catch(e){ finish(null) }
+      };
+      v.onerror=function(){ finish(null) };
+      timer=setTimeout(function(){ finish(null) },5000);
+    }catch(e){ finish(null) }
+  });
+}
+async function chatUpload(file){
+  const isV=/^video\//i.test(file.type||'')||/\.(mp4|mov|webm|m4v|ogv)$/i.test(file.name||'');
+  const lim=(isV?24:8)*1048576;
+  if(file.size>lim) throw new Error(isV?cmt('bigv'):cmt('bigi'));
+  let blob=file;
+  let name='chat_'+Date.now()+'.'+(((file.name||'').match(/\.([a-z0-9]{2,5})$/i)||[,'bin'])[1].toLowerCase());
+  if(!isV && !/gif/i.test((file.type||'')+(file.name||''))){
+    blob=await compressImg(file,1600);
+    name=name.replace(/\.[a-z0-9]+$/,'.jpg');
+  }
+  /* ① Cloudflare Pages 函数代理上传：令牌放在 Cloudflare 后台环境变量里，浏览器里没有 — 所有人都能发 */
+  if(/^https?:/.test(location.protocol)){
+    try{
+      const r=await fetch('/api/upload?name='+encodeURIComponent(name),{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:blob});
+      if(r.ok){
+        const j=await r.json().catch(function(){return null});
+        if(j&&j.path){
+          if(isV){
+            const pc=await chPoster(file);
+            if(pc){
+              try{
+                const pn=name.replace(/\.[a-z0-9]+$/,'_p.jpg');
+                const pr=await fetch('/api/upload?name='+encodeURIComponent(pn),{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:pc});
+                if(pr.ok){const pj=await pr.json().catch(function(){return null}); if(pj&&pj.path) return j.path+'|'+pj.path}
+              }catch(e){}
+            }
+          }
+          return j.path;
+        }
+      }
+    }catch(e){}
+  }
+  /* ② 本机存了 GitHub 令牌就直接传（站长本机可用） */
+  if(typeof File==='function'){
+    const vPath=await ghUploadFile(new File([blob],name,{type:blob.type||'application/octet-stream'}),'chat',24);
+    if(isV){
+      const pc=await chPoster(file);
+      if(pc){
+        try{
+          const pp=await ghUploadFile(new File([pc],name.replace(/\.[a-z0-9]+$/,'_p.jpg'),{type:'image/jpeg'}),'chat_p',4);
+          return vPath+'|'+pp;
+        }catch(e){}
+      }
+    }
+    return vPath;
+  }
+  throw new Error(cmt('fail'));
+}
+function chatBubbleHTML(x,ownNick){
+  const own=String(x.nick||'').toLowerCase()===String(ownNick||'').toLowerCase();
+  return '<div class="ch-msg'+(own?' own':'')+'"><span class="ch-ava">'+fumiAv(x.nick)+'</span>'
+   +'<div class="ch-bub"><div class="ch-meta"><b>'+esc(x.nick||'')+'</b><i>'+chTime(x.ts)+'</i></div>'
+   +(x.text?'<div class="ch-text">'+esc(x.text)+'</div>':'')
+   +(x.img?chMediaHTML(x.img):'')
+   +'</div></div>';
+}
+function communityHTML(){
+  const m=me();
+  if(!m) return '<div class="card cm-login"><p class="note-empty">'+cmt('login')+'</p>'
+    +'<div style="text-align:center;margin-top:10px"><a class="btn btn-sm" href="#/me">'+t('tab_login')+'</a></div></div>';
+  return '<div class="ch-wrap">'
+   +'<div class="ch-head"><b>'+cmt('head')+'</b><span>'+cmt('tip')+'</span></div>'
+   +'<div class="ch-list" id="chatList"><div class="ch-empty">'+cmt('loading')+'</div></div>'
+   +'<div class="ch-bar"><label class="ch-file" title="'+cmt('attach')+'">＋<input type="file" id="chatFile" accept="image/*,video/*,.gif" hidden></label>'
+   +'<input class="ch-input" id="chatText" maxlength="800" placeholder="'+cmt('ph')+'">'
+   +'<button class="ch-send" id="chatSend">'+cmt('send')+'</button></div>'
+   +'<div class="ch-status" id="chatStatus"></div></div>';
+}
+async function chatInit(){
+  const m=me(); if(!m) return;
+  const status=$('#chatStatus');
+  function paint(keep){
+    const box=$('#chatList'); if(!box) return;
+    const near=box.scrollHeight-box.scrollTop-box.clientHeight<80;
+    box.innerHTML=CHAT.length?CHAT.map(function(x){return chatBubbleHTML(x,m.nick)}).join(''):'<div class="ch-empty">'+cmt('empty')+'</div>';
+    if(keep||near) box.scrollTop=box.scrollHeight;
+  }
+  async function refresh(){ CHAT=await chatFetch(); paint(false); }
+  await refresh(); paint(true);
+  chatTimer=setInterval(function(){ if(document.getElementById('chatList')) refresh(); },12000);
+  const tx=$('#chatText'), send=$('#chatSend'), file=$('#chatFile');
+  async function doSend(){
+    const txt=(tx&&tx.value||'').trim();
+    if(!txt||chatBusy) return;
+    chatBusy=true; if(send)send.disabled=true;
+    await chatPost(m.nick,txt,'');
+    if(tx)tx.value='';
+    if(status)status.textContent=cmt('ok');
+    await refresh(); paint(true);
+    chatBusy=false; if(send)send.disabled=false;
+    setTimeout(function(){ var st=document.getElementById('chatStatus'); if(st)st.textContent=''; },1600);
+  }
+  const list=$('#chatList');
+  if(list)list.addEventListener('click',function(e){
+    const box=e.target.closest?e.target.closest('.ch-vbox'):null;
+    if(!box) return;
+    const src=chSplit(box.getAttribute('data-src')||'')[0]; if(!src) return;
+    const v=document.createElement('video');
+    v.className='ch-vid'; v.controls=true; v.autoplay=true; v.playsInline=true;
+    v.setAttribute('src',src);
+    box.parentNode.replaceChild(v,box);
+    try{v.play()}catch(err){}
+  });
+  if(send)send.addEventListener('click',doSend);
+  if(tx){
+    tx.addEventListener('keydown',function(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend()} });
+    tx.addEventListener('input',function(){ if(status)status.textContent=''});
+  }
+  if(file)file.addEventListener('change',async function(){
+    const f=file.files&&file.files[0]; file.value=''; if(!f||chatBusy) return;
+    chatBusy=true; if(send)send.disabled=true; if(status)status.textContent=cmt('up');
+    try{
+      const path=await chatUpload(f);
+      await chatPost(m.nick,'',path);
+      if(status)status.textContent=cmt('ok');
+      await refresh(); paint(true);
+    }catch(e){
+      if(status)status.textContent=(e&&e.message)||cmt('fail');
+    }
+    chatBusy=false; if(send)send.disabled=false;
+  });
 }
 
 /* ============ 9. 栏目页组装 ============ */
@@ -1661,10 +2091,11 @@ function boardHTML(b){
   else if(b.id==='letters') body=lettersHTML();
   else if(b.id==='notes') body=notesHTML();
   else if(b.id==='game') body=gameHTML();
+  else if(b.id==='community') body=communityHTML();
   else body=meHTML();
   return '<div class="wrap"><section class="mod">'
    +'<div class="crumb"><a href="#/home">'+t('back_home')+'</a><span>·</span><span>'+b.en+'</span></div>'
-   +'<div class="mod-head"><span class="mod-no">0'+(i+1)+'</span><span class="kicker mod-kicker">'+b.en+' · ROOM</span>'
+   +'<div class="mod-head"><span class="mod-no">'+(i+1<10?'0':'')+(i+1)+'</span><span class="kicker mod-kicker">'+b.en+' · ROOM</span>'
      +'<div class="mod-title-row"><h1 class="mod-title">'+bid(i)+'</h1><img class="fumi-mark" alt="Fumimi" src="'+FUMI_IMG[b.icon]+'"></div><p class="mod-sub">'+bdesc(i)+'</p></div>'
    +(b.id==='profile'||b.id==='me'||b.id==='notes'?'<div style="height:14px"></div>':'')
    +body+dirHTML(b.id)
@@ -1679,6 +2110,7 @@ function render(){
   const id=routeId();
   applyStatic();
   clearInterval(clockTimer);clockTimer=null;
+  clearInterval(chatTimer);chatTimer=null;
   try{drawLeave()}catch(e){}
   if(id==='admin'){openAdmin();return}
   closeAdmin();
@@ -1687,12 +2119,14 @@ function render(){
     const b=BOARDS.find(function(x){return x.id===id});markTabs(id);
     view.innerHTML=boardHTML(b);
   }
+  document.body.setAttribute('data-page',id);
   view.classList.remove('enter');void view.offsetWidth;view.classList.add('enter');
   bindView(id);
   window.scrollTo({top:0,behavior:'instant'});
 }
 function bindView(id){
   if(id==='draw'){drawInit()}
+  if(id==='community'){chatInit()}
   if(id==='game'){
     const pet=$('#petBtn'),feed=$('#feedBtn');
     function add(n,ev){
@@ -1718,6 +2152,43 @@ function bindView(id){
   }
   if(id==='clock'){startClock()}
   if(id==='letters'){
+    const board=$('#msgList');
+    if(board){
+      board.addEventListener('click',function(e){
+        const btn=e.target.closest?e.target.closest('.gb-rep-btn'):null;
+        const snd=e.target.closest?e.target.closest('.gb-rep-send'):null;
+        if(btn){
+          const note=btn.closest('.gb-note'), form=note&&note.querySelector('.gb-rep-form');
+          if(!form) return;
+          if(form.hasAttribute('hidden')){
+            form.removeAttribute('hidden');
+            const inp=form.querySelector('input'); if(inp){inp.value='';inp.focus()}
+          }else{
+            form.setAttribute('hidden','');
+          }
+          return;
+        }
+        if(snd){
+          const form=snd.closest('.gb-rep-form'), note=snd.closest('.gb-note');
+          const inp=form&&form.querySelector('input'), txt=(inp&&inp.value||'').trim();
+          if(!txt){ toast(mt('empty')); return; }
+          const parent=note?note.getAttribute('data-note'):'';
+          const nick=(me()&&me().nick)||((($('#msgNick')||{}).value)||'').trim()||'fumimi';
+          snd.disabled=true;
+          postReply(nick,parent,txt).then(function(){ toast(mt('re_ok')); render(); });
+          return;
+        }
+      });
+      board.addEventListener('keydown',function(e){
+        const inp=e.target;
+        if(!inp||inp.tagName!=='INPUT') return;
+        if(e.key!=='Enter') return;
+        e.preventDefault();
+        const form=inp.closest('.gb-rep-form');
+        const snd=form&&form.querySelector('.gb-rep-send');
+        if(snd) snd.click();
+      });
+    }
     const send=$('#msgSend'),tx=$('#msgText'),nk=$('#msgNick');
     if(send)send.addEventListener('click',async function(){
       const txt=(tx.value||'').trim();
@@ -1808,11 +2279,20 @@ function hideAuth(){
 }
 function setMode(mode){
   authMode=mode;
-  $$('#authTabs button').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
+  function authAvPaint(){
+  const box=$('#authAvBox'), wrap=$('#authAv'), n=$('#aNick').value.trim();
+  if(!box||!wrap) return;
+  const show=(authMode==='reg'&&n.length>0);
+  wrap.style.display=show?'flex':'none';
+  if(show) box.innerHTML=fumiAv(n);
+}
+$('#aNick').addEventListener('input',authAvPaint);
+$$('#authTabs button').forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});
   $('#genderField').style.display=mode==='reg'?'block':'none';
   $('#authBtn').setAttribute('data-i18n',mode==='reg'?'btn_reg':'btn_login');
   $('#authBtn').textContent=t(mode==='reg'?'btn_reg':'btn_login');
   $('#authErr').textContent='';
+  try{authAvPaint()}catch(e){}
 }
 $$('#authTabs button').forEach(function(b){
   b.addEventListener('click',function(){setMode(b.dataset.mode)});
@@ -2038,6 +2518,13 @@ function adPanelHTML(){
       +'<span class="t">'+esc(((x.nick?x.nick+' · ':'')+(x.text||A('onlyimg'))).slice(0,46))+'</span>'
       +'<button class="del" data-op="del-msg" data-i="'+i+'" data-id="'+esc(x.id||'')+'">'+A('del')+'</button></div>';
   },A('em_none'));
+  const chatMsgs=chatRows(MSGS||lsGet('fuko_msg',[])).slice(0,30);
+  const chatLlist=adList(chatMsgs,function(x,i){
+    const nk=String(x.nick||'').slice(1);
+    return '<div class="ad-item">'+(x.img?'<img class="thumb" alt="" src="'+esc(x.img)+'">':'')
+      +'<span class="t">'+esc(('社区 · '+(nk?nk+' · ':'')+(x.text||A('onlyimg'))).slice(0,44))+'</span>'
+      +'<button class="del" data-op="del-msg" data-i="'+i+'" data-id="'+esc(x.id||'')+'">'+A('del')+'</button></div>';
+  },A('em_none'));
 
   const DEF={stage:'FUKO',name:'후코 · HAYASHI FUKO',cn:'林枫子',nat:'日本 · Japan',place:'福冈 · Fukuoka',birth:'2004.08.22',mbti:'ISFP',sign:'狮子座 · Leo',mark:'🍁 枫叶',agency:'THE L1VE LABEL',nick:'fukosama'};
   const fields=['stage','name','cn','nat','place','birth','mbti','sign','mark','agency','nick'].map(function(k){
@@ -2104,7 +2591,8 @@ function adPanelHTML(){
    +'<div class="ad-nmsg" id="adNMsg"></div>'
    +nlist+'</section>'
 
-   +'<section class="ad-sec"><h3>'+A('s5b')+'</h3><p class="hint">'+A('h5b')+'</p>'+llist+'</section>'
+   +'<section class="ad-sec"><h3>'+A('s5b')+'</h3><p class="hint">'+A('h5b')+'</p>'+llist
+   +'<p class="hint" style="margin:14px 0 8px">社区消息 · Community</p>'+chatLlist+'</section>'
 
    +'<section class="ad-sec"><h3>'+A('s5')+'</h3><p class="hint">'+A('h5')+'</p>'
    +'<div class="ad-row"><img class="ad-prev" alt="" src="'+esc(P.photo||'fumi/fuko.jpg')+'">'
@@ -2486,10 +2974,11 @@ function bgmToggle(){bgmOn=!bgmOn;lsSet(BGM_KEY,bgmOn);if(bgmOn)bgmStart();else 
 $('#bgmBtn').addEventListener('click',bgmToggle);
 
 /* ============ 14. 语言 / 启动 ============ */
-$$('#lang button').forEach(function(b){
+$$('#lang button, #authLang button').forEach(function(b){
   b.addEventListener('click',function(){
     LANG=b.dataset.lang;lsSet('fuko_lang',LANG);
     renderTabs();render();
+    if(authMode) setMode(authMode);
   });
 });
 (function boot(){
