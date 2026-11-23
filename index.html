@@ -1034,7 +1034,27 @@ function me(){
 function updateMe(patch){
   const m=me(); if(!m) return null;
   const list=users().map(function(u){return u.nick.toLowerCase()===m.nick.toLowerCase()?Object.assign({},u,patch):u});
-  saveUsers(list); return me();
+  saveUsers(list);
+  const nm=me();
+  try{ if(nm && typeof clOn==='function' && clOn()) cloudSaveUser(nm); }catch(e){}
+  return nm;
+}
+/* 爱心/等级：本地与云端取大值，避免重登后被云端 0 覆盖 */
+async function syncHearts(){
+  if(!clOn()) return false;
+  const m=me(); if(!m) return false;
+  try{
+    const cu=await cloudGetUser(m.nick);
+    const lh=Number(m.hearts)||0;
+    if(cu&&cu.nick){
+      const ch=Number(cu.hearts)||0;
+      if(ch>lh){ cacheUser(Object.assign({},m,{hearts:ch})); return true }
+      if(lh>ch){ await cloudSaveUser(Object.assign({},m,{hearts:lh})) }
+    }else{
+      await cloudSaveUser(m);
+    }
+  }catch(e){}
+  return false;
 }
 function setSession(nick){try{localStorage.setItem(SESSION_KEY,JSON.stringify(nick))}catch(e){}}
 function clearSession(){try{localStorage.removeItem(SESSION_KEY)}catch(e){}}
@@ -1114,12 +1134,12 @@ zh:{
  ga_next:'再攒 {n} 颗就升级啦',ga_max:'已经是满级啦，谢谢你 ♡',ga_up:'升级啦！✦',
  me_title:'个人中心',me_sub:'你的小世界记录',
  me_joined:'来到小世界',me_days:'天',me_lv:'当前等级',me_h:'爱心',me_notes:'留言',me_gender:'性别',me_out:'退出登录',
- me_since:'注册于'
+ me_days_label:'来到小世界 · 天',me_since:'注册于'
 },
 en:{
  notice:'welcome to Fuko\'s little world · the door is open',gate_hint:'tap to open the door',mu_blank:'no song yet',
  home:'Home',f_home:'Home',f_profile:'Profile',f_letters:'Letters',f_game:'Fumimi',
- auth_title:'A little check-in first',auth_sub:'The door opens for one sentence: it\'s you.',
+ auth_title:'A little check-in first',auth_sub:'The door opens for just one line: “it\'s you.”',
  tab_login:'Login',tab_reg:'Register',f_nick:'Nickname',f_pw:'Password',f_gender:'Gender',
  ph_nick:'a soft name for yourself',ph_pw:'at least 4 characters you\'ll remember',
  g_f:'girl',g_m:'boy',g_x:'secret',
@@ -1136,9 +1156,9 @@ en:{
  dir_title:'Directory',dir_sub:'in-page index · switch anytime',
  prev:'previous door',next:'next door',back_home:'back home',
  foot:'personal fan station · unofficial · for appreciation only',
- b1:'Profile',d1:'Fuko\'s file, in stickers',b2:'Stage',d2:'stages, fancams, behind',b3:'Album',d3:'polaroid journal',
+ b1:'Profile',d1:'Fuko\'s profile & stickers',b2:'Stage',d2:'stages, fancams & behind-the-scenes',b3:'Album',d3:'polaroid journal',
  b4:'Canvas',d4:'draw one picture together',b5:'Dates',d5:'three live countdowns',b6:'Letters to Fuko',d6:'a public board',
- b7:'From Fuko',d7:'quotes & letters',b8:'Fumimi',d8:'pat the head, collect hearts',b9:'My Page',d9:'my numbers & level',
+ b7:'From Fuko',d7:'quotes & letters from the admin',b8:'Fumimi',d8:'pat her head, collect hearts',b9:'My Page',d9:'my numbers & level',
  p_birth:'Birthday',p_join:'Joined',p_bio:'About',p_bio_text:'(a short intro for Fuko: personality, favourites, what she is practising lately.)',
  p_tags:'Tags',p_t1:'singer',p_t2:'dancer',p_t3:'maknae',p_fumi:'Fumimi\'s neighbour',
  st_title:'Stage',st_sub:'stages, fancams and behind-the-scenes',
@@ -1151,20 +1171,20 @@ en:{
  c_1:'Fuko\'s birthday',c_2:'Days with THE L1VE',c_3:'Days in this world',
  c_1s:'August 22 · one pink day every year',c_2s:'since 2025.07.16, always here',c_3s:'since 2004.08.22, growing slowly',
  u_d:'D',u_h:'H',u_m:'M',u_s:'S',c_next:'next',
- le_title:'Letters to Fuko',le_sub:'public board · newest last',
+ le_title:'Letters to Fuko',le_sub:'public board · oldest first',
  le_ph:'what would you like to tell Fuko?',le_btn:'pin it ♡',le_empty:'no letters yet — write the first one ♡',le_count:'letters',
- no_title:'From Fuko',no_sub:'updated by the admin · quotes & letters',
+ no_title:'From Fuko',no_sub:'words & letters, updated by the admin',
  ga_title:'Fumimi\'s little game',ga_sub:'the little one who lives here',
  ga_pet:'pat +1',ga_feed:'feed +2',ga_lv:'Level',ga_hearts:'hearts',
- ga_next:'{n} more hearts to level up',ga_max:'already max level, thank you ♡',ga_up:'level up! ✦',
+ ga_next:'{n} more hearts for the next level',ga_max:'already max level, thank you ♡',ga_up:'level up! ✦',
  me_title:'My Page',me_sub:'your little record',
- me_joined:'here for',me_days:'days',me_lv:'Level',me_h:'hearts',me_notes:'letters',me_gender:'gender',me_out:'log out',
- me_since:'joined on'
+ me_joined:'days in this world',me_days:'',me_lv:'Level',me_h:'hearts',me_notes:'letters',me_gender:'gender',me_out:'log out',
+ me_days_label:'days in this world',me_since:'joined on'
 },
 ja:{
  notice:'Fukoの小さな世界へようこそ · 扉は開いています',gate_hint:'そっと押して開ける',mu_blank:'まだ曲なし',
  home:'ホーム',f_home:'ホーム',f_profile:'プロフィール',f_letters:'メッセージ',f_game:'Fumimi',
- auth_title:'まずはチェックイン',auth_sub:'扉はひとことだけ：あなたです。',
+ auth_title:'まずはチェックイン',auth_sub:'扉はひとことで開きます：あなたです。',
  tab_login:'ログイン',tab_reg:'新規登録',f_nick:'ニックネーム',f_pw:'パスワード',f_gender:'性別',
  ph_nick:'やわらかい名前をひとつ',ph_pw:'4文字以上、覚えられるもの',
  g_f:'女の子',g_m:'男の子',g_x:'秘密',
@@ -1172,7 +1192,7 @@ ja:{
  auth_tip:'名前はひとつだけ。ずっと一緒にいたい名前にしてね。',
  auth_lock:'閉じるボタンはありません · ログインで扉が開きます',
  e_empty:'名前とパスワードを少しずつ ♡',e_short:'もう少し長く、4文字以上で',
- e_dup:'その名前はもう使われています、別のかわいい名前に ♡',e_no:'その名前はまだいません、先に登録を',
+ e_dup:'その名前はもう使われています、別のかわいい名前に ♡',e_no:'その名前はまだ登録されていません。先に登録してください',
  e_pw:'パスワードが少し違うみたい、もう一度？',
  ok_reg:'登録できました、ようこそ ♡',ok_back:'おかえりなさい ♡',
  hero_sub:'ピンクでいっぱいの小さな世界',hero_quote:'「空は いちごソーダの味がする。」',
@@ -1183,12 +1203,12 @@ ja:{
  foot:'個人ファンサイト · 非公式 · 鑑賞用',
  b1:'プロフィール',d1:'Fukoのファイルとシール',b2:'ステージ',d2:'ステージ・ファンカム・裏側',b3:'アルバム',d3:'ポラロイド手帳',
  b4:'みんなの絵',d4:'一緒に一枚の絵を描く',b5:'大切な日',d5:'三つのライブカウント',b6:'Fukoへの手紙',d6:'公開メッセージ',
- b7:'Fukoの言葉',d7:'管理人更新の言葉と手紙',b8:'Fumimiゲーム',d8:'なでて、ハートを集める',b9:'マイページ',d9:'記録とレベル',
+ b7:'Fukoの言葉',d7:'管理人が更新する言葉と手紙',b8:'Fumimiのゲーム',d8:'なでて、ハートを集める',b9:'マイページ',d9:'記録とレベル',
  p_birth:'誕生日',p_join:'加入',p_bio:'すこし紹介',p_bio_text:'（Fukoの紹介をここに：性格、好きなもの、最近の練習。）',
- p_tags:'タグ',p_t1:'歌',p_t2:'ダンス',p_t3:'末っ子',p_fumi:'Fumimiのおとなり',
+ p_tags:'タグ',p_t1:'歌手',p_t2:'ダンサー',p_t3:'末っ子',p_fumi:'Fumimiのおとなり',
  st_title:'ステージ',st_sub:'ステージ、ファンカム、裏側',
  st_g1:'ステージ動画',st_g2:'ファンカム',st_g3:'裏側',
- st_ph:'動画リンクを貼る（1行に1つ / YouTube・B站・mp4）',st_btn:'入れる',st_empty:'まだ空っぽ、ステージを待っています ♡',
+ st_ph:'動画リンクを貼る（1行に1つ / YouTube・bilibili・mp4）',st_btn:'入れる',st_empty:'まだ空っぽ、ステージを待っています ♡',
  al_title:'アルバム',al_sub:'ポラロイド手帳コラージュ',
  al_ph:'画像リンクをまとめて貼る（1行に1枚）',al_btn:'アルバムへ',al_empty:'アルバムはまだ空っぽ ♡',al_count:'枚',
  mu_title:'音楽',mu_sub:'プレイリストとカバー',mu_now:'再生中',mu_ph:'音楽リンクを貼る（mp3 / YouTube など）',mu_btn:'追加',mu_empty:'まだ曲がありません ♡',
@@ -1196,22 +1216,22 @@ ja:{
  c_1:'Fukoの誕生日',c_2:'THE L1VEと過ごした日',c_3:'この世界に来た日',
  c_1s:'8月22日 · 年に一度のピンクの日',c_2s:'2025.07.16 から、ずっと',c_3s:'2004.08.22 から、ゆっくり',
  u_d:'日',u_h:'時',u_m:'分',u_s:'秒',c_next:'次',
- le_title:'Fukoへの手紙',le_sub:'公開ボード · 新しい順ではなく時系列',
+ le_title:'Fukoへの手紙',le_sub:'公開ボード · 古い順に並びます',
  le_ph:'Fukoにひとこと',le_btn:'貼る ♡',le_empty:'まだ誰もいません、最初のひとことを ♡',le_count:'件',
- no_title:'Fukoの言葉',no_sub:'管理人更新 · 言葉と手紙',
+ no_title:'Fukoの言葉',no_sub:'管理人が更新する言葉と手紙',
  ga_title:'Fumimiのゲーム',ga_sub:'ここに住んでいる小さな子',
  ga_pet:'なでる +1',ga_feed:'ごはん +2',ga_lv:'レベル',ga_hearts:'ハート',
  ga_next:'あと {n} でレベルアップ',ga_max:'もう満レベル、ありがとう ♡',ga_up:'レベルアップ！✦',
  me_title:'マイページ',me_sub:'あなたの小さな記録',
- me_joined:'ここにいる',me_days:'日',me_lv:'レベル',me_h:'ハート',me_notes:'メッセージ',me_gender:'性別',me_out:'ログアウト',
- me_since:'登録日'
+ me_joined:'この世界にいる日数',me_days:'',me_lv:'レベル',me_h:'ハート',me_notes:'メッセージ',me_gender:'性別',me_out:'ログアウト',
+ me_days_label:'この世界にいる日数',me_since:'登録日'
 },
 ko:{
  notice:'Fuko의 작은 세계에 오신 것을 환영해요 · 문이 열렸어요',gate_hint:'살며시 눌러 열기',mu_blank:'아직 곡 없음',
  home:'홈',f_home:'홈',f_profile:'프로필',f_letters:'메시지',f_game:'Fumimi',
  auth_title:'먼저 체크인부터',auth_sub:'문은 한 마디로 열려요: 당신이에요.',
  tab_login:'로그인',tab_reg:'회원가입',f_nick:'닉네임',f_pw:'비밀번호',f_gender:'성별',
- ph_nick:'자신에게 부드러운 이름 하나',ph_pw:'4자 이상, 기억할 수 있는 것',
+ ph_nick:'자신에게 어울리는 부드러운 이름 하나',ph_pw:'4자 이상, 기억할 수 있는 것',
  g_f:'여자',g_m:'남자',g_x:'비밀',
  btn_login:'살며시 문 열기 ♡',btn_reg:'가입하고 들어가기 ♡',
  auth_tip:'닉네임은 하나뿐이에요. 오래 함께할 이름으로.',
@@ -1228,12 +1248,12 @@ ko:{
  foot:'개인 팬사이트 · 비공식 · 감상용',
  b1:'프로필',d1:'Fuko의 파일과 스티커',b2:'무대',d2:'무대·팬캠·비하인드',b3:'앨범',d3:'폴라로이드 다이어리',
  b4:'함께 그리기',d4:'다 같이 한 장을 그려요',b5:'중요한 날',d5:'세 개의 실시간 카운트',b6:'Fuko에게',d6:'공개 메시지판',
- b7:'Fuko의 말',d7:'관리자 업데이트',b8:'Fumimi 게임',d8:'머리 쓰다듬고 하트 모으기',b9:'마이페이지',d9:'나의 기록과 레벨',
- p_birth:'생일',p_join:'입사',p_bio:'소개',p_bio_text:'(Fuko의 소개를 적어 주세요: 성격, 좋아하는 것, 요즘 연습.)',
- p_tags:'태그',p_t1:'보컬',p_t2:'댄서',p_t3:'막내',p_fumi:'Fumimi의 이웃',
+ b7:'Fuko의 말',d7:'관리자가 올린 말과 편지',b8:'Fumimi 게임',d8:'머리 쓰다듬고 하트 모으기',b9:'마이페이지',d9:'나의 기록과 레벨',
+ p_birth:'생일',p_join:'데뷔',p_bio:'소개',p_bio_text:'(Fuko의 소개를 적어 주세요: 성격, 좋아하는 것, 요즘 연습.)',
+ p_tags:'태그',p_t1:'가수',p_t2:'댄서',p_t3:'막내',p_fumi:'Fumimi의 이웃',
  st_title:'무대',st_sub:'무대, 팬캠, 비하인드',
  st_g1:'무대 영상',st_g2:'팬캠',st_g3:'비하인드',
- st_ph:'영상 링크 붙여넣기 (한 줄에 하나 / YouTube·B站·mp4)',st_btn:'넣기',st_empty:'아직 비어 있어요, 무대를 기다려요 ♡',
+ st_ph:'영상 링크 붙여넣기 (한 줄에 하나 / YouTube·bilibili·mp4)',st_btn:'넣기',st_empty:'아직 비어 있어요, 무대를 기다려요 ♡',
  al_title:'앨범',al_sub:'폴라로이드 콜라주',
  al_ph:'이미지 링크를 한 번에 (한 줄에 하나)',al_btn:'앨범에 넣기',al_empty:'앨범이 아직 비었어요 ♡',al_count:'장',
  mu_title:'음악',mu_sub:'플레이리스트와 커버',mu_now:'재생 중',mu_ph:'음악 링크 붙여넣기 (mp3 / YouTube 등)',mu_btn:'추가',mu_empty:'아직 곡이 없어요 ♡',
@@ -1243,13 +1263,13 @@ ko:{
  u_d:'일',u_h:'시',u_m:'분',u_s:'초',c_next:'다음',
  le_title:'Fuko에게',le_sub:'공개 게시판 · 시간 순서',
  le_ph:'Fuko에게 한마디',le_btn:'붙이기 ♡',le_empty:'아직 아무도 없어요, 첫 마디를 ♡',le_count:'개',
- no_title:'Fuko의 말',no_sub:'관리자 업데이트 · 말과 편지',
+ no_title:'Fuko의 말',no_sub:'관리자가 올린 말과 편지',
  ga_title:'Fumimi 게임',ga_sub:'여기 사는 작은 친구',
- ga_pet:'머리 쓰다듬기 +1',ga_feed:'먹이 주기 +2',ga_lv:'레벨',ga_hearts:'하트',
+ ga_pet:'쓰다듬기 +1',ga_feed:'먹이 주기 +2',ga_lv:'레벨',ga_hearts:'하트',
  ga_next:'{n}개 더 모으면 레벨 업',ga_max:'이미 만렙이에요, 고마워요 ♡',ga_up:'레벨 업! ✦',
  me_title:'마이페이지',me_sub:'나의 작은 기록',
- me_joined:'함께한 지',me_days:'일',me_lv:'레벨',me_h:'하트',me_notes:'메시지',me_gender:'성별',me_out:'로그아웃',
- me_since:'가입일'
+ me_joined:'이 세계에서 보낸 날',me_days:'',me_lv:'레벨',me_h:'하트',me_notes:'메시지',me_gender:'성별',me_out:'로그아웃',
+ me_days_label:'이 세계에서 보낸 날',me_since:'가입일'
 }
 };
 let LANG='zh';
@@ -1761,7 +1781,7 @@ function meHTML(){
   return '<div class="card me-card">'
    +'<div class="me-info"><b>'+esc(m.nick)+'</b><span>'+t('me_since')+' '+fmtDate(m.joined,LANG)+' · '+g+'</span></div></div>'
    +'<div class="me-grid">'
-   +'<div class="me-stat"><b>'+days+'</b><span>'+t('me_joined')+' · '+t('me_days')+'</span></div>'
+   +'<div class="me-stat"><b>'+days+'</b><span>'+(t('me_days_label')||t('me_joined'))+'</span></div>'
    +'<div class="me-stat"><b>'+lv+'</b><span>'+t('me_lv')+'</span></div>'
    +'<div class="me-stat"><b>'+h+'</b><span>'+t('me_h')+'</span></div>'
    +'<div class="me-stat"><b>'+mine+'</b><span>'+t('me_notes')+'</span></div>'
@@ -2039,9 +2059,10 @@ function bindView(id){
   if(id==='game'){
     const pet=$('#petBtn'),feed=$('#feedBtn');
     function add(n,ev){
-      const m=me();const old=Math.floor((m.hearts||0)/10);
+      const m=me();if(!m)return;
+      const old=Math.floor((m.hearts||0)/10)+1;
       const nh=(m.hearts||0)+n;updateMe({hearts:nh});
-      const nl=Math.floor(nh/10);
+      const nl=Math.floor(nh/10)+1;
       const hEl=$('#heartNum'),lvEl=$('#lvNum'),pg=$('#prog'),note=$('#lvNote');
       if(hEl)hEl.textContent=nh;
       if(lvEl)lvEl.textContent=t('ga_lv')+' '+nl;
@@ -2223,13 +2244,17 @@ authForm.addEventListener('submit',async function(e){
   }else{
     let u=null;
     try{u=await cloudGetUser(nick)}catch(e){}
-    if(u&&u.nick) cacheUser(u);
+    if(u&&u.nick){
+      const lc=users().find(function(x){return x.nick.toLowerCase()===nick.toLowerCase()});
+      u=Object.assign({},u,{hearts:Math.max(Number(u.hearts)||0,Number(lc&&lc.hearts)||0)});
+      cacheUser(u);
+    }
     if(!u) u=users().find(function(x){return x.nick.toLowerCase()===nick.toLowerCase()});
     busy(false);
     if(!u){err.textContent=t('e_no');shake();return}
     if(String(u.pw)!==hashPw(pw)){err.textContent=t('e_pw');shake();return}
     cacheUser(u);setSession(u.nick);err.textContent='';
-    if(!(await cloudGetUser(nick))) cloudSaveUser(u);   // 老账号自动迁移到云端
+    cloudSaveUser(me()||u);   // 老账号自动迁移到云端
     hideAuth();toast(t('ok_back'));render();
   }
 });
@@ -2350,7 +2375,7 @@ const AD={
   s7:'⑧ クラウド公開（ファンに見せる）',h7:'Supabase の URL と anon key、站长のメール/パスワードを入れると、全訪問者に公開されます',ph_url:'プロジェクト URL https://xxx.supabase.co',ph_key:'anon public key',ph_mail:'站长メール',ph_pw2:'站长パスワード',test:'接続テスト',push:'今すぐ公開',clear:'接続を解除',
   del:'削除',edit:'編集',cancel:'キャンセル',onlyimg:'（画像のみ）',ev:'動画はまだありません',ep:'アルバムは空です',et:'曲はまだありません',ed:'日付はまだありません',el:'まだ公開されていません',
   t_vid:'動画リンクを入れてください',t_img:'画像リンクを入れてください',t_audio:'音声リンクを入れてください',t_date:'日付を選んでください',t_letter:'文章か画像、どちらか必要です',t_ready:'画像OK、保存を押してね',t_upd:'アップロード済み ',t_up:' 枚',t_saved:'保存しました ♡',t_cloud:'クラウド更新済み ♡',t_cfail:'接続失敗、URL と key を確認',publish_btn:'クラウドへ公開'},
- ko:{title:'Fuko의 작은 세계 · 관리',back:'사이트로',out:'로그아웃',login:'관리자 로그인',acc:'계정',pwd:'비밀번호',ph_acc:'관리자 계정',ph_pwd:'관리자 비밀번호',enter:'들어가기',owner:'站长 전용 · 이번 세션에서만 유지',wrong:'계정이나 비밀번호가 달라요 ♡',
+ ko:{title:'Fuko의 작은 세계 · 관리',back:'사이트로',out:'로그아웃',login:'관리자 로그인',acc:'계정',pwd:'비밀번호',ph_acc:'관리자 계정',ph_pwd:'관리자 비밀번호',enter:'들어가기',owner:'관리자 전용 · 이번 세션에서만 유지',wrong:'계정이나 비밀번호가 달라요 ♡',
   s1:'① 무대 영상 & 사진',h1:'영상은 YouTube / Bilibili / .mp4 링크. 사진은 저장소 안 경로나 이미지 링크',ph_vid:'영상 링크 https://…',ph_title:'제목 (비워도 됨)',btn_vid:'영상 추가',ph_img:'fumi/파일명.jpg 또는 이미지 링크',ph_note:'설명 (비워도 됨)',btn_img:'사진 추가',tip_img:'이미지는 저장소 fumi 폴더에 올리고, 여기에 fumi/파일명.jpg 를 입력하세요',
   s2:'② 음악',h2:'오디오 직링크 (mp3 / wav / m4a / ogg)',ph_audio:'오디오 링크 https://….mp3',ph_track:'곡명 (비워도 됨)',btn_music:'곡 추가',
   s3:'③ 중요한 날',h3:'기념일 추가·수정·삭제, 카운트다운으로 표시',ph_date:'메모 (예: 데뷔 무대)',btn_date:'날짜 추가',btn_update:'날짜 수정',
@@ -2894,6 +2919,7 @@ $$('#lang button, #authLang button').forEach(function(b){
       CL_STATE='idle';paintCloud();
       renderTabs();render();
       if(ADM)renderAdmin();
+      syncHearts().then(function(changed){ if(changed) render() });
     }).catch(function(){CL_STATE='err';paintCloud()});
   }
 })();
