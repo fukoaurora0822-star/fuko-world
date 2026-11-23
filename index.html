@@ -619,6 +619,8 @@ body::before{display:none!important}
 .vcard{background:#fff!important;border:1px solid var(--line)!important;border-radius:16px;box-shadow:none!important}
 .vcard:hover{border-color:#EECFD9!important;transform:none!important;box-shadow:none!important}
 .vcard .media{background:#FAE4EA!important}
+.vcard .media video{object-fit:cover;background:#000}
+.vcard .media .vthumb{aspect-ratio:16/9}
 .vcard .cap{color:#8B6E77!important}
 .vcard .cap em{color:#BFA3AC!important;font-style:normal!important}
 .polaroid{background:#fff!important;border:1px solid var(--line)!important;border-radius:10px;box-shadow:0 1px 2px rgba(190,120,140,.12)!important;transform:none!important}
@@ -1528,7 +1530,7 @@ function stageHTML(){
 function embedHTML(url){
   const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
   if(yt) return '<iframe src="https://www.youtube.com/embed/'+yt[1]+'" allow="accelerometer;autoplay;clipboard-write;encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe>';
-  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url)) return '<video src="'+esc(url)+'" controls preload="metadata"></video>';
+  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url)) return '<video class="vthumb" src="'+esc(url)+'#t=0.12" controls preload="metadata" playsinline></video>';
   const bili=url.match(/bilibili\.com\/video\/(BV[\w]+)/);
   if(bili) return '<a href="'+esc(url)+'" target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%;text-decoration:none;color:#9B8590;font-size:12px;letter-spacing:.1em;background:#FDF3F8">Bilibili · ↗</a>';
   return '<a href="'+esc(url)+'" target="_blank" rel="noopener" style="display:grid;place-items:center;width:100%;height:100%;text-decoration:none;color:#9B8590;font-size:12px;letter-spacing:.1em;background:#FDF3F8;text-align:center;padding:8px;word-break:break-all">'+esc(url)+' ↗</a>';
@@ -2919,6 +2921,26 @@ async function adDrawOp(op,id){
   }
 }
 
+</script>
+
+<script>
+/* 本地视频在没有 poster 时，强制解码一小帧作为封面 */
+(function(){
+  function paint(v){
+    try{ if(v.readyState>=1 && v.currentTime<0.1) v.currentTime=0.12; }catch(e){}
+  }
+  document.addEventListener('loadedmetadata',function(e){
+    var t=e.target;
+    if(t&&t.tagName==='VIDEO'&&t.classList.contains('vthumb')) paint(t);
+  },true);
+  document.addEventListener('loadeddata',function(e){
+    var t=e.target;
+    if(t&&t.tagName==='VIDEO'&&t.classList.contains('vthumb')) paint(t);
+  },true);
+  window.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('video.vthumb').forEach(paint);
+  });
+})();
 </script>
 </body>
 </html>
